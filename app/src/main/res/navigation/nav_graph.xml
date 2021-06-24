@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/boardingFragment">
+
+    <fragment
+        android:id="@+id/boardingFragment"
+        android:name="com.skillbox.strava.ui.onboarding.BoardingFragment"
+        android:label="BoardingFragment" />
+</navigation>

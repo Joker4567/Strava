@@ -54,6 +54,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
+    implementation(project(":shared_model"))
 
     //Dagger-Hilt
     val dagger_version = rootProject.extra["dagger_version"]
@@ -65,4 +66,7 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:$hilt_work_version")
     implementation("androidx.hilt:hilt-work:$hilt_work_version")
     kapt("androidx.hilt:hilt-compiler:$hilt_work_version")
+
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation("com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2")
 }

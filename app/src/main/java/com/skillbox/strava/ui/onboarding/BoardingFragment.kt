@@ -2,7 +2,6 @@ package com.skillbox.strava.ui.onboarding
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -18,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class BoardingFragment : ViewBindingFragment<FragmentBoardingBinding>(FragmentBoardingBinding::inflate) {
 
-    private val screenViewModel by viewModels<BoardingViewModel>()
+    override val screenViewModel by viewModels<BoardingViewModel>()
     private var screens: MutableList<BoardingModel> = emptyList<BoardingModel>().toMutableList()
     private var positionSelected = 0
 

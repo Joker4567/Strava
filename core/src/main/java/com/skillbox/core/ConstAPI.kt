@@ -1,4 +1,4 @@
-package com.skillbox.core.platform
+package com.skillbox.core
 
 object ConstAPI {
     const val id_client = 67715

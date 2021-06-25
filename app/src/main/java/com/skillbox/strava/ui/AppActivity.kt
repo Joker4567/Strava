@@ -1,22 +1,21 @@
 package com.skillbox.strava.ui
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import com.skillbox.core.platform.BaseActivity
 import com.skillbox.strava.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AppActivity : AppCompatActivity(R.layout.activity_app) {
+class AppActivity : BaseActivity(R.layout.activity_app) {
 
-    private lateinit var navController: NavController
+    private var _navController: NavController? = null
+    private val navController get() = checkNotNull(_navController) { "navController isn`n initialized" }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        navController = Navigation.findNavController(this, R.id.fragmentContainer)
+    override fun initInterface(savedInstanceState: Bundle?) {
+        _navController = Navigation.findNavController(this, R.id.fragmentContainer)
         NavigationUI.setupActionBarWithNavController(this, navController)
     }
 

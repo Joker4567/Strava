@@ -3,11 +3,12 @@ package com.skillbox.strava.di
 import android.app.Application
 import android.util.Log
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.google.gson.Gson
+import com.skillbox.core_network.api.AuthApi
+import com.skillbox.strava.BuildConfig
+import com.skillbox.strava.interceptor.HeaderInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import com.skillbox.strava.BuildConfig
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -39,9 +40,10 @@ object RetrofitModule {
     }
 
     @Provides
-    fun buildOkHttp(cache: Cache): OkHttpClient {
+    fun buildOkHttp(cache: Cache, headerInterceptor: HeaderInterceptor): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
         with(okHttpClientBuilder) {
+            addInterceptor(headerInterceptor)
             cache(cache)
             connectTimeout(TIME_OUT_CONNECT, TimeUnit.SECONDS)
             writeTimeout(TIME_OUT_WRITE, TimeUnit.SECONDS)
@@ -76,16 +78,24 @@ object RetrofitModule {
         } catch (ex:Exception) {
             Log.e("OkHttpClient","Exception ${ex.message}")
         }
-        hostnameVerifier(HostnameVerifier { _, _ -> true })
+        hostnameVerifier { _, _ -> true }
         return this
     }
 
     @Singleton
     @Provides
-    fun provideRetrofit(client: OkHttpClient, gson: Gson): Retrofit.Builder {
+    fun provideRetrofit(client: OkHttpClient): Retrofit.Builder {
         return Retrofit.Builder()
                 .client(client)
-                .baseUrl("https://url")
+                .baseUrl("https://www.strava.com")
                 .addConverterFactory(MoshiConverterFactory.create())
+    }
+
+    @Singleton
+    @Provides
+    fun provideRetrofitAuth(retrofit: Retrofit.Builder): AuthApi {
+        return retrofit
+                .build()
+                .create(AuthApi::class.java)
     }
 }

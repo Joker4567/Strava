@@ -17,7 +17,7 @@ android {
         targetSdk = rootProject.extra["compileSdkVersion"] as Int
         versionCode = 1
         versionName = "1.0"
-        addManifestPlaceholders( mapOf(Pair("appAuthRedirectScheme", "https://strava/token")))
+//        addManifestPlaceholders( mapOf(Pair("appAuthRedirectScheme", "https://strava/token")))
     }
 
     buildFeatures.viewBinding = true
@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":core_network"))
     implementation(project(":shared_model"))
+    implementation(project(":core_db"))
 
     //Dagger-Hilt
     val dagger_version = rootProject.extra["dagger_version"]

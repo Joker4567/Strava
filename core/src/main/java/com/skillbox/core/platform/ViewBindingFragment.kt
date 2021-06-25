@@ -13,7 +13,7 @@ abstract class ViewBindingFragment<T : ViewBinding>(
                 root: ViewGroup?,
                 attachToRoot: Boolean
         ) -> T
-) : Fragment() {
+) : BaseFragment() {
 
     private var _binding: T? = null
 

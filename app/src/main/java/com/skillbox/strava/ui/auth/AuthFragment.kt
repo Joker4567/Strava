@@ -2,8 +2,7 @@ package com.skillbox.strava.ui.auth
 
 import android.os.Bundle
 import android.view.View
-import com.skillbox.core.extensions.show
-import com.skillbox.core.platform.ConstAPI
+import com.skillbox.core.ConstAPI
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.strava.databinding.FragmentAuthBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,7 +13,6 @@ import net.openid.appauth.AuthState
 import net.openid.appauth.ResponseTypeValues
 
 import net.openid.appauth.AuthorizationRequest
-import androidx.core.app.ActivityCompat.startActivityForResult
 
 import android.content.Intent
 import android.util.Log
@@ -24,43 +22,13 @@ import net.openid.appauth.AuthorizationException
 
 import net.openid.appauth.AuthorizationResponse
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @AndroidEntryPoint
 class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBinding::inflate) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.authButton.setOnClickListener {
             doAuthorization()
-//            binding.authWebView.show()
-//            val extraHeaders: MutableMap<String, String> = HashMap()
-//            extraHeaders["Authorization"] = "Bearer ${ConstAPI.client_access}"
-//            val authUrl = "http://www.strava.com/oauth/authorize"
-//            binding.authWebView.settings.userAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36 Edg/91.0.864.54"
-//            binding.authWebView.loadUrl(
-//                    "$authUrl?" +
-//                            "client_id=${ConstAPI.id_client}" +
-//                            "&response_type=code" +
-//                            "&redirect_uri=https://strava/token" +
-//                            "&approval_prompt=force" +
-//                            "&scope=read",
-//                    extraHeaders)
         }
     }
 

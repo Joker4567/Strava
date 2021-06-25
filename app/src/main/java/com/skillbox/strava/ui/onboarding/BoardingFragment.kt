@@ -35,6 +35,7 @@ class BoardingFragment : ViewBindingFragment<FragmentBoardingBinding>(FragmentBo
     }
 
     private fun bindViewPager() {
+        screens.clear()
         screens.addAll(
                 listOf(
                         BoardingModel(

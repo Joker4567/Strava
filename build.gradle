@@ -10,6 +10,9 @@ buildscript {
     ext.navigation = "1.0.0"
     ext.lifecycle = "2.3.1"
     ext.adapterDelegate = "4.3.0"
+    ext.roomVersion = "2.3.0"
+    ext.retrofit = "2.9.0"
+    ext.okhttp = "4.9.1"
 
     repositories {
         google()
@@ -87,6 +90,23 @@ allprojects {
                 implementation("android.arch.navigation:navigation-fragment:$navigation")
                 implementation("android.arch.navigation:navigation-ui:$navigation")
                 implementation("android.arch.navigation:navigation-ui-ktx:$navigation")
+
+                //Room
+                implementation("androidx.room:room-runtime:$roomVersion")
+                implementation("androidx.room:room-ktx:$roomVersion")
+                kapt("androidx.room:room-compiler:$roomVersion")
+
+                //Retrofit
+                implementation("com.squareup.retrofit2:retrofit:$retrofit")
+                implementation("com.squareup.retrofit2:converter-moshi:$retrofit")
+                implementation("com.squareup.retrofit2:converter-gson:$retrofit")
+                //Stetho
+                implementation("com.facebook.stetho:stetho-okhttp3:1.6.0")
+                //Okhttp
+                implementation("com.squareup.okhttp3:okhttp:$okhttp")
+                implementation("com.squareup.okhttp3:logging-interceptor:$okhttp")
+                //AppAuth
+                implementation("net.openid:appauth:0.9.0")
             }
         }
     }

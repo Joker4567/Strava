@@ -12,4 +12,5 @@
     <string name="boarding_button_okey">Okey</string>
     <string name="auth_button_text">Continue with Strava</string>
     <string name="auth_already">ALREADY A MEMBER</string>
+    <string name="main_exit">Выйти</string>
 </resources>

@@ -5,6 +5,7 @@ import com.skillbox.core_network.api.AuthApi
 import com.skillbox.core_network.utils.BaseRepository
 import com.skillbox.core_network.utils.ErrorHandler
 import com.skillbox.core_network.utils.State
+import com.skillbox.shared_model.Athlete
 import com.skillbox.shared_model.OAuthModel
 import javax.inject.Inject
 
@@ -13,10 +14,14 @@ class AuthRepositoryImpl @Inject constructor(
         private val api: AuthApi
 ) : BaseRepository(errorHandler = errorHandler), AuthRepository {
 
-    override suspend fun getAthlete(onSuccess: (Boolean) -> Unit, onState: (State) -> Unit) {
+    override suspend fun getAthlete(onSuccess: (Athlete?) -> Unit, onState: (State) -> Unit) {
         execute(onSuccess = onSuccess, onState = onState) {
             val response = api.getAthlete().execute()
-            true
+            if(response.isSuccessful){
+                val resultModel = response.body() as Athlete
+                resultModel
+            } else
+                null
         }
     }
 

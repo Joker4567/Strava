@@ -35,9 +35,18 @@ class Pref(context: Context) {
             }
         }
 
+    var isBoarding: Boolean
+        get() = sharedPreferences.getBoolean(KeyOnBoarding, false)
+        set(value) {
+            sharedPreferences.edit {
+                putBoolean(KeyOnBoarding, value)
+            }
+        }
+
     companion object {
         const val FileName = "SkillboxPreference"
         const val KeyToken = "accessToken"
         const val KeyCode = "code"
+        const val KeyOnBoarding = "onBoarding"
     }
 }

@@ -72,4 +72,7 @@ dependencies {
 
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2")
+    //Image
+    implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("jp.wasabeef:picasso-transformations:2.4.0")
 }

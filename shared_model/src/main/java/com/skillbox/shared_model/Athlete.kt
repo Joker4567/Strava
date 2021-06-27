@@ -6,10 +6,13 @@ data class Athlete(
         val resource_state: Int,
         val firstname: String,
         val lastname: String,
-        val city: String,
+        val city: String?,
         val sex: Sex,
-        val profile_medium: String,
-        val profile: String
+        val profile_medium: String?,
+        val profile: String?,
+        val friend: Int?,
+        val follower: Int?,
+        val country: String?
 )
 
 enum class Sex {

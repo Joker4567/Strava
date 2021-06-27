@@ -1,5 +1,6 @@
 package com.skillbox.strava.ui.fragment.onboarding
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -8,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.skillbox.core.extensions.checkDarkTheme
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.utils.ZoomOutPageTransformer
+import com.skillbox.core_db.pref.Pref
 import com.skillbox.shared_model.BoardingModel
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentBoardingBinding
@@ -65,8 +67,7 @@ class BoardingFragment : ViewBindingFragment<FragmentBoardingBinding>(FragmentBo
             if (positionSelected < 2)
                 binding.boardingCard.setCurrentItem(positionSelected + 1, true)
             else
-                findNavController()
-                        .navigate(R.id.action_boardingFragment_to_authFragment)
+                navigateAuth()
         }
 
         binding.boardingCard.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -76,5 +77,13 @@ class BoardingFragment : ViewBindingFragment<FragmentBoardingBinding>(FragmentBo
                 binding.boardingSkip.text = if (position < 2) getString(R.string.boarding_button_skip) else getString(R.string.boarding_button_okey)
             }
         })
+    }
+
+    private fun navigateAuth() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Pref(requireContext()).isBoarding = true
+        }
+        findNavController()
+                .navigate(R.id.action_boardingFragment_to_authFragment)
     }
 }

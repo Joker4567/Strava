@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/profile_tvFollowers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Followers"
+                android:textColor="@color/gray"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/profile_tvFollowing"
+                app:layout_constraintTop_toBottomOf="@+id/profile_imageViewPhoto" />
+
+            <TextView
+                android:id="@+id/profile_tvCountFollowers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                style="@style/textColorCard"
+                android:textSize="11sp"
+                app:layout_constraintStart_toStartOf="@+id/profile_tvFollowers"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tvFollowers"
+                tools:text="53" />
+
+            <ImageView
+                android:id="@+id/profile_imageViewPhoto"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/profile_tvtelegramName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/gray"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_imageViewPhoto"
+                app:layout_constraintStart_toEndOf="@+id/profile_imageViewPhoto"
+                tools:text="\@viktoriaivanova" />
+
+            <TextView
+                android:id="@+id/profile_tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/roboto"
+                style="@style/textColorCard"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_imageViewPhoto"
+                app:layout_constraintStart_toEndOf="@+id/profile_imageViewPhoto"
+                app:layout_constraintTop_toTopOf="@+id/profile_imageViewPhoto"
+                tools:text="Viktoria Ivanova" />
+
+            <TextView
+                android:id="@+id/profile_tvFollowing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Following"
+                android:textColor="@color/gray"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@+id/profile_imageViewPhoto"
+                app:layout_constraintTop_toBottomOf="@+id/profile_imageViewPhoto" />
+
+            <TextView
+                android:id="@+id/profile_tvCountFlollowing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                style="@style/textColorCard"
+                android:textSize="11sp"
+                app:layout_constraintStart_toStartOf="@+id/profile_tvFollowing"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tvFollowing"
+                tools:text="109" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/profile_buttonShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Share"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_tvCountFlollowing"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/profile_tvFollowing" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/profile_tvCountryValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto"
+                style="@style/textColorCard"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/profile_tvGenderValue"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tvCountry"
+                tools:text="Russia" />
+
+            <TextView
+                android:id="@+id/profile_tvCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="County"
+                android:textColor="@color/gray"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@+id/profile_tvGenderValue"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tvGenderValue" />
+
+            <TextView
+                android:id="@+id/profile_tvWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="76dp"
+                android:text="Weight (edit)"
+                android:textColor="@color/gray"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@+id/profile_tvCountryValue"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tvGenderValue" />
+
+            <TextView
+                android:id="@+id/profile_tvGenderValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto"
+                style="@style/textColorCard"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/profile_tvGender"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tvGender"
+                tools:text="Female" />
+
+            <TextView
+                android:id="@+id/profile_tvGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="32dp"
+                android:text="Gender"
+                android:textColor="@color/gray"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/profile_spinnerItems"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:spinnerMode="dropdown"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/profile_tvWeight"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tvWeight" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/profile_buttonLogout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:text="Logout"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+</androidx.constraintlayout.widget.ConstraintLayout>

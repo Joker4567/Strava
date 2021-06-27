@@ -90,6 +90,8 @@ allprojects {
                 implementation("android.arch.navigation:navigation-fragment:$navigation")
                 implementation("android.arch.navigation:navigation-ui:$navigation")
                 implementation("android.arch.navigation:navigation-ui-ktx:$navigation")
+                implementation("androidx.navigation:navigation-runtime-ktx:$navigation")
+                implementation("androidx.navigation:navigation-common-ktx:$navigation")
 
                 //Room
                 implementation("androidx.room:room-runtime:$roomVersion")

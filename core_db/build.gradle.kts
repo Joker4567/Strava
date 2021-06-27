@@ -8,5 +8,5 @@ plugins {
 dependencies {
     implementation(project(":shared_model"))
 
-    implementation("androidx.security:security-crypto-ktx:1.1.0-alpha03")
+    implementation("androidx.security:security-crypto:1.1.0-alpha03")
 }

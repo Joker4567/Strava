@@ -13,10 +13,10 @@ constructor(
 
     override fun intercept(chain: Interceptor.Chain): Response {
         when {
-            !pref.authToken.isNullOrEmpty() -> {
+            !pref.accessToken.isNullOrEmpty() -> {
                 val newRequest =
                         chain.request().newBuilder()
-                                .header("Authorization", "Bearer " + pref.authToken.toString())
+                                .header("Authorization", "Bearer " + pref.accessToken.toString())
                                 .header("Content-Type","application/json; charset=UTF-8")
                                 .build()
 

@@ -7,4 +7,9 @@ interface AuthRepository {
             onSuccess: (Boolean) -> Unit,
             onState: (State) -> Unit
     )
+    suspend fun postAuth(
+            code: String,
+            onSuccess: (String) -> Unit,
+            onState: (State) -> Unit
+    )
 }

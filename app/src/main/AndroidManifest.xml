@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.skillbox.strava">
 
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="30"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Strava"
         android:usesCleartextTraffic="true"
+        tools:overrideLibrary="androidx.security.ktx"
         tools:targetApi="m">
 
         <activity

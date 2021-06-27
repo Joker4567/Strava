@@ -19,7 +19,7 @@ class Pref(context: Context) {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
-    var authToken: String?
+    var accessToken: String?
         get() = sharedPreferences.getString(KeyToken, null)
         set(value) {
             sharedPreferences.edit {
@@ -27,8 +27,17 @@ class Pref(context: Context) {
             }
         }
 
+    var code: String?
+        get() = sharedPreferences.getString(KeyCode, null)
+        set(value) {
+            sharedPreferences.edit {
+                putString(KeyCode, value)
+            }
+        }
+
     companion object {
         const val FileName = "SkillboxPreference"
-        const val KeyToken = "token"
+        const val KeyToken = "accessToken"
+        const val KeyCode = "code"
     }
 }

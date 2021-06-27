@@ -17,7 +17,7 @@ android {
         targetSdk = rootProject.extra["compileSdkVersion"] as Int
         versionCode = 1
         versionName = "1.0"
-//        addManifestPlaceholders( mapOf(Pair("appAuthRedirectScheme", "https://strava/token")))
+        addManifestPlaceholders( mapOf(Pair("appAuthRedirectScheme", "https://strava/token")))
     }
 
     buildFeatures.viewBinding = true

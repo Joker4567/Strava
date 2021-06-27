@@ -1,4 +1,4 @@
-package com.skillbox.strava.ui.auth
+package com.skillbox.strava.ui.fragment.auth
 
 import android.os.Bundle
 import android.view.View

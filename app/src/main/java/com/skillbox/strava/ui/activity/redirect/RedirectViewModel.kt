@@ -1,4 +1,4 @@
-package com.skillbox.strava.ui.redirect
+package com.skillbox.strava.ui.activity.redirect
 
 import com.skillbox.core.platform.BaseViewModel
 import com.skillbox.core.utils.SingleLiveEvent

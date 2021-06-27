@@ -1,10 +1,11 @@
-package com.skillbox.strava.ui.redirect
+package com.skillbox.strava.ui.activity.redirect
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import com.skillbox.core.platform.BaseActivity
+import com.skillbox.strava.ui.activity.main.MainActivity
+import com.skillbox.strava.ui.activity.OnBoardingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,9 +18,14 @@ class RedirectActivity : BaseActivity() {
         screenViewModel.authStateObserver.observe(this, { result ->
             result?.let {
                 if(it){
-                    Log.d("", "")
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finishAffinity()
                 } else {
-                    Log.d("", "")
+                    val intent = Intent(this, OnBoardingActivity::class.java)
+                    intent.putExtra("auth", true)
+                    startActivity(intent)
+                    finishAffinity()
                 }
             }
         })

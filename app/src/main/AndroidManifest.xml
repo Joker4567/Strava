@@ -19,7 +19,7 @@
         tools:targetApi="m">
 
         <activity
-            android:name=".ui.AppActivity"
+            android:name=".ui.activity.OnBoardingActivity"
             android:launchMode="singleTask"
             android:exported="true">
             <intent-filter>
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.redirect.RedirectActivity" android:exported="true">
+        <activity android:name="com.skillbox.strava.ui.activity.redirect.RedirectActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -38,6 +38,8 @@
                     android:path="/token"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.activity.main.MainActivity" android:exported="true" android:launchMode="singleTop"/>
 
         <meta-data
             android:name="preloaded_fonts"

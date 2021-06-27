@@ -1,4 +1,4 @@
-package com.skillbox.strava.ui.onboarding
+package com.skillbox.strava.ui.fragment.onboarding
 
 import android.os.Bundle
 import android.view.View
@@ -11,7 +11,7 @@ import com.skillbox.core.utils.ZoomOutPageTransformer
 import com.skillbox.shared_model.BoardingModel
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentBoardingBinding
-import com.skillbox.strava.ui.onboarding.adapter.OnboardingAdapter
+import com.skillbox.strava.ui.fragment.onboarding.adapter.OnboardingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

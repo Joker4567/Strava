@@ -1,4 +1,4 @@
-package com.skillbox.strava.ui.onboarding.adapter
+package com.skillbox.strava.ui.fragment.onboarding.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

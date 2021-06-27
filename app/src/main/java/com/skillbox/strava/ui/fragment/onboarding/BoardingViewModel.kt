@@ -1,4 +1,4 @@
-package com.skillbox.strava.ui.onboarding
+package com.skillbox.strava.ui.fragment.onboarding
 
 import com.skillbox.core.platform.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

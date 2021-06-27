@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/boardingFragment"
-        android:name="com.skillbox.strava.ui.onboarding.BoardingFragment"
+        android:name="com.skillbox.strava.ui.fragment.onboarding.BoardingFragment"
         tools:layout="@layout/fragment_boarding">
         <action
             android:id="@+id/action_boardingFragment_to_authFragment"
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/authFragment"
-        android:name="com.skillbox.strava.ui.auth.AuthFragment"
+        android:name="com.skillbox.strava.ui.fragment.auth.AuthFragment"
         android:label="AuthFragment"
         tools:layout="@layout/fragment_auth"/>
 </navigation>

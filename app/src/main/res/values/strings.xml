@@ -13,4 +13,12 @@
     <string name="auth_button_text">Continue with Strava</string>
     <string name="auth_already">ALREADY A MEMBER</string>
     <string name="main_exit">Выйти</string>
+    <string name="activities_add_title">Create a new activities</string>
+    <string name="activties_add_type">Type</string>
+    <string name="activities_add_name">Name</string>
+    <string name="activities_add_time">Time</string>
+    <string name="activities_add_distance">Distance</string>
+    <string name="activities_add_description">Description</string>
+    <string name="activites_add_date">Date</string>
+    <string name="activities_add_button_text">Add</string>
 </resources>

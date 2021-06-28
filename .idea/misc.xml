@@ -9,6 +9,7 @@
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/drawable/circle_white.xml" value="0.3828125" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/drawable/iamge.xml" value="0.3828125" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/drawable/ic_activities.xml" value="0.3828125" />
+        <entry key="..\:/source/Skillbox/Strava/app/src/main/res/drawable/ic_add.xml" value="0.3828125" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/drawable/ic_auth_button.xml" value="0.3828125" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/drawable/ic_friends.xml" value="0.3828125" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/drawable/ic_icon_auth_button.xml" value="0.3828125" />
@@ -20,11 +21,13 @@
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/layout/activity_app.xml" value="0.36666666666666664" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/layout/activity_main.xml" value="0.3596014492753623" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/layout/fragment_activities.xml" value="0.3596014492753623" />
+        <entry key="..\:/source/Skillbox/Strava/app/src/main/res/layout/fragment_add_activities.xml" value="0.36666666666666664" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/layout/fragment_auth.xml" value="0.5" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/layout/fragment_boarding.xml" value="0.36666666666666664" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/layout/fragment_home.xml" value="0.3596014492753623" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/layout/fragment_profile.xml" value="0.5" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/layout/item_card.xml" value="0.36666666666666664" />
+        <entry key="..\:/source/Skillbox/Strava/app/src/main/res/layout/item_spinner.xml" value="0.5" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/menu/bottom_nav.xml" value="0.36666666666666664" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/menu/bottom_onboarding.xml" value="0.36666666666666664" />
         <entry key="..\:/source/Skillbox/Strava/app/src/main/res/menu/nav_graph.xml" value="0.36666666666666664" />

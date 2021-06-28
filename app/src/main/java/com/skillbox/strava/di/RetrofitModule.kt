@@ -3,6 +3,7 @@ package com.skillbox.strava.di
 import android.app.Application
 import android.util.Log
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.skillbox.core_network.api.AthleteApi
 import com.skillbox.core_network.api.AuthApi
 import com.skillbox.strava.BuildConfig
 import com.skillbox.strava.interceptor.HeaderInterceptor
@@ -19,7 +20,6 @@ import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
@@ -97,5 +97,13 @@ object RetrofitModule {
         return retrofit
                 .build()
                 .create(AuthApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideRetrofitAthlete(retrofit: Retrofit.Builder) : AthleteApi {
+        return retrofit
+                .build()
+                .create(AthleteApi::class.java)
     }
 }

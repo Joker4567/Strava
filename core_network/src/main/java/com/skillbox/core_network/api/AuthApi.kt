@@ -1,10 +1,7 @@
 package com.skillbox.core_network.api
 
-import com.skillbox.shared_model.Athlete
 import com.skillbox.shared_model.OAuthModel
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -14,7 +11,4 @@ interface AuthApi {
                  @Query("client_secret") client_secret: String,
                  @Query("code") code: String,
                  @Query("grant_type") grant_type: String): Call<OAuthModel>
-
-    @GET("api/v3/athlete")
-    fun getAthlete(): Call<Athlete>
 }

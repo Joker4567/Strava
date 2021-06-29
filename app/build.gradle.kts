@@ -80,4 +80,9 @@ dependencies {
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
+    //Delegate
+    implementation("com.hannesdorfmann:adapterdelegates4:4.3.0")
+    //RecyclerViewDelegates
+    implementation("com.hannesdorfmann:adapterdelegates4-kotlin-dsl:4.3.0")
+    implementation("com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:4.3.0")
 }

@@ -12,11 +12,10 @@ interface AthleteApi {
     fun getAthlete(): Call<Athlete>
 
     @GET("api/v3/athlete/activities")
-
     fun getActivities(
             @Query("page") page: Int = 1,
             @Query("per_page") per_page: Int = 30
-    ): Call<List<Athlete>>
+    ): Call<List<СreateActivity>>
 
     @POST("api/v3/activities")
     fun createActivities(

@@ -1,5 +1,6 @@
 package com.skillbox.strava.ui.activity.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -12,6 +13,7 @@ import com.skillbox.core.extensions.setupBottomWithNavController
 import com.skillbox.core.platform.BaseActivity
 import com.skillbox.core.state.StateTitleToolbar
 import com.skillbox.strava.R
+import com.skillbox.strava.ui.activity.OnBoardingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.flow.*
@@ -37,6 +39,15 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
                     Log.e("MainActivity", "StateTitleToolbar.titleToolbar -> ${it.localizedMessage}")
                 }
                 .launchIn(lifecycleScope)
+        screenViewModel.reAuthStateObserver.observe(this, { isSuccessReAuth ->
+            isSuccessReAuth?.let {
+                if(isSuccessReAuth)
+                {
+                    startActivity(Intent(this, OnBoardingActivity::class.java))
+                    finishAffinity()
+                }
+            }
+        })
     }
 
     private fun setupBottomNavigationBar() {

@@ -9,4 +9,10 @@ interface AuthRepository {
             onSuccess: (String) -> Unit,
             onState: (State) -> Unit
     )
+
+    suspend fun reauthorize(
+            access_token: String,
+            onSuccess: (String) -> Unit,
+            onState: (State) -> Unit
+    )
 }

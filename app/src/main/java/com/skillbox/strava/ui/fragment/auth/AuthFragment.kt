@@ -1,22 +1,17 @@
 package com.skillbox.strava.ui.fragment.auth
 
-import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import com.skillbox.core_network.ConstAPI
 import com.skillbox.core.platform.ViewBindingFragment
+import com.skillbox.core_network.ConstAPI
 import com.skillbox.strava.databinding.FragmentAuthBinding
 import dagger.hilt.android.AndroidEntryPoint
-
-import android.net.Uri
+import net.openid.appauth.AuthorizationRequest
+import net.openid.appauth.AuthorizationService
 import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.ResponseTypeValues
-
-import net.openid.appauth.AuthorizationRequest
-
-import android.util.Log
-
-import net.openid.appauth.AuthorizationService
 
 @AndroidEntryPoint
 class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBinding::inflate) {
@@ -29,15 +24,13 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
     }
 
     private fun doAuthorization() {
-        val authUrl = "http://www.strava.com/oauth/authorize"
-
         val intentUri : Uri = Uri.parse("https://www.strava.com/oauth/mobile/authorize")
                 .buildUpon()
                 .appendQueryParameter("client_id", ConstAPI.id_client.toString())
                 .appendQueryParameter("redirect_uri", "https://www.strava.com/oauth/token")
                 .appendQueryParameter("response_type", "code")
                 .appendQueryParameter("approval_prompt", "auto")
-                .appendQueryParameter("scope", "activity:write,read")
+                .appendQueryParameter("scope", "read,activity:read_all,profile:read_all,read_all")
                 .build()
 
         val serviceConfig = AuthorizationServiceConfiguration(

@@ -9,8 +9,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RedirectViewModel @Inject constructor(
-        private val authRepository: AuthRepository,
-        private val pref: Pref
+        private val authRepository: AuthRepository
 )  : BaseViewModel() {
 
     val authStateObserver = SingleLiveEvent<Boolean>()
@@ -18,7 +17,6 @@ class RedirectViewModel @Inject constructor(
     fun auth(code: String) {
         launchIO {
             authRepository.postAuth(code, { tokenAccess ->
-                pref.accessToken = tokenAccess
                 authStateObserver.postValue(true)
             }, ::handleState)
         }

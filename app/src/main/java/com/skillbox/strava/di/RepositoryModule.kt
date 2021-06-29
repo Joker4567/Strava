@@ -1,5 +1,6 @@
 package com.skillbox.strava.di
 
+import com.skillbox.core_db.pref.Pref
 import com.skillbox.core_network.api.AthleteApi
 import com.skillbox.core_network.api.AuthApi
 import com.skillbox.core_network.repository.AthleteRepository
@@ -20,11 +21,13 @@ object RepositoryModule {
     @Provides
     fun provideAuthRepository(
             errorHandler: ErrorHandler,
-            authApi: AuthApi
+            authApi: AuthApi,
+            pref: Pref
     ): AuthRepository {
         return AuthRepositoryImpl(
                 errorHandler = errorHandler,
-                api = authApi
+                api = authApi,
+                pref = pref
         )
     }
 }
@@ -36,11 +39,13 @@ object GameModule {
     @Provides
     fun provideAthleteRepository(
             errorHandler: ErrorHandler,
-            api: AthleteApi
+            api: AthleteApi,
+            pref: Pref
     ): AthleteRepository {
         return AthleteRepositoryImpl(
                 errorHandler = errorHandler,
-                apiAthlete = api
+                apiAthlete = api,
+                pref = pref
         )
     }
 }

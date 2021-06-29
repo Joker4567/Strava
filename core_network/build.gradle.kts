@@ -7,7 +7,7 @@ plugins {
 
 dependencies {
     implementation(project(":shared_model"))
-
+    implementation(project(":core_db"))
     //Dagger-Hilt
     val dagger_version = rootProject.extra["dagger_version"]
     val hilt_work_version = rootProject.extra["hilt_work_version"]

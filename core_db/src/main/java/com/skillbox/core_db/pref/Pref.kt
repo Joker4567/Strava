@@ -19,11 +19,27 @@ class Pref(context: Context) {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
-    var accessToken: String?
-        get() = sharedPreferences.getString(KeyToken, null)
+    var accessToken: String
+        get() = sharedPreferences.getString(KeyToken, "") ?: ""
         set(value) {
             sharedPreferences.edit {
                 putString(KeyToken, value)
+            }
+        }
+
+    var nameProfile: String
+        get() = sharedPreferences.getString(KeyProfileName, "") ?: ""
+        set(value) {
+            sharedPreferences.edit {
+                putString(KeyProfileName, value)
+            }
+        }
+
+    var photoprofile: String
+        get() = sharedPreferences.getString(KeyProfilePhoto, "") ?: ""
+        set(value) {
+            sharedPreferences.edit {
+                putString(KeyProfilePhoto, value)
             }
         }
 
@@ -43,10 +59,20 @@ class Pref(context: Context) {
             }
         }
 
+    fun clearProfile() {
+        sharedPreferences.edit {
+            remove(KeyToken)
+            remove(KeyProfilePhoto)
+            remove(KeyProfileName)
+        }
+    }
+
     companion object {
         const val FileName = "SkillboxPreference"
         const val KeyToken = "accessToken"
         const val KeyCode = "code"
         const val KeyOnBoarding = "onBoarding"
+        const val KeyProfilePhoto = "photo"
+        const val KeyProfileName = "name"
     }
 }

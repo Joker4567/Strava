@@ -11,4 +11,9 @@ interface AuthApi {
                  @Query("client_secret") client_secret: String,
                  @Query("code") code: String,
                  @Query("grant_type") grant_type: String): Call<OAuthModel>
+
+    @POST("oauth/deauthorize")
+    fun reauthorization(
+            @Query("access_token") access_token: String
+    ): Call<OAuthModel>
 }

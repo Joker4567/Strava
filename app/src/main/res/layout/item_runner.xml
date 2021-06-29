@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/runner_tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Time"
+                android:textColor="@color/gray"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/runner_tvDistance"
+                app:layout_constraintTop_toTopOf="@+id/runner_tvDistance" />
+
+            <TextView
+                android:id="@+id/runner_tvElevation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Elevation Gain"
+                android:textColor="@color/gray"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/runner_tvTime"
+                app:layout_constraintTop_toTopOf="@+id/runner_tvDistance" />
+
+            <TextView
+                android:id="@+id/runner_tvTimeValue"
+                style="@style/textColorCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/runner_tvTime"
+                app:layout_constraintTop_toBottomOf="@+id/runner_tvTime"
+                tools:text="0h" />
+
+            <TextView
+                android:id="@+id/runner_tvElevationValue"
+                style="@style/textColorCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/runner_tvElevation"
+                app:layout_constraintTop_toBottomOf="@+id/runner_tvTime"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="0h" />
+
+            <ImageView
+                android:id="@+id/runner_ivPhoto"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/runner_tvTimeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:textColor="@color/gray"
+                android:textSize="8sp"
+                app:layout_constraintStart_toStartOf="@+id/runner_tvName"
+                app:layout_constraintTop_toBottomOf="@+id/runner_tvName"
+                tools:text="\uf0e7 Today 15:09" />
+
+            <TextView
+                android:id="@+id/runner_tvName"
+                style="@style/textColorCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/roboto"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/runner_ivPhoto"
+                app:layout_constraintTop_toTopOf="@+id/runner_ivPhoto"
+                tools:text="Viktoria Ivanova" />
+
+            <TextView
+                android:id="@+id/runner_tvDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Distance"
+                android:textColor="@color/gray"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@+id/runner_ivPhoto"
+                app:layout_constraintTop_toBottomOf="@+id/runner_tvTitle" />
+
+            <TextView
+                android:id="@+id/runner_tvDistanceValue"
+                style="@style/textColorCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/runner_tvDistance"
+                app:layout_constraintTop_toBottomOf="@+id/runner_tvDistance"
+                tools:text="0 km" />
+
+            <TextView
+                android:id="@+id/runner_tvTitle"
+                style="@style/textColorCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/runner_ivPhoto"
+                app:layout_constraintTop_toBottomOf="@+id/runner_ivPhoto"
+                tools:text="Run 1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/runner_ivBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:srcCompat="@drawable/background_image" />
+
+    <TextView
+        android:id="@+id/runner_desc_big"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAlignment="textStart"
+        android:textColor="@color/purple"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/runner_ivBackground"
+        tools:text="The best app for \ncyclists and runners!" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:elevation="3dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/runner_desc_big">
+
+        <ImageView
+            android:id="@+id/runner_share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            app:srcCompat="@drawable/ic_share" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

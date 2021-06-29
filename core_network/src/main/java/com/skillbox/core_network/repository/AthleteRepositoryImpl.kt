@@ -4,7 +4,10 @@ import com.skillbox.core_network.api.AthleteApi
 import com.skillbox.core_network.utils.BaseRepository
 import com.skillbox.core_network.utils.ErrorHandler
 import com.skillbox.core_network.utils.State
+import com.skillbox.shared_model.ActivityType
 import com.skillbox.shared_model.Athlete
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AthleteRepositoryImpl @Inject constructor(
@@ -34,4 +37,16 @@ class AthleteRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun postActivities(
+            name: String,
+            type: ActivityType,
+            date: String,
+            time: Int,
+            description: String?,
+            distance: Float) : Boolean {
+        return withContext(Dispatchers.IO) {
+            val response = apiAthlete.createActivities(name, type.name, date, time, description, distance).execute()
+            response.isSuccessful && response.code() == 201
+        }
+    }
 }

@@ -75,4 +75,9 @@ dependencies {
     //Image
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("jp.wasabeef:picasso-transformations:2.4.0")
+    //WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.5.0")
+    //Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
 }

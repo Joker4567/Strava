@@ -1,5 +1,6 @@
 package com.skillbox.strava.ui.fragment.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.skillbox.core_network.ConstAPI
@@ -30,8 +31,17 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
     private fun doAuthorization() {
         val authUrl = "http://www.strava.com/oauth/authorize"
 
+        val intentUri : Uri = Uri.parse("https://www.strava.com/oauth/mobile/authorize")
+                .buildUpon()
+                .appendQueryParameter("client_id", ConstAPI.id_client.toString())
+                .appendQueryParameter("redirect_uri", "https://www.strava.com/oauth/token")
+                .appendQueryParameter("response_type", "code")
+                .appendQueryParameter("approval_prompt", "auto")
+                .appendQueryParameter("scope", "activity:write,read")
+                .build()
+
         val serviceConfig = AuthorizationServiceConfiguration(
-                Uri.parse(authUrl),
+                intentUri,
                 Uri.parse("https://www.strava.com/oauth/token"))
 
         val authRequest = AuthorizationRequest.Builder(

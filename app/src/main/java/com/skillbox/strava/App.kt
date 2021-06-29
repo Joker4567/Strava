@@ -1,12 +1,16 @@
 package com.skillbox.strava
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltAndroidApp
-class App : Application() {
-
+class App : Application(), Configuration.Provider {
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
     private var _application: App? = null
     private val application get() = checkNotNull(_application) { "Application isn`n initialized" }
 
@@ -24,4 +28,9 @@ class App : Application() {
     fun getInstance(): App {
         return application
     }
+
+    override fun getWorkManagerConfiguration() =
+            Configuration.Builder()
+                    .setWorkerFactory(workerFactory)
+                    .build()
 }

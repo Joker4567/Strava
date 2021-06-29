@@ -5,6 +5,7 @@ import com.skillbox.shared_model.СreateActivity
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface AthleteApi {
@@ -26,4 +27,7 @@ interface AthleteApi {
             @Query("description") description: String?, //null or "text desc"
             @Query("distance") distance: Float = 0F
     ) : Call<СreateActivity>
+
+    @PUT("api/v3/athlete")
+    fun putWeightProfile(@Query("weight") weight: Int) : Call<Athlete>
 }

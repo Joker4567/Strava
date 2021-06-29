@@ -23,4 +23,6 @@ interface AthleteRepository {
             time: Int,
             description: String?,
             distance: Float) : Boolean
+
+    suspend fun putWeightAthlete(weight: Int, onSuccess: (Boolean) -> Unit, onState: (State) -> Unit)
 }

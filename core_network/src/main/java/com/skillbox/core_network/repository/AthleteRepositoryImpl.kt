@@ -51,7 +51,14 @@ class AthleteRepositoryImpl @Inject constructor(
             distance: Float) : Boolean {
         return withContext(Dispatchers.IO) {
             val response = apiAthlete.createActivities(name, type.name, date, time, description, distance).execute()
-            response.isSuccessful && response.code() == 201
+            response.isSuccessful
+        }
+    }
+
+    override suspend fun putWeightAthlete(weight: Int, onSuccess: (Boolean) -> Unit, onState: (State) -> Unit) {
+        execute(onSuccess = onSuccess, onState = onState) {
+            val response = apiAthlete.putWeightProfile(weight).execute()
+            response.isSuccessful
         }
     }
 }

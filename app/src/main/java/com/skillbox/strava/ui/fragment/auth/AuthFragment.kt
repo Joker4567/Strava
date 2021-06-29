@@ -30,7 +30,7 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
                 .appendQueryParameter("redirect_uri", "https://www.strava.com/oauth/token")
                 .appendQueryParameter("response_type", "code")
                 .appendQueryParameter("approval_prompt", "auto")
-                .appendQueryParameter("scope", "read,activity:read_all,profile:read_all,read_all")
+                .appendQueryParameter("scope", "read,activity:write,activity:read,profile:write,profile:read_all")
                 .build()
 
         val serviceConfig = AuthorizationServiceConfiguration(
@@ -38,10 +38,10 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
                 Uri.parse("https://www.strava.com/oauth/token"))
 
         val authRequest = AuthorizationRequest.Builder(
-                serviceConfig,  // the authorization service configuration
-                ConstAPI.id_client.toString(),  // the client ID, typically pre-registered and static
-                ResponseTypeValues.CODE,  // the response_type value: we want a code
-                Uri.parse("https://strava/token")).build() // the redirect URI to which the auth response is sent
+                serviceConfig,
+                ConstAPI.id_client.toString(),
+                ResponseTypeValues.CODE,
+                Uri.parse("https://strava/token")).build()
 
         val authService = AuthorizationService(requireContext())
         val authIntent = authService.getAuthorizationRequestIntent(authRequest)

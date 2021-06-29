@@ -22,7 +22,7 @@
                 android:id="@+id/runner_tvTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:text="Time"
                 android:textColor="@color/gray"
                 android:textSize="10sp"
@@ -33,7 +33,7 @@
                 android:id="@+id/runner_tvElevation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:text="Elevation Gain"
                 android:textColor="@color/gray"
                 android:textSize="10sp"
@@ -63,8 +63,7 @@
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/runner_tvElevation"
-                app:layout_constraintTop_toBottomOf="@+id/runner_tvTime"
-                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@+id/runner_tvElevation"
                 tools:text="0h" />
 
             <ImageView
@@ -157,14 +156,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:text="The best app for \ncyclists and runners!"
         android:textAlignment="textStart"
         android:textColor="@color/purple"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/runner_ivBackground"
-        tools:text="The best app for \ncyclists and runners!" />
+        app:layout_constraintTop_toBottomOf="@+id/runner_ivBackground" />
 
     <LinearLayout
         android:layout_width="0dp"

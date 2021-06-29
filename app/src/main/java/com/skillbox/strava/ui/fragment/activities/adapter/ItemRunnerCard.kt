@@ -34,10 +34,10 @@ fun itemRunnerCard(share:() -> Unit) =
                 }
                 if(nameProfile.isNotEmpty())
                     containerView.runner_tvName.text = nameProfile
-                containerView.runner_desc_big.text = item.description
                 containerView.runner_tvTitle.text = item.name
-                containerView.runner_tvDistanceValue.text = "${item.distance} м"
+                containerView.runner_tvDistanceValue.text = "${item.distance} m"
                 containerView.runner_tvTimeValue.text = "${item.elapsed_time} h"
+                containerView.runner_tvElevationValue.text = "${item.total_elevation_gain} m"
                 containerView.runner_share.setOnClickListener {
                     share.invoke()
                 }

@@ -6,6 +6,7 @@ data class СreateActivity(
         val type: String,
         val start_date: String,
         val elapsed_time: Int,
-        val description: String?,
-        val distance: Float
+        val description: String = "",
+        val distance: Float,
+        val total_elevation_gain: Int = 0
 )

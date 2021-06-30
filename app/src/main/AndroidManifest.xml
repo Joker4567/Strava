@@ -38,6 +38,9 @@
                 <data android:scheme="https"
                     android:host="strava"
                     android:path="/token"/>
+                <data android:scheme="https"
+                    android:host="www.strava.com"
+                    android:path="/athletes"/>
             </intent-filter>
         </activity>
 

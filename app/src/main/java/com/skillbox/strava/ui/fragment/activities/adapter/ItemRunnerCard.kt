@@ -1,6 +1,8 @@
 package com.skillbox.strava.ui.fragment.activities.adapter
 
 import android.os.Build
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.skillbox.shared_model.network.СreateActivity
 import com.skillbox.strava.R
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
@@ -22,14 +24,11 @@ fun itemRunnerCard(share:() -> Unit) =
                 else
                     ""
                 if(profileImageUrl.isNotEmpty()) {
-                    val transformation = RoundedCornersTransformation(
-                            200,
-                            0,
-                            RoundedCornersTransformation.CornerType.ALL
-                    )
-                    Picasso.get().load(profileImageUrl)
-                            .resize(200, 200)
-                            .transform(transformation)
+                    Glide.with(containerView.context)
+                            .load(profileImageUrl)
+                            .placeholder(R.drawable.ic_placeholder_contact)
+                            .error(R.drawable.ic_error_contact)
+                            .transform(CircleCrop())
                             .into(containerView.runner_ivPhoto)
                 }
                 if(nameProfile.isNotEmpty())

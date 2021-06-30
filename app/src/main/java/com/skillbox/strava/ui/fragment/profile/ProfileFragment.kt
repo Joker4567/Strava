@@ -8,22 +8,24 @@ import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.state.StateToolbar
-import com.skillbox.shared_model.network.Athlete
 import com.skillbox.shared_model.ToolbarModel
+import com.skillbox.shared_model.network.Athlete
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentProfileBinding
 import com.skillbox.strava.ui.activity.OnBoardingActivity
 import com.skillbox.strava.ui.fragment.logOut.LogOutDialogFragment
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
+import kotlinx.android.synthetic.main.item_contact.*
 
 @AndroidEntryPoint
 class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
 
     override val screenViewModel by viewModels<ProfileViewModel>()
+    private var userId: Long = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,8 +46,9 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
             LogOutDialogFragment().show(requireActivity().supportFragmentManager, "DialogFragment")
         }
         binding.profileButtonShare.setOnClickListener {
+            val action = ProfileFragmentDirections.actionHomeFragmentToContactFragment(userId)
             findNavController()
-                    .navigate(R.id.action_homeFragment_to_contactFragment)
+                    .navigate(action)
         }
     }
 
@@ -55,12 +58,13 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
     }
 
     private fun setData(model: Athlete) {
+        userId = model.id
         model.profile?.let {
-            val transformation = RoundedCornersTransformation(25, 0, RoundedCornersTransformation.CornerType.ALL)
-            Picasso
-                    .get()
+            Glide.with(requireContext())
                     .load(model.profile)
-                    .transform(transformation)
+                    .placeholder(R.drawable.ic_placeholder_contact)
+                    .error(R.drawable.ic_error_contact)
+                    .transform(CircleCrop())
                     .into(binding.profileImageViewPhoto)
         }
         binding.profileTvName.text = "${model.lastname} ${model.firstname}"

@@ -5,6 +5,7 @@ import com.skillbox.core.platform.BaseViewModel
 import com.skillbox.core.utils.SingleLiveEvent
 import com.skillbox.core_cotentProvider.repository.ContactRepository
 import com.skillbox.shared_model.contact.BaseContact
+import com.skillbox.strava.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ class ContactViewModel @Inject constructor(
     fun getContacts(context: Context) {
         launchIO {
             try {
-                contactObserver.postValue(repository.getAllContacts(context))
+                contactObserver.postValue(repository.getAllContacts(context, R.drawable.ic_error_contact))
             } catch (e: Exception) {
                 contactObserver.postValue(arrayListOf())
             }

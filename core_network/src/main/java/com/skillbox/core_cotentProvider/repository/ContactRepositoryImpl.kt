@@ -1,23 +1,23 @@
 package com.skillbox.core_cotentProvider.repository
 
+import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.provider.ContactsContract
+import androidx.annotation.DrawableRes
 import com.skillbox.shared_model.contact.Contact
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.IOException
+import java.io.InputStream
 import javax.inject.Inject
+
 
 class ContactRepositoryImpl @Inject constructor() : ContactRepository {
 
-    private val avatars = arrayListOf(
-            "https://www.w3schools.com/howto/img_avatar.png",
-            "https://www.w3schools.com/w3css/img_avatar5.png",
-            "https://image.freepik.com/free-vector/man-avatar-profile-on-round-icon_24640-14046.jpg",
-            "https://www.w3schools.com/w3images/avatar6.png"
-    )
-
-    override suspend fun getAllContacts(context: Context): List<Contact> = withContext(Dispatchers.IO) {
+    override suspend fun getAllContacts(context: Context, @DrawableRes default: Int): List<Contact> = withContext(Dispatchers.IO) {
         context.contentResolver.query(
                 ContactsContract.Contacts.CONTENT_URI,
                 null,
@@ -25,11 +25,11 @@ class ContactRepositoryImpl @Inject constructor() : ContactRepository {
                 null,
                 null
         )?.use {
-            getContactsFromCursor(it, context)
+            getContactsFromCursor(it, context, default)
         }.orEmpty()
     }
 
-    private fun getContactsFromCursor(cursor: Cursor, context: Context): List<Contact> {
+    private fun getContactsFromCursor(cursor: Cursor, context: Context, @DrawableRes default: Int): List<Contact> {
         if (cursor.moveToFirst().not()) return emptyList()
         val list: MutableList<Contact> = mutableListOf()
         do {
@@ -44,7 +44,7 @@ class ContactRepositoryImpl @Inject constructor() : ContactRepository {
                             id = id,
                             name = name,
                             numbers = getPhonesForContact(id, context),
-                            avatar = avatars.random()
+                            avatar = getPhotoForContact(id, context, default)
                     )
             )
         } while (cursor.moveToNext())
@@ -72,5 +72,16 @@ class ContactRepositoryImpl @Inject constructor() : ContactRepository {
             list.add(number)
         } while (cursor.moveToNext())
         return list
+    }
+
+    private fun getPhotoForContact(contactId: Long, context: Context, @DrawableRes default: Int): Bitmap? {
+        var photo = BitmapFactory.decodeResource(context.resources, default)
+        val inputStream: InputStream? = ContactsContract.Contacts.openContactPhotoInputStream(context.contentResolver,
+                ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId))
+        inputStream?.let {
+            photo = BitmapFactory.decodeStream(inputStream)
+        }
+        inputStream?.close()
+        return photo
     }
 }

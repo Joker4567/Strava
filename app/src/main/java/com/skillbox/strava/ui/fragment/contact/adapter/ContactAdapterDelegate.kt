@@ -50,7 +50,9 @@ class ContactAdapterDelegate (
             if(item.numbers.isEmpty()) item_textViewNumber.text = ""
             else item_textViewNumber.text = item.numbers.first()
             Glide.with(itemView)
-                    .load(item.avatar)
+                    .load(item.avatar ?: R.drawable.ic_error_contact)
+                    .placeholder(R.drawable.ic_placeholder_contact)
+                    .error(R.drawable.ic_error_contact)
                     .transform(CircleCrop())
                     .into(item_image)
         }

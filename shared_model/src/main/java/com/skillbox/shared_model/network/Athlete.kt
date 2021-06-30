@@ -1,4 +1,4 @@
-package com.skillbox.shared_model
+package com.skillbox.shared_model.network
 
 data class Athlete(
         val id: Long,

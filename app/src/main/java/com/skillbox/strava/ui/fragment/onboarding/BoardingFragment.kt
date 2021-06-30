@@ -10,7 +10,7 @@ import com.skillbox.core.extensions.checkDarkTheme
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.utils.ZoomOutPageTransformer
 import com.skillbox.core_db.pref.Pref
-import com.skillbox.shared_model.BoardingModel
+import com.skillbox.shared_model.network.BoardingModel
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentBoardingBinding
 import com.skillbox.strava.ui.fragment.onboarding.adapter.OnboardingAdapter

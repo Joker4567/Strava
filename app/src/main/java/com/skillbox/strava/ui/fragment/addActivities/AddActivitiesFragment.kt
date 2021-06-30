@@ -1,5 +1,6 @@
 package com.skillbox.strava.ui.fragment.addActivities
 
+import android.app.Activity
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import android.os.Build
@@ -18,12 +19,11 @@ import com.skillbox.core.extensions.OnTouchListener
 import com.skillbox.core.extensions.afterTextChanged
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.state.StateToolbar
-import com.skillbox.shared_model.ActivityType
+import com.skillbox.shared_model.network.ActivityType
 import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentAddActivitiesBinding
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -62,13 +62,10 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
         val isFinished = workInfo.state.isFinished
         when(workInfo.state){
             WorkInfo.State.FAILED -> {
-                Toast.makeText(requireContext(), "Ошибка добавления записи", Toast.LENGTH_SHORT).show()
+                Log.e("AddActivitiesFragment", "Ошибка добавления записи")
             }
             WorkInfo.State.SUCCEEDED -> {
-                if (isResumed) {
-                    findNavController()
-                            .navigateUp()
-                }
+                Log.d("AddActivitiesFragment", "Запись успешно добавлена")
             }
         }
         if(isFinished)
@@ -124,22 +121,18 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
             binding.activitiesName.isErrorEnabled = true
             binding.activitiesName.error = "Введите название активности"
             binding.activitiesName.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-//            binding.activitiesNameValue.setError("Введите название активности", requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesNameValue.requestFocus()
         }
         if(type == null){
             binding.activitiesType.isErrorEnabled = true
             binding.activitiesType.error = "Выберите тип активности"
             binding.activitiesType.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-
-//            binding.activitiesTypeValue.setError("Выберите тип активности", requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesTypeValue.requestFocus()
         }
         if(date.isEmpty()) {
             binding.activitiesDate.isErrorEnabled = true
             binding.activitiesDate.error = "Выберите дату"
             binding.activitiesDate.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-
             binding.activitiesDateValue.setError("Выберите дату", requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesDateValue.requestFocus()
         }
@@ -147,7 +140,6 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
             binding.activitiesTime.isErrorEnabled = true
             binding.activitiesTime.error = "Выберите дату"
             binding.activitiesTime.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-
             binding.activitiesTimeValue.setError("Введите время забега", requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesTimeValue.requestFocus()
         }
@@ -155,7 +147,6 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
             binding.activitiesDistance.isErrorEnabled = true
             binding.activitiesDistance.error = "Введите дистанцию в (м)"
             binding.activitiesDistance.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-
             binding.activitiesDistanceValue.setError("Введите дистанцию в (м)", requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesDistanceValue.requestFocus()
         }
@@ -171,6 +162,8 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
                     SendActivitiesWorker.MODEL_TYPE to type.name
             )
 
+            screenViewModel.saveLocal(name, ActivityType.valueOf(type.name), date, time.toInt(), description, distance.toFloat())
+
             val workConstraints = Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)//имеется подключение к интернету
                     .setRequiresBatteryNotLow(true)//Нормальный уровень заряда
@@ -184,6 +177,11 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
 
             WorkManager.getInstance(requireContext())
                     .enqueueUniqueWork(DOWNLOAD_WORK_ID, ExistingWorkPolicy.KEEP, workRequest)
+
+            if (isResumed) {
+                findNavController()
+                        .navigateUp()
+            }
         }
     }
 

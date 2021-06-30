@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.skillbox.core_network.repository.AthleteRepository
-import com.skillbox.shared_model.ActivityType
+import com.skillbox.shared_model.network.ActivityType
 import dagger.assisted.*
 import kotlinx.coroutines.*
 import timber.log.Timber

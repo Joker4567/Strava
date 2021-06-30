@@ -1,7 +1,7 @@
 package com.skillbox.core_network.api
 
-import com.skillbox.shared_model.Athlete
-import com.skillbox.shared_model.СreateActivity
+import com.skillbox.shared_model.network.Athlete
+import com.skillbox.shared_model.network.СreateActivity
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST

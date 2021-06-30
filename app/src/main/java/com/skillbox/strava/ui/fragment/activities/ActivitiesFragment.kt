@@ -10,7 +10,7 @@ import com.skillbox.core.extensions.setData
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.state.StateToolbar
 import com.skillbox.shared_model.ToolbarModel
-import com.skillbox.shared_model.СreateActivity
+import com.skillbox.shared_model.network.СreateActivity
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentActivitiesBinding
 import com.skillbox.strava.ui.fragment.activities.adapter.itemRunnerCard

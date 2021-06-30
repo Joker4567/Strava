@@ -9,7 +9,7 @@ import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.viewModels
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.state.StateToolbar
-import com.skillbox.shared_model.Athlete
+import com.skillbox.shared_model.network.Athlete
 import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.strava.databinding.FragmentProfileBinding
 import com.skillbox.strava.ui.activity.OnBoardingActivity

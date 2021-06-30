@@ -1,4 +1,4 @@
-package com.skillbox.shared_model
+package com.skillbox.shared_model.network
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

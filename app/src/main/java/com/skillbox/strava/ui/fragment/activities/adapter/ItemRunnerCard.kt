@@ -1,7 +1,7 @@
 package com.skillbox.strava.ui.fragment.activities.adapter
 
 import android.os.Build
-import com.skillbox.shared_model.СreateActivity
+import com.skillbox.shared_model.network.СreateActivity
 import com.skillbox.strava.R
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
 import com.skillbox.core_db.pref.Pref

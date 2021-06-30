@@ -1,6 +1,6 @@
 package com.skillbox.core_network.api
 
-import com.skillbox.shared_model.OAuthModel
+import com.skillbox.shared_model.network.OAuthModel
 import retrofit2.Call
 import retrofit2.http.POST
 import retrofit2.http.Query

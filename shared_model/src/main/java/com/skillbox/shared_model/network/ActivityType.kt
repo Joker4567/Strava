@@ -1,4 +1,4 @@
-package com.skillbox.shared_model
+package com.skillbox.shared_model.network
 
 enum class ActivityType {
     AlpineSki, BackcountrySki, Canoeing, Crossfit, EBikeRide, Elliptical, Golf, Handcycle, Hike,

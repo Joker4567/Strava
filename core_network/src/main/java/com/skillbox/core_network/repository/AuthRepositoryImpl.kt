@@ -2,13 +2,11 @@ package com.skillbox.core_network.repository
 
 import com.skillbox.core_db.pref.Pref
 import com.skillbox.core_network.ConstAPI
-import com.skillbox.core_network.api.AthleteApi
 import com.skillbox.core_network.api.AuthApi
 import com.skillbox.core_network.utils.BaseRepository
 import com.skillbox.core_network.utils.ErrorHandler
 import com.skillbox.core_network.utils.State
-import com.skillbox.shared_model.Athlete
-import com.skillbox.shared_model.OAuthModel
+import com.skillbox.shared_model.network.OAuthModel
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(

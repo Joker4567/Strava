@@ -15,11 +15,13 @@ class AuthViewModel @Inject constructor(
 
     fun getIsAthlete() {
         launchIO {
-            repository.getAthlete({ athlete ->
-                athlete?.let {
-                    authObserver.postValue(true)
-                }
-            }, ::handleState)
+            repository.getAthlete(::localData)
+        }
+    }
+
+    private fun localData(isLocal: Boolean) {
+        if(isLocal.not()){
+            authObserver.postValue(true)
         }
     }
 }

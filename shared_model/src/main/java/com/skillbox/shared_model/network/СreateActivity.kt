@@ -1,4 +1,4 @@
-package com.skillbox.shared_model
+package com.skillbox.shared_model.network
 
 data class СreateActivity(
         val id: Long,
@@ -6,7 +6,7 @@ data class СreateActivity(
         val type: String,
         val start_date: String,
         val elapsed_time: Int,
-        val description: String = "",
-        val distance: Float,
-        val total_elevation_gain: Int = 0
+        val description: String? = "",
+        val distance: Float? = 0F,
+        val total_elevation_gain: Int? = 0
 )

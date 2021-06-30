@@ -1,12 +1,17 @@
 package com.skillbox.strava.ui.fragment.auth
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.app.ActivityCompat.finishAffinity
+import androidx.fragment.app.viewModels
 import com.skillbox.core.platform.ViewBindingFragment
+import com.skillbox.core_db.pref.Pref
 import com.skillbox.core_network.ConstAPI
 import com.skillbox.strava.databinding.FragmentAuthBinding
+import com.skillbox.strava.ui.activity.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationService
@@ -16,11 +21,24 @@ import net.openid.appauth.ResponseTypeValues
 @AndroidEntryPoint
 class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBinding::inflate) {
 
+    override val screenViewModel by viewModels<AuthViewModel>()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.authButton.setOnClickListener {
             doAuthorization()
         }
+        screenViewModel.getIsAthlete()
+        screenViewModel.authObserver.observe(this, { isAuth ->
+            isAuth?.let {
+                if(isAuth && Pref(requireContext()).accessToken.isNotEmpty())
+                {
+                    val intent = Intent(requireActivity(), MainActivity::class.java)
+                    startActivity(intent)
+                    finishAffinity(requireActivity())
+                }
+            }
+        })
     }
 
     private fun doAuthorization() {

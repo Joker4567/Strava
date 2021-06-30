@@ -17,7 +17,9 @@ import com.google.android.material.timepicker.TimeFormat
 import com.skillbox.core.extensions.OnTouchListener
 import com.skillbox.core.extensions.afterTextChanged
 import com.skillbox.core.platform.ViewBindingFragment
+import com.skillbox.core.state.StateToolbar
 import com.skillbox.shared_model.ActivityType
+import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentAddActivitiesBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,6 +51,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
             postActivities()
         }
         onError()
+        StateToolbar.changeToolbarTitle(ToolbarModel("",visible = false))
     }
 
     private fun stopDownload() {

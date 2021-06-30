@@ -21,4 +21,5 @@
     <string name="activities_add_description">Description</string>
     <string name="activites_add_date">Date</string>
     <string name="activities_add_button_text">Add</string>
+    <string name="bottom_sheet_text">Are you sure you want to logout? All local data will be deleted.</string>
 </resources>

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -32,10 +30,10 @@
 
             <TextView
                 android:id="@+id/profile_tvCountFollowers"
+                style="@style/textColorCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                style="@style/textColorCard"
                 android:textSize="11sp"
                 app:layout_constraintStart_toStartOf="@+id/profile_tvFollowers"
                 app:layout_constraintTop_toBottomOf="@+id/profile_tvFollowers"
@@ -65,11 +63,11 @@
 
             <TextView
                 android:id="@+id/profile_tvName"
+                style="@style/textColorCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/roboto"
-                style="@style/textColorCard"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/profile_imageViewPhoto"
                 app:layout_constraintStart_toEndOf="@+id/profile_imageViewPhoto"
@@ -89,10 +87,10 @@
 
             <TextView
                 android:id="@+id/profile_tvCountFlollowing"
+                style="@style/textColorCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                style="@style/textColorCard"
                 android:textSize="11sp"
                 app:layout_constraintStart_toStartOf="@+id/profile_tvFollowing"
                 app:layout_constraintTop_toBottomOf="@+id/profile_tvFollowing"
@@ -116,10 +114,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        android:elevation="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -127,11 +122,11 @@
 
             <TextView
                 android:id="@+id/profile_tvCountryValue"
+                style="@style/textColorCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto"
-                style="@style/textColorCard"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/profile_tvGenderValue"
                 app:layout_constraintTop_toBottomOf="@+id/profile_tvCountry"
@@ -161,11 +156,11 @@
 
             <TextView
                 android:id="@+id/profile_tvGenderValue"
+                style="@style/textColorCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto"
-                style="@style/textColorCard"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/profile_tvGender"
                 app:layout_constraintTop_toBottomOf="@+id/profile_tvGender"
@@ -200,14 +195,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/profile_buttonLogout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:text="Logout"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textAllCaps="false" />
+
+</LinearLayout>

@@ -1,14 +1,19 @@
 package com.skillbox.strava.ui.fragment.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.viewModels
 import com.skillbox.core.platform.ViewBindingFragment
-import com.skillbox.core.state.StateTitleToolbar
+import com.skillbox.core.state.StateToolbar
 import com.skillbox.shared_model.Athlete
+import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.strava.databinding.FragmentProfileBinding
+import com.skillbox.strava.ui.activity.OnBoardingActivity
+import com.skillbox.strava.ui.fragment.logOut.LogOutDialogFragment
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
@@ -24,11 +29,23 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
             athlete?.let { setData(athlete) }
         })
         screenViewModel.getAthlete()
+        screenViewModel.reAuthStateObserver.observe(this, { isSuccessReAuth ->
+            isSuccessReAuth?.let {
+                if(isSuccessReAuth)
+                {
+                    startActivity(Intent(requireActivity(), OnBoardingActivity::class.java))
+                    finishAffinity(requireActivity())
+                }
+            }
+        })
+        binding.profileButtonLogout.setOnClickListener {
+            LogOutDialogFragment().show(requireActivity().supportFragmentManager, "DialogFragment")
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        StateTitleToolbar.changeToolbarTitle("Profile")
+        StateToolbar.changeToolbarTitle(ToolbarModel("Profile"))
     }
 
     private fun setData(model: Athlete) {

@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.skillbox.core.extensions.setData
 import com.skillbox.core.platform.ViewBindingFragment
-import com.skillbox.core.state.StateTitleToolbar
+import com.skillbox.core.state.StateToolbar
+import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.shared_model.СreateActivity
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentActivitiesBinding
@@ -37,7 +38,7 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
 
     override fun onStart() {
         super.onStart()
-        StateTitleToolbar.changeToolbarTitle("Activities")
+        StateToolbar.changeToolbarTitle(ToolbarModel("Activities"))
     }
 
     private val runnerCardAdapter by lazy {

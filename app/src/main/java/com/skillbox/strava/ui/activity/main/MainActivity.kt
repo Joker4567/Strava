@@ -4,14 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.*
 import androidx.navigation.NavController
+import com.skillbox.core.extensions.*
 import com.skillbox.core.extensions.setupBottomWithNavController
 import com.skillbox.core.platform.BaseActivity
-import com.skillbox.core.state.StateTitleToolbar
+import com.skillbox.core.state.StateToolbar
 import com.skillbox.strava.R
 import com.skillbox.strava.ui.activity.OnBoardingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,10 +28,20 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         ivExit.setOnClickListener {
             screenViewModel.exit()
         }
-        StateTitleToolbar.titleToolbar
+        StateToolbar.modelToolbar
                 .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
-                .onEach { title ->
-                    toolbar.title = title
+                .onEach { toolbarModel ->
+                    toolbar.title = toolbarModel.title
+
+                    if(toolbarModel.visible)
+                        toolbar.show()
+                    else
+                        toolbar.gone()
+
+                    if(toolbarModel.visibleLogOut)
+                        ivExit.show()
+                    else
+                        ivExit.gone()
                 }
                 .catch {
                     Log.e("MainActivity", "StateTitleToolbar.titleToolbar -> ${it.localizedMessage}")
@@ -48,6 +56,11 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
                 }
             }
         })
+    }
+
+    override fun onDestroy() {
+        screenViewModel.reAuthStateObserver.removeObserver {  }
+        super.onDestroy()
     }
 
     private fun setupBottomNavigationBar() {

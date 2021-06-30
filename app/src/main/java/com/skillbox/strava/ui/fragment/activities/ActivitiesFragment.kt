@@ -23,7 +23,7 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        screenViewModel.runnerItemsObserver.observe(this, { list ->
+        screenViewModel.runnerItemsObserver.observe(viewLifecycleOwner, { list ->
             list?.let {
                 setAdapter(list)
             }

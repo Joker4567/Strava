@@ -9,5 +9,14 @@
         android:id="@+id/homeFragment"
         android:name="com.skillbox.strava.ui.fragment.profile.ProfileFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_profile"/>
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_homeFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.skillbox.strava.ui.fragment.contact.ContactFragment"
+        android:label="ContactFragment"
+        tools:layout="@layout/fragment_contact" />
 </navigation>

@@ -7,10 +7,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.state.StateToolbar
 import com.skillbox.shared_model.network.Athlete
 import com.skillbox.shared_model.ToolbarModel
+import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentProfileBinding
 import com.skillbox.strava.ui.activity.OnBoardingActivity
 import com.skillbox.strava.ui.fragment.logOut.LogOutDialogFragment
@@ -29,7 +31,7 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
             athlete?.let { setData(athlete) }
         })
         screenViewModel.getAthlete()
-        screenViewModel.reAuthStateObserver.observe(this, { isSuccessReAuth ->
+        screenViewModel.reAuthStateObserver.observe(viewLifecycleOwner, { isSuccessReAuth ->
             isSuccessReAuth?.let {
                 if(isSuccessReAuth)
                 {
@@ -40,6 +42,10 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
         })
         binding.profileButtonLogout.setOnClickListener {
             LogOutDialogFragment().show(requireActivity().supportFragmentManager, "DialogFragment")
+        }
+        binding.profileButtonShare.setOnClickListener {
+            findNavController()
+                    .navigate(R.id.action_homeFragment_to_contactFragment)
         }
     }
 

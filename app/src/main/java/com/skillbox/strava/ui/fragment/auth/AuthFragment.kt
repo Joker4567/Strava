@@ -29,7 +29,7 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
             doAuthorization()
         }
         screenViewModel.getIsAthlete()
-        screenViewModel.authObserver.observe(this, { isAuth ->
+        screenViewModel.authObserver.observe(viewLifecycleOwner, { isAuth ->
             isAuth?.let {
                 if(isAuth && Pref(requireContext()).accessToken.isNotEmpty())
                 {

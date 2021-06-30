@@ -85,4 +85,6 @@ dependencies {
     //RecyclerViewDelegates
     implementation("com.hannesdorfmann:adapterdelegates4-kotlin-dsl:4.3.0")
     implementation("com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:4.3.0")
+    //Glide
+    implementation("com.github.bumptech.glide:glide:4.12.0")
 }

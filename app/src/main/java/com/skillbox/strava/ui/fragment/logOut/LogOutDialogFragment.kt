@@ -21,7 +21,7 @@ class LogOutDialogFragment : BottomSheetDialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        screenViewModel.reAuthStateObserver.observe(this, { isSuccess ->
+        screenViewModel.reAuthStateObserver.observe(viewLifecycleOwner, { isSuccess ->
             isSuccess?.let {
                 if(isSuccess)
                 {

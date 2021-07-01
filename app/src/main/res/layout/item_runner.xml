@@ -26,7 +26,7 @@
                 android:text="Time"
                 android:textColor="@color/gray"
                 android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@+id/runner_tvDistance"
+                app:layout_constraintStart_toEndOf="@+id/runner_tvDistanceValue"
                 app:layout_constraintTop_toTopOf="@+id/runner_tvDistance" />
 
             <TextView
@@ -37,7 +37,7 @@
                 android:text="Elevation Gain"
                 android:textColor="@color/gray"
                 android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@+id/runner_tvTime"
+                app:layout_constraintStart_toEndOf="@+id/runner_tvTimeValue"
                 app:layout_constraintTop_toTopOf="@+id/runner_tvDistance" />
 
             <TextView
@@ -123,7 +123,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/runner_tvDistance"
                 app:layout_constraintTop_toBottomOf="@+id/runner_tvDistance"
-                tools:text="0 km" />
+                android:text="0 km" />
 
             <TextView
                 android:id="@+id/runner_tvTitle"

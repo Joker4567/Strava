@@ -5,7 +5,10 @@ import com.skillbox.core_network.ConstAPI
 import com.skillbox.core_network.api.AuthApi
 import com.skillbox.core_network.utils.BaseRepository
 import com.skillbox.core_network.utils.ErrorHandler
+import com.skillbox.core_network.utils.Failure
 import com.skillbox.core_network.utils.State
+import com.skillbox.shared_model.map.mapToСreateActivities
+import com.skillbox.shared_model.map.mapToСreateActivitiesEntity
 import com.skillbox.shared_model.network.OAuthModel
 import javax.inject.Inject
 
@@ -15,33 +18,31 @@ class AuthRepositoryImpl @Inject constructor(
         private val pref: Pref
 ) : BaseRepository(errorHandler = errorHandler), AuthRepository {
 
-    override suspend fun postAuth(code: String, onSuccess: (String) -> Unit, onState: (State) -> Unit) {
-        execute(onSuccess = onSuccess, onState = onState) {
-            val response =
-                    api.postAuth(
-                            client_id = ConstAPI.id_client,
-                            client_secret = ConstAPI.client_secret,
-                            code = code,
-                            grant_type = "authorization_code").execute()
-            if (response.isSuccessful) {
+    override suspend fun postAuth(code: String, onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit): String? =
+            execute(onState = onState, onLocal = onLocal, func = {
+                val response =
+                        api.postAuth(
+                                client_id = ConstAPI.id_client,
+                                client_secret = ConstAPI.client_secret,
+                                code = code,
+                                grant_type = "authorization_code").execute()
                 val resultOAuth = response.body() as OAuthModel
                 pref.accessToken = resultOAuth.access_token
                 resultOAuth.access_token
-            } else
+            }, funcLocal = {
                 ""
-        }
-    }
+            }, funcOther = { _ ->
+                ""
+            })
 
-    override suspend fun reauthorize(access_token: String, onSuccess: (String) -> Unit, onState: (State) -> Unit) {
-        execute(onSuccess = onSuccess, onState = onState) {
-            val response = api.reauthorization(
-                    access_token = access_token
-            ).execute()
-            if (response.isSuccessful) {
+    override suspend fun reauthorize(access_token: String, onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit): String? =
+            execute(onState = onState, onLocal = onLocal, func = {
+                val response = api.reauthorization(access_token = access_token).execute()
                 val resultOAuth = response.body() as OAuthModel
                 resultOAuth.access_token
-            } else
+            }, funcLocal = {
                 ""
-        }
-    }
+            }, funcOther = { _ ->
+                ""
+            })
 }

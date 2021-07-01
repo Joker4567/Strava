@@ -6,6 +6,7 @@ import com.skillbox.core_db.room.dao.AthleteDao
 import com.skillbox.core_network.api.AthleteApi
 import com.skillbox.core_network.utils.BaseRepository
 import com.skillbox.core_network.utils.ErrorHandler
+import com.skillbox.core_network.utils.Failure
 import com.skillbox.core_network.utils.State
 import com.skillbox.shared_model.map.mapToAthlete
 import com.skillbox.shared_model.map.mapToAthleteEntities
@@ -26,47 +27,34 @@ class AthleteRepositoryImpl @Inject constructor(
         private val athleteDao: AthleteDao
 ) : BaseRepository(errorHandler = errorHandler), AthleteRepository {
 
-    override suspend fun getAthlete(onLocal: (Boolean) -> Unit): Athlete? =
-            try {
-                val response = apiAthlete.getAthlete().execute()
-                if (response.isSuccessful) {
-                    val resultModel = response.body() as Athlete
+    override suspend fun getAthlete(onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit) : Athlete?  =
+        execute(onState = onState, onLocal = onLocal, func =  {
+            val response = apiAthlete.getAthlete().execute()
+            val resultModel = response.body() as Athlete
+            pref.nameProfile = "${resultModel.lastname} ${resultModel.firstname}"
+            pref.photoprofile = resultModel.profile ?: ""
+            resultModel
+        }, funcLocal = {
+            athleteDao.getAthlete()?.mapToAthlete()
+        }, funcOther = { resultModel ->
+            athleteDao.insertAthlete(resultModel!!.mapToAthleteEntities())
+            null
+        })
 
-                    athleteDao.insertAthlete(resultModel.mapToAthleteEntities())
-
-                    pref.nameProfile = "${resultModel.lastname} ${resultModel.firstname}"
-                    pref.photoprofile = resultModel.profile ?: ""
-                    onLocal.invoke(false)
-                    resultModel
-                } else {
-                    onLocal.invoke(true)
-                    athleteDao.getAthlete()?.mapToAthlete()
-                }
-
-            } catch (ex: Exception) {
-                onLocal.invoke(true)
-                athleteDao.getAthlete()?.mapToAthlete()
-            }
-
-    override suspend fun getListAthlete(onLocal: (Boolean) -> Unit): List<СreateActivity> =
-            try {
+    override suspend fun getListAthlete(onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit): List<СreateActivity>? =
+            execute(onState = onState, onLocal = onLocal, func =  {
                 val response = apiAthlete.getActivities().execute()
-                if (response.isSuccessful) {
-                    var resultModel = parseResponse(response)
-                    athleteDao.deleteAthleteActivities()
-                    if (resultModel.isNotEmpty()) {
-                        athleteDao.insertAthleteActivities(resultModel.map { it.mapToСreateActivitiesEntity() }.toList())
-                    }
-                    onLocal.invoke(false)
-                    resultModel
-                } else {
-                    onLocal.invoke(true)
-                    athleteDao.getAthleteActivities().map { it.mapToСreateActivities() }
-                }
-            } catch (ex: Exception) {
-                onLocal.invoke(true)
+                var resultModel = parseResponse(response)
+                resultModel
+            }, funcLocal = {
                 athleteDao.getAthleteActivities().map { it.mapToСreateActivities() }
-            }
+            }, funcOther = { resultModel ->
+                athleteDao.deleteAthleteActivities()
+                if (resultModel.isNotEmpty()) {
+                    athleteDao.insertAthleteActivities(resultModel.map { it.mapToСreateActivitiesEntity() }.toList())
+                }
+                emptyList()
+            })
 
     override suspend fun postActivities(
             name: String,
@@ -74,15 +62,16 @@ class AthleteRepositoryImpl @Inject constructor(
             date: String,
             time: Int,
             description: String?,
-            distance: Float): Boolean =
-            withContext(Dispatchers.IO) {
-                try {
-                    val response = apiAthlete.createActivities(name, type.name, date, time, description, distance).execute()
-                    response.isSuccessful
-                } catch (ex: Exception) {
-                    false
-                }
-            }
+            distance: Float,
+            onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit): Boolean? =
+            execute(onState = onState, onLocal = onLocal, func =  {
+                val response = apiAthlete.createActivities(name, type.name, date, time, description, distance).execute()
+                response.isSuccessful
+            }, funcLocal = {
+                false
+            }, funcOther = { _ ->
+                true
+            })
 
     override suspend fun saveLocalActivities(
             name: String,
@@ -97,12 +86,15 @@ class AthleteRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun putWeightAthlete(weight: Int, onSuccess: (Boolean) -> Unit, onState: (State) -> Unit) {
-        execute(onSuccess = onSuccess, onState = onState) {
-            val response = apiAthlete.putWeightProfile(weight).execute()
-            response.isSuccessful
-        }
-    }
+    override suspend fun putWeightAthlete(weight: Int, onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit) : Boolean? =
+            execute(onState = onState, onLocal = onLocal, func =  {
+                val response = apiAthlete.putWeightProfile(weight).execute()
+                response.isSuccessful
+            }, funcLocal = {
+                false
+            }, funcOther = { _ ->
+                true
+            })
 
     override suspend fun clearProfile() {
         athleteDao.deleteAthleteActivities()

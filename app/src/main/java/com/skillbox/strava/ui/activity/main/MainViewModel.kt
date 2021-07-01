@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: AuthRepository,
-    @ApplicationContext private val appContext: Context
+        private val repository: AuthRepository,
+        @ApplicationContext private val appContext: Context
 ) : BaseViewModel() {
 
     val reAuthStateObserver = SingleLiveEvent<Boolean>()
@@ -24,14 +24,14 @@ class MainViewModel @Inject constructor(
         else
             ""
         launchIO {
-            repository.reauthorize(token, { token ->
-                if(token.isNotEmpty()){
+            repository.reauthorize(token, ::handleLocal, ::handleState)?.let { token ->
+                if (token.isNotEmpty()) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         Pref(appContext).clearProfile()
                     }
                 }
                 reAuthStateObserver.postValue(token.isNotEmpty())
-            }, ::handleState)
+            }
         }
     }
 

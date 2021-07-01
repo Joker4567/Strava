@@ -7,26 +7,31 @@ import kotlinx.coroutines.withContext
 abstract class BaseRepository(val errorHandler: ErrorHandler) {
 
     protected suspend inline fun <T> execute(
-        crossinline onSuccess: (T) -> Unit,
-        crossinline onState: (State) -> Unit,
-        noinline func: suspend () -> T
-    ) {
-        try {
-            //Показываем прогресс - главный поток
-            withContext(Dispatchers.Main) { onState.invoke(State.Loading) }
-            //Загрузка, вызов бд, маппинг в IO
+        crossinline onLocal: (Boolean) -> Unit,
+        crossinline onState: (Failure) -> Unit,
+        noinline func: suspend () -> T,
+        noinline funcLocal: suspend () -> T,
+        noinline funcOther: suspend (result: T) -> T
+    ) : T? {
+        return try {
             val result = withContext(Dispatchers.IO) { func.invoke() }
-
-            //Результат и скрытие прогресса - главный поток
+            withContext(Dispatchers.IO) { result ?.let { funcOther.invoke(result) } }
             withContext(Dispatchers.Main) {
-                onSuccess.invoke(result)
-                onState.invoke(State.Loaded)
+                onLocal.invoke(false)
+                result
             }
         } catch (e: Exception) {
-            //Обработка ошибки - главный поток
+            Log.e("BaseRepository", e.localizedMessage)
             withContext(Dispatchers.Main) {
-                Log.e("BaseRepository", e.localizedMessage)
-                onState.invoke(State.Error(errorHandler.proceedException(e)))
+                val failure = errorHandler.proceedException(e)
+                if(failure == Failure.UnknownError){
+                    onLocal.invoke(true)
+                    funcLocal.invoke()
+                } else {
+                    onState.invoke(failure)
+                    onLocal.invoke(false)
+                    null
+                }
             }
         }
     }

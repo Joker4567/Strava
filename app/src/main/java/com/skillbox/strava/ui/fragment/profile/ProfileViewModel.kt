@@ -4,7 +4,6 @@ import android.util.Log
 import com.skillbox.core.platform.BaseViewModel
 import com.skillbox.core.utils.SingleLiveEvent
 import com.skillbox.core_network.repository.AthleteRepository
-import com.skillbox.shared_model.ToastModel
 import com.skillbox.shared_model.network.Athlete
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,13 +15,12 @@ class ProfileViewModel @Inject constructor(
 
     val athleteObserver = SingleLiveEvent<Athlete>()
     val reAuthStateObserver = SingleLiveEvent<Boolean>()
-    val toastObserver = SingleLiveEvent<ToastModel>()
     val loadDataObserver = SingleLiveEvent<Boolean>()
 
     fun getAthlete() {
         loadDataObserver.postValue(true)
         launchIO {
-            val athlete = repository.getAthlete(::localData)
+            val athlete = repository.getAthlete(::handleLocal, ::handleState)
             launch {
                 athlete?.let { athleteObserver.postValue(it) }
                 loadDataObserver.postValue(false)
@@ -41,14 +39,5 @@ class ProfileViewModel @Inject constructor(
                 }
             }, ::handleState)
         }
-    }
-
-    private fun localData(islocal: Boolean) {
-        if(islocal) {
-            toastObserver.postValue(ToastModel("Loaded feed from cache", isLocal = true))
-            Log.d("ProfileViewModel", "Профиль был загружен из локальной БД")
-        }
-        else
-            Log.d("ProfileViewModel", "Профиль получен с веб-сервера")
     }
 }

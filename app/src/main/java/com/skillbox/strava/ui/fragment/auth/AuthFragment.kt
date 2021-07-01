@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core_db.pref.Pref
 import com.skillbox.core_network.ConstAPI
+import com.skillbox.shared_model.ToastModel
 import com.skillbox.strava.databinding.FragmentAuthBinding
 import com.skillbox.strava.ui.activity.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,16 +30,14 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
             doAuthorization()
         }
         screenViewModel.getIsAthlete()
-        screenViewModel.authObserver.observe(viewLifecycleOwner, { isAuth ->
-            isAuth?.let {
-                if(isAuth && Pref(requireContext()).accessToken.isNotEmpty())
-                {
-                    val intent = Intent(requireActivity(), MainActivity::class.java)
-                    startActivity(intent)
-                    finishAffinity(requireActivity())
-                }
-            }
-        })
+    }
+
+    override fun localData(localToast: ToastModel) {
+        if(localToast.isLocal.not() && Pref(requireContext()).accessToken.isNotEmpty()){
+            val intent = Intent(requireActivity(), MainActivity::class.java)
+            startActivity(intent)
+            finishAffinity(requireActivity())
+        }
     }
 
     private fun doAuthorization() {

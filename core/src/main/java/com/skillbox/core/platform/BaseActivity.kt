@@ -4,7 +4,10 @@ import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.skillbox.core.extensions.observeEvent
+import com.skillbox.core.state.StateCache
+import com.skillbox.core_network.utils.Failure
 import com.skillbox.core_network.utils.State
+import com.skillbox.shared_model.ToastModel
 
 abstract class BaseActivity() : AppCompatActivity() {
 
@@ -30,15 +33,24 @@ abstract class BaseActivity() : AppCompatActivity() {
 
     open fun observeBaseLiveData() {
         screenViewModel?.let { vm ->
-            observeEvent(vm.mainState, ::handleState)
+            vm.mainState.observe(this, ::handleState)
+            vm.localState.observe(this, ::localData)
         }
     }
 
-    open fun handleState(state: State) {
-        when (state) {
-            is State.Error -> {
+    open fun handleState(state: Failure) {
 
-            }
+    }
+
+    open fun localData(localToast: ToastModel) {
+
+    }
+
+    override fun onDestroy() {
+        screenViewModel?.let { vm ->
+            vm.mainState.removeObserver {  }
+            vm.localState.removeObserver {  }
         }
+        super.onDestroy()
     }
 }

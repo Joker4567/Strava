@@ -3,10 +3,13 @@ package com.skillbox.core.extensions
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import java.text.ParseException
+import java.text.SimpleDateFormat
 
 fun <T: Fragment> T.withArguments(action: Bundle.() -> Unit): T {
     return apply {
@@ -35,3 +38,15 @@ fun View.gone() = run { visibility = View.GONE }
 fun View.enable() = run { isEnabled = true }
 
 fun View.disable() = run { isEnabled = false }
+
+fun getAbbreviatedFromDateTime(inputDate: String): String {
+    //2018-02-20T18:02:13Z
+    return try {
+        val date = inputDate.split('T')[0].split('-')
+        val time = inputDate.split('T')[1].split(':')
+        return "${date[2]}.${date[1]}.${date[0]} ${time[0]}:${time[1]}"
+    } catch (ex: Exception) {
+        Log.e("parseDate", ex.localizedMessage)
+        ""
+    }
+}

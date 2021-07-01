@@ -12,6 +12,7 @@ import com.skillbox.core.extensions.*
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.snackbar.CustomSnackbar
 import com.skillbox.core.state.StateToolbar
+import com.skillbox.shared_model.ToastModel
 import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.shared_model.network.СreateActivity
 import com.skillbox.strava.R
@@ -49,27 +50,29 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
         }
         initList()
         screenViewModel.getAthleteActivities()
-        screenViewModel.toastObserver.observe(viewLifecycleOwner, { toastModel ->
-            toastModel?.let {
-                CustomSnackbar.make(
-                        requireActivity().window.decorView.rootView as ViewGroup,
-                        toastModel.isLocal,
-                        toastModel.text
-                ).show()
-            }
-        })
     }
 
     override fun onDestroyView() {
         screenViewModel.loadDataObserver.removeObserver {  }
         screenViewModel.runnerItemsObserver.removeObserver {  }
-        screenViewModel.toastObserver.removeObserver {  }
         super.onDestroyView()
     }
 
     override fun onStart() {
         super.onStart()
         StateToolbar.changeToolbarTitle(ToolbarModel("Activities"))
+    }
+
+    override fun localData(localToast: ToastModel) {
+        if(localToast.text.isEmpty()) return
+        CustomSnackbar.make(
+                requireActivity().window.decorView.rootView as ViewGroup,
+                localToast.isLocal,
+                localToast.text,
+                localToast.isError
+        ) {
+            screenViewModel.getAthleteActivities()
+        }.show()
     }
 
     private val runnerCardAdapter by lazy {

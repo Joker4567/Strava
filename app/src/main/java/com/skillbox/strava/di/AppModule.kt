@@ -14,6 +14,6 @@ object AppModule {
     @Singleton
     @Provides
     fun provideErrorHandler(): ErrorHandler {
-        return ErrorHandler(Gson())
+        return ErrorHandler()
     }
 }

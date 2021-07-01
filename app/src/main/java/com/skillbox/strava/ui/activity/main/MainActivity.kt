@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import com.skillbox.core.extensions.*
 import com.skillbox.core.extensions.setupBottomWithNavController
 import com.skillbox.core.platform.BaseActivity
+import com.skillbox.core.state.StateCache
 import com.skillbox.core.state.StateToolbar
 import com.skillbox.strava.R
 import com.skillbox.strava.ui.activity.OnBoardingActivity
@@ -49,18 +50,32 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
                 .launchIn(lifecycleScope)
         screenViewModel.reAuthStateObserver.observe(this, { isSuccessReAuth ->
             isSuccessReAuth?.let {
-                if(isSuccessReAuth)
-                {
-                    startActivity(Intent(this, OnBoardingActivity::class.java))
-                    finishAffinity()
+                if(isSuccessReAuth) {
+                    exitProfile()
                 }
             }
         })
+        StateCache.isClearCache
+                .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
+                .onEach { isClear ->
+                    if(isClear){
+                        screenViewModel.exit()
+                    }
+                }
+                .catch {
+                    Log.e("MainActivity", "StateCache.isClearCache -> ${it.localizedMessage}")
+                }
+                .launchIn(lifecycleScope)
     }
 
     override fun onDestroy() {
         screenViewModel.reAuthStateObserver.removeObserver {  }
         super.onDestroy()
+    }
+
+    private fun exitProfile() {
+        startActivity(Intent(this, OnBoardingActivity::class.java))
+        finishAffinity()
     }
 
     private fun setupBottomNavigationBar() {

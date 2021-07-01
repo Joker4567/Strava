@@ -1,33 +1,22 @@
 package com.skillbox.core_network.utils
 
-import com.google.gson.Gson
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 
-class ErrorHandler(
-    private val gsonConverter: Gson
-) {
+class ErrorHandler() {
     fun proceedException(exception: Throwable): Failure {
         when (exception) {
             is HttpException -> {
-                try {
-                    val error = gsonConverter.fromJson(
-                        exception.response()?.errorBody()?.string(),
-                        ErrorResponse::class.java
-                    )
-                    return when (error.error) {
-                        "UnknownError" -> Failure.UnknownError
-                        else -> Failure.CommonError
-                    }
-                } catch (e: Exception) {
-                    Failure.ServerError
+                return when (exception.response()?.code()) {
+                    502 -> Failure.CacheError
+                    else -> Failure.UnknownError
                 }
             }
             is SocketTimeoutException -> {
                 return Failure.ServerError
             }
-            else -> Failure.CommonError
+            else -> Failure.UnknownError
         }
-        return Failure.CommonError
+        return Failure.UnknownError
     }
 }

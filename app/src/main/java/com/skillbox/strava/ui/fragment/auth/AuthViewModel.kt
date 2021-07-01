@@ -11,17 +11,9 @@ class AuthViewModel @Inject constructor(
         private val repository: AthleteRepository
 ) : BaseViewModel() {
 
-    val authObserver = SingleLiveEvent<Boolean>()
-
     fun getIsAthlete() {
         launchIO {
-            repository.getAthlete(::localData)
-        }
-    }
-
-    private fun localData(isLocal: Boolean) {
-        if(isLocal.not()){
-            authObserver.postValue(true)
+            repository.getAthlete(::handleLocal, ::handleState)
         }
     }
 }

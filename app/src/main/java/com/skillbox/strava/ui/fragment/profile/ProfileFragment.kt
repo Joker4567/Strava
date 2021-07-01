@@ -15,6 +15,7 @@ import com.skillbox.core.extensions.*
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.snackbar.CustomSnackbar
 import com.skillbox.core.state.StateToolbar
+import com.skillbox.shared_model.ToastModel
 import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.shared_model.network.Athlete
 import com.skillbox.strava.R
@@ -52,15 +53,6 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
             findNavController()
                     .navigate(action)
         }
-        screenViewModel.toastObserver.observe(viewLifecycleOwner, { toastModel ->
-            toastModel?.let {
-                CustomSnackbar.make(
-                        requireActivity().window.decorView.rootView as ViewGroup,
-                        toastModel.isLocal,
-                        toastModel.text
-                ).show()
-            }
-        })
         screenViewModel.loadDataObserver.observe(viewLifecycleOwner, { isLoad ->
             isLoad?.let {
                 if(isLoad) {
@@ -82,9 +74,20 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
     override fun onDestroyView() {
         screenViewModel.reAuthStateObserver.removeObserver {  }
         screenViewModel.athleteObserver.removeObserver {  }
-        screenViewModel.toastObserver.removeObserver {  }
         screenViewModel.loadDataObserver.removeObserver {  }
         super.onDestroyView()
+    }
+
+    override fun localData(localToast: ToastModel) {
+        if(localToast.text.isEmpty()) return
+        CustomSnackbar.make(
+                requireActivity().window.decorView.rootView as ViewGroup,
+                localToast.isLocal,
+                localToast.text,
+                localToast.isError
+        ) {
+            screenViewModel.getAthlete()
+        }.show()
     }
 
     private fun setData(model: Athlete) {

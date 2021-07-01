@@ -1,12 +1,20 @@
 package com.skillbox.strava.ui.fragment.contact
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.skillbox.core.extensions.gone
+import com.skillbox.core.extensions.show
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.state.StateToolbar
 import com.skillbox.core.utils.autoCleared
@@ -15,11 +23,6 @@ import com.skillbox.shared_model.contact.Contact
 import com.skillbox.strava.databinding.FragmentContactBinding
 import com.skillbox.strava.ui.fragment.contact.adapter.ContactAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import android.content.Intent
-import android.net.Uri
-import android.util.Log
-import androidx.navigation.fragment.navArgs
-import com.skillbox.core.extensions.*
 
 
 @AndroidEntryPoint
@@ -28,6 +31,7 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
     override val screenViewModel by viewModels<ContactViewModel>()
     private var contactAdapter: ContactAdapter by autoCleared()
     val args: ContactFragmentArgs by navArgs()
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,9 +51,17 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
                 }
             }
         })
-        checkPermissions()
-        contactAdapter =
-                ContactAdapter(onItemClick = { contact ->
+        if (hasReadWithWritePermission().not()) {
+            initPermissionResultListener()
+            binding.contactAllow.show()
+            binding.contactPermissionTitle.show()
+            binding.contactAllow.setOnClickListener {
+                requestReadWithWritePermissions()
+            }
+        } else {
+            screenViewModel.getContacts(requireContext())
+        }
+        contactAdapter = ContactAdapter(onItemClick = { contact ->
                     openContactDetailInfo(contact)
                 })
         binding.contactRecycler.apply {
@@ -81,44 +93,34 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
         }
     }
 
-    private fun checkPermissions() {
-        val readGranted = ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.READ_CONTACTS
-        ) == PackageManager.PERMISSION_GRANTED
+    private fun hasReadWithWritePermission() =
+            PERMISSIONS.all {
+                ActivityCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
+            }
 
-        val writeGranted = ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.WRITE_CONTACTS
-        ) == PackageManager.PERMISSION_GRANTED
-
-        if (readGranted.not() && writeGranted.not()) {
-            requestPermissions(
-                    arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS),
-                    PERMISSIONS_REQUEST_CODE
-            )
-        } else {
-            screenViewModel.getContacts(requireContext())
-        }
+    private fun requestReadWithWritePermissions() {
+        requestPermissionLauncher.launch(PERMISSIONS.toTypedArray())
     }
 
-    override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-            screenViewModel.getContacts(requireContext())
-        } else {
-            requestPermissions(
-                    arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS),
-                    PERMISSIONS_REQUEST_CODE
-            )
+    private fun initPermissionResultListener() {
+        requestPermissionLauncher = registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissionToGrantedMap: Map<String, Boolean> ->
+            permissionToGrantedMap.values.all {
+                if(it) {
+                    binding.contactAllow.gone()
+                    binding.contactPermissionTitle.gone()
+                    screenViewModel.getContacts(requireContext())
+                }
+                it
+            }
         }
     }
 
     companion object {
-        private const val PERMISSIONS_REQUEST_CODE = 214
+        private val PERMISSIONS = listOfNotNull(
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.WRITE_CONTACTS
+        )
     }
 }

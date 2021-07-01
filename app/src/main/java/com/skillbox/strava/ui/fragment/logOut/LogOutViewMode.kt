@@ -27,7 +27,7 @@ class LogOutViewMode @Inject constructor(
         else
             ""
         launchIO {
-            repositoryAuth.reauthorize(token, { token ->
+            repositoryAuth.reauthorize(token, ::handleLocal, ::handleState)?.let { token ->
                 if(token.isNotEmpty()){
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         Pref(appContext).clearProfile()
@@ -38,7 +38,7 @@ class LogOutViewMode @Inject constructor(
                     Log.d("LogOutViewMode", "Токен и данные прифиля были успешно очишены")
                 }
                 reAuthStateObserver.postValue(token.isNotEmpty())
-            }, ::handleState)
+            }
         }
     }
 }

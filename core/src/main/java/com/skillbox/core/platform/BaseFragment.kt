@@ -6,7 +6,10 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.skillbox.core.extensions.observeEvent
+import com.skillbox.core.state.StateCache
+import com.skillbox.core_network.utils.Failure
 import com.skillbox.core_network.utils.State
+import com.skillbox.shared_model.ToastModel
 
 abstract class BaseFragment() : Fragment() {
 
@@ -16,23 +19,32 @@ abstract class BaseFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         screenViewModel?.let { vm ->
-            observeEvent(vm.mainState, ::handleState)
+            vm.mainState.observe(viewLifecycleOwner, ::handleState)
+            vm.localState.observe(viewLifecycleOwner, ::localData)
         }
     }
 
     open fun onBackPressed(): Boolean = false
 
-    open fun handleState(state: State) {
-        when (state) {
-            is State.Loading -> { }
-            is State.Loaded -> { }
-            is State.Error -> { }
-        }
+    open fun handleState(state: Failure) {
+
+    }
+
+    open fun localData(localToast:ToastModel) {
+
     }
 
     override fun onStop() {
         super.onStop()
         hideSoftKeyboard()
+    }
+
+    override fun onDestroyView() {
+        screenViewModel?.let { vm ->
+            vm.mainState.removeObserver {  }
+            vm.localState.removeObserver {  }
+        }
+        super.onDestroyView()
     }
 
     fun showSoftKeyboard(field: View?) {

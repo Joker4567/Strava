@@ -138,16 +138,16 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
         }
         if(time.isEmpty()) {
             binding.activitiesTime.isErrorEnabled = true
-            binding.activitiesTime.error = "Выберите дату"
+            binding.activitiesTime.error = "Введите время"
             binding.activitiesTime.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-            binding.activitiesTimeValue.setError("Введите время забега", requireContext().getDrawable(R.drawable.ic_error))
+            binding.activitiesTimeValue.setError("Введите время забега в минутах", requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesTimeValue.requestFocus()
         }
         if(distance.isEmpty()) {
             binding.activitiesDistance.isErrorEnabled = true
             binding.activitiesDistance.error = "Введите дистанцию в (м)"
             binding.activitiesDistance.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-            binding.activitiesDistanceValue.setError("Введите дистанцию в (м)", requireContext().getDrawable(R.drawable.ic_error))
+            binding.activitiesDistanceValue.setError("Введите дистанцию в метрах", requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesDistanceValue.requestFocus()
         }
         if(name.isNotEmpty() && type != null && date.isNotEmpty() && time.isNotEmpty() && distance.isNotEmpty()) {

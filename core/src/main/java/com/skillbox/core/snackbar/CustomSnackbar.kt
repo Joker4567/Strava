@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.skillbox.core.R
 import com.skillbox.core.extensions.getDimension
+import com.skillbox.core.extensions.gone
+import com.skillbox.core.extensions.show
 import kotlinx.android.synthetic.main.item_custom_snackbar.view.*
 
 class CustomSnackbar(
@@ -30,7 +32,7 @@ class CustomSnackbar(
 
     companion object {
 
-        fun make(viewGroup: ViewGroup, isCache: Boolean, text: String): CustomSnackbar {
+        fun make(viewGroup: ViewGroup, isCache: Boolean, text: String, isError: Boolean = false, retry:() -> Unit): CustomSnackbar {
             val customView = LayoutInflater.from(viewGroup.context).inflate(
                     R.layout.layout_custom_snackbar,
                     viewGroup,
@@ -38,17 +40,25 @@ class CustomSnackbar(
             ) as CustomSnackbarView
 
             if(isCache) {
-                customView.tvMessage.setTextColor(ContextCompat.getColor(customView.context, R.color.colorCache))
+                customView.tvMessage.setTextColor(ContextCompat.getColor(customView.context, android.R.color.white))
                 customView.ivState.setBackgroundDrawable(customView.context.getDrawable(R.drawable.ic_notification))
             }
             else {
-                customView.tvMessage.setTextColor(ContextCompat.getColor(customView.context, R.color.colorError))
+                customView.tvMessage.setTextColor(ContextCompat.getColor(customView.context, android.R.color.white))
                 customView.ivState.setBackgroundDrawable(customView.context.getDrawable(R.drawable.ic_error))
             }
 
-            customView.ivClose.setOnClickListener {
-
+            if(isError){
+                customView.ivClose.show()
+            } else {
+                customView.ivClose.gone()
             }
+
+            customView.ivClose.setOnClickListener {
+                retry.invoke()
+            }
+
+            customView.tvRetry.setOnClickListener {  }
 
             customView.tvMessage.text = text
 

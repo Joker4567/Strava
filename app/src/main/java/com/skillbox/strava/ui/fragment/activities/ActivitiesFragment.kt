@@ -2,13 +2,16 @@ package com.skillbox.strava.ui.fragment.activities
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.skillbox.core.extensions.setData
 import com.skillbox.core.platform.ViewBindingFragment
+import com.skillbox.core.snackbar.CustomSnackbar
 import com.skillbox.core.state.StateToolbar
+import com.skillbox.shared_model.ToastModel
 import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.shared_model.network.СreateActivity
 import com.skillbox.strava.R
@@ -34,6 +37,15 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
         }
         initList()
         screenViewModel.getAthleteActivities()
+        screenViewModel.toastObserver.observe(viewLifecycleOwner, { toastModel ->
+            toastModel?.let {
+                CustomSnackbar.make(
+                        requireActivity().window.decorView.rootView as ViewGroup,
+                        toastModel.isLocal,
+                        toastModel.text
+                ).show()
+            }
+        })
     }
 
     override fun onStart() {

@@ -3,6 +3,7 @@ package com.skillbox.strava.ui.fragment.profile
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat.finishAffinity
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.skillbox.core.platform.ViewBindingFragment
+import com.skillbox.core.snackbar.CustomSnackbar
 import com.skillbox.core.state.StateToolbar
 import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.shared_model.network.Athlete
@@ -50,6 +52,15 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
             findNavController()
                     .navigate(action)
         }
+        screenViewModel.toastObserver.observe(viewLifecycleOwner, { toastModel ->
+            toastModel?.let {
+                CustomSnackbar.make(
+                        requireActivity().window.decorView.rootView as ViewGroup,
+                        toastModel.isLocal,
+                        toastModel.text
+                ).show()
+            }
+        })
     }
 
     override fun onStart() {

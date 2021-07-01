@@ -4,6 +4,7 @@ import android.util.Log
 import com.skillbox.core.platform.BaseViewModel
 import com.skillbox.core.utils.SingleLiveEvent
 import com.skillbox.core_network.repository.AthleteRepository
+import com.skillbox.shared_model.ToastModel
 import com.skillbox.shared_model.network.СreateActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,6 +15,7 @@ class ActivitiesViewModel @Inject constructor(
 )  : BaseViewModel() {
 
     val runnerItemsObserver = SingleLiveEvent<List<СreateActivity>>()
+    val toastObserver = SingleLiveEvent<ToastModel>()
 
     fun getAthleteActivities() {
         launchIO {
@@ -29,9 +31,12 @@ class ActivitiesViewModel @Inject constructor(
     }
 
     private fun localData(islocal: Boolean) {
-        if(islocal)
+        if(islocal) {
+            toastObserver.postValue(ToastModel("Loaded feed from cache", isLocal = true))
             Log.d("ActivitiesViewModel", "Список активносей загрузился из локальной БД")
-        else
+        }
+        else {
             Log.d("ActivitiesViewModel", "Список активносей получен из веб-сервера")
+        }
     }
 }

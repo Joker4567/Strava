@@ -60,7 +60,7 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
     private fun openContactDetailInfo(contact: Contact) {
         val uri = Uri.parse("smsto:${contact.numbers.first()}")
         val intentSms = Intent(Intent.ACTION_SENDTO, uri)
-        intentSms.putExtra("sms_body", "Я уже в Strava: https://www.strava.com/athletes/${args.userId}")
+        intentSms.putExtra("sms_body", "Я уже в Strava: https://strava/athletes/?userId=${args.userId}")
         if(intentSms.resolveActivity(requireContext().packageManager) != null) {
             startActivity(intentSms)
         } else {

@@ -11,40 +11,32 @@
         style="@style/Toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:tooltipText="Sample"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Sample"
-        app:titleTextColor="@color/white">
+        app:title="Profile user"
+        app:titleTextColor="@color/white"
+        tools:visibility="visible">
 
         <ImageView
-            android:id="@+id/ivExit"
+            android:id="@+id/redirect_ivLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="15dp"
-            android:src="@drawable/ic_exit" />
+            android:src="@drawable/ic_login" />
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_container"
-        android:layout_width="match_parent"
+    <WebView
+        android:id="@+id/redirect_webView"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/redirect_toolbar" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        style="@style/Theme.Onboarding"
-        android:id="@+id/bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:labelVisibilityMode="unlabeled"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav" />
+        app:layout_constraintTop_toBottomOf="@+id/redirect_toolbar"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

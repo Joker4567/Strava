@@ -31,12 +31,12 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         StateToolbar.modelToolbar
                 .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
                 .onEach { toolbarModel ->
-                    toolbar.title = toolbarModel.title
+                    redirect_toolbar.title = toolbarModel.title
 
                     if(toolbarModel.visible)
-                        toolbar.show()
+                        redirect_toolbar.show()
                     else
-                        toolbar.gone()
+                        redirect_toolbar.gone()
 
                     if(toolbarModel.visibleLogOut)
                         ivExit.show()

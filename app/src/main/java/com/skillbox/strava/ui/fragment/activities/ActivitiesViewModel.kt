@@ -16,8 +16,10 @@ class ActivitiesViewModel @Inject constructor(
 
     val runnerItemsObserver = SingleLiveEvent<List<СreateActivity>>()
     val toastObserver = SingleLiveEvent<ToastModel>()
+    val loadDataObserver = SingleLiveEvent<Boolean>()
 
     fun getAthleteActivities() {
+        loadDataObserver.postValue(true)
         launchIO {
             val resultList = repository.getListAthlete(::localData)
             launch {
@@ -28,6 +30,7 @@ class ActivitiesViewModel @Inject constructor(
 
     private fun list(list: List<СreateActivity>) {
         runnerItemsObserver.postValue(list)
+        loadDataObserver.postValue(false)
     }
 
     private fun localData(islocal: Boolean) {

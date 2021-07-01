@@ -17,12 +17,15 @@ class ProfileViewModel @Inject constructor(
     val athleteObserver = SingleLiveEvent<Athlete>()
     val reAuthStateObserver = SingleLiveEvent<Boolean>()
     val toastObserver = SingleLiveEvent<ToastModel>()
+    val loadDataObserver = SingleLiveEvent<Boolean>()
 
     fun getAthlete() {
+        loadDataObserver.postValue(true)
         launchIO {
             val athlete = repository.getAthlete(::localData)
             launch {
                 athlete?.let { athleteObserver.postValue(it) }
+                loadDataObserver.postValue(false)
             }
         }
     }

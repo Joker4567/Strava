@@ -15,13 +15,17 @@ class ContactViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val contactObserver = SingleLiveEvent<List<BaseContact>>()
+    val loadDataObserver = SingleLiveEvent<Boolean>()
 
     fun getContacts(context: Context) {
+        loadDataObserver.postValue(true)
         launchIO {
             try {
                 contactObserver.postValue(repository.getAllContacts(context, R.drawable.ic_error_contact))
             } catch (e: Exception) {
                 contactObserver.postValue(arrayListOf())
+            } finally {
+                loadDataObserver.postValue(false)
             }
         }
     }

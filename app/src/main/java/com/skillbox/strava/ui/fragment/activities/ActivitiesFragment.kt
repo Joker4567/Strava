@@ -8,10 +8,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.skillbox.core.extensions.setData
+import com.skillbox.core.extensions.*
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.snackbar.CustomSnackbar
 import com.skillbox.core.state.StateToolbar
-import com.skillbox.shared_model.ToastModel
 import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.shared_model.network.СreateActivity
 import com.skillbox.strava.R
@@ -31,7 +31,19 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
                 setAdapter(list)
             }
         })
-        binding.floatingActionButton.setOnClickListener {
+        screenViewModel.loadDataObserver.observe(viewLifecycleOwner, { isLoad ->
+            isLoad?.let {
+                if(isLoad) {
+                    binding.activitiesLoader.show()
+                    binding.activitiesRecyclerView.gone()
+                }
+                else {
+                    binding.activitiesLoader.gone()
+                    binding.activitiesRecyclerView.show()
+                }
+            }
+        })
+        binding.activitiesFabButton.setOnClickListener {
             findNavController()
                     .navigate(R.id.action_activitiesFragment_to_addActivitiesFragment)
         }
@@ -46,6 +58,13 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
                 ).show()
             }
         })
+    }
+
+    override fun onDestroyView() {
+        screenViewModel.loadDataObserver.removeObserver {  }
+        screenViewModel.runnerItemsObserver.removeObserver {  }
+        screenViewModel.toastObserver.removeObserver {  }
+        super.onDestroyView()
     }
 
     override fun onStart() {
@@ -64,7 +83,7 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
     }
 
     private fun initList() {
-        with(binding.searchRvSearch) {
+        with(binding.activitiesRecyclerView) {
             adapter = runnerCardAdapter
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)

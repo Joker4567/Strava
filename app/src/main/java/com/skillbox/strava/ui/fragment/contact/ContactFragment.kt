@@ -19,6 +19,7 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.navigation.fragment.navArgs
+import com.skillbox.core.extensions.*
 
 
 @AndroidEntryPoint
@@ -26,13 +27,24 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
 
     override val screenViewModel by viewModels<ContactViewModel>()
     private var contactAdapter: ContactAdapter by autoCleared()
-    val args : ContactFragmentArgs by navArgs()
+    val args: ContactFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         screenViewModel.contactObserver.observe(viewLifecycleOwner, { items ->
             items?.let {
                 contactAdapter.items = it as List<Contact>
+            }
+        })
+        screenViewModel.loadDataObserver.observe(viewLifecycleOwner, { isLoad ->
+            isLoad?.let {
+                if (isLoad) {
+                    binding.contactRecycler.gone()
+                    binding.contactLoader.show()
+                } else {
+                    binding.contactRecycler.show()
+                    binding.contactLoader.gone()
+                }
             }
         })
         checkPermissions()
@@ -53,7 +65,8 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
     }
 
     override fun onDestroyView() {
-        screenViewModel.contactObserver.removeObserver {  }
+        screenViewModel.contactObserver.removeObserver { }
+        screenViewModel.loadDataObserver.removeObserver {  }
         super.onDestroyView()
     }
 
@@ -61,7 +74,7 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
         val uri = Uri.parse("smsto:${contact.numbers.first()}")
         val intentSms = Intent(Intent.ACTION_SENDTO, uri)
         intentSms.putExtra("sms_body", "Я уже в Strava: https://strava/athletes/?userId=${args.userId}")
-        if(intentSms.resolveActivity(requireContext().packageManager) != null) {
+        if (intentSms.resolveActivity(requireContext().packageManager) != null) {
             startActivity(intentSms)
         } else {
             Log.e("ContactFragment", "Не могу обработать открытие activity, не найден sms application for phone")

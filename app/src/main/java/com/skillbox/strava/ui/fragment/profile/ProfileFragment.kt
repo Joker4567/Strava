@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.skillbox.core.extensions.*
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.snackbar.CustomSnackbar
 import com.skillbox.core.state.StateToolbar
@@ -21,7 +22,6 @@ import com.skillbox.strava.databinding.FragmentProfileBinding
 import com.skillbox.strava.ui.activity.OnBoardingActivity
 import com.skillbox.strava.ui.fragment.logOut.LogOutDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.item_contact.*
 
 @AndroidEntryPoint
 class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
@@ -61,11 +61,30 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
                 ).show()
             }
         })
+        screenViewModel.loadDataObserver.observe(viewLifecycleOwner, { isLoad ->
+            isLoad?.let {
+                if(isLoad) {
+                    visibleViewForm(false)
+                    binding.profileLoader.show()
+                } else {
+                    visibleViewForm(true)
+                    binding.profileLoader.gone()
+                }
+            }
+        })
     }
 
     override fun onStart() {
         super.onStart()
         StateToolbar.changeToolbarTitle(ToolbarModel("Profile"))
+    }
+
+    override fun onDestroyView() {
+        screenViewModel.reAuthStateObserver.removeObserver {  }
+        screenViewModel.athleteObserver.removeObserver {  }
+        screenViewModel.toastObserver.removeObserver {  }
+        screenViewModel.loadDataObserver.removeObserver {  }
+        super.onDestroyView()
     }
 
     private fun setData(model: Athlete) {
@@ -110,6 +129,18 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
         if(currentWeight != 0){
             val index = weightData.toList().indexOfFirst { x -> x.contains(currentWeight.toString()) }
             binding.profileSpinnerItems.setSelection(index)
+        }
+    }
+
+    private fun visibleViewForm(isVisible: Boolean) {
+        if(isVisible.not()) {
+            binding.linearLayout.gone()
+            binding.linearLayout2.gone()
+            binding.profileButtonLogout.gone()
+        } else {
+            binding.linearLayout.show()
+            binding.linearLayout2.show()
+            binding.profileButtonLogout.show()
         }
     }
 }

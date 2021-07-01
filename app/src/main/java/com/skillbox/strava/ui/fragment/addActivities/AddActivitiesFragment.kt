@@ -1,6 +1,5 @@
 package com.skillbox.strava.ui.fragment.addActivities
 
-import android.app.Activity
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import android.os.Build
@@ -8,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.work.*
@@ -19,15 +17,15 @@ import com.skillbox.core.extensions.OnTouchListener
 import com.skillbox.core.extensions.afterTextChanged
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.state.StateToolbar
-import com.skillbox.shared_model.network.ActivityType
 import com.skillbox.shared_model.ToolbarModel
+import com.skillbox.shared_model.network.ActivityType
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentAddActivitiesBinding
 import dagger.hilt.android.AndroidEntryPoint
+import icepick.Icepick
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-
 
 @AndroidEntryPoint
 class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(FragmentAddActivitiesBinding::inflate) {
@@ -52,6 +50,23 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
         }
         onError()
         StateToolbar.changeToolbarTitle(ToolbarModel("",visible = false))
+
+        if (savedInstanceState != null) {
+            try {
+                Icepick.restoreInstanceState(this, savedInstanceState)
+            } catch (ex: Exception) {
+                Log.e("AddActivitiesFragment", ex.localizedMessage)
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        try {
+            Icepick.saveInstanceState(this, outState)
+        } catch (ex: Exception) {
+            Log.e("AddActivitiesFragment", ex.localizedMessage)
+        }
+        super.onSaveInstanceState(outState)
     }
 
     private fun stopDownload() {

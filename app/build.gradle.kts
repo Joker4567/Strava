@@ -87,4 +87,6 @@ dependencies {
     implementation("com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:4.3.0")
     //Glide
     implementation("com.github.bumptech.glide:glide:4.12.0")
+    //Save instance fragment, activity
+    implementation("frankiesardo:icepick:3.2.0")
 }

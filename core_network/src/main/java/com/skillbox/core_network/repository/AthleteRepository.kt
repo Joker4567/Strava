@@ -5,6 +5,7 @@ import com.skillbox.core_network.utils.State
 import com.skillbox.shared_model.network.ActivityType
 import com.skillbox.shared_model.network.Athlete
 import com.skillbox.shared_model.network.СreateActivity
+import com.skillbox.shared_model.room.CreateActivitiesEntity
 
 interface AthleteRepository {
     suspend fun getAthlete(onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit) : Athlete?
@@ -33,4 +34,6 @@ interface AthleteRepository {
     suspend fun putWeightAthlete(weight: Int, onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit) : Boolean?
 
     suspend fun clearProfile()
+
+    suspend fun getLastAthleteDate() : CreateActivitiesEntity?
 }

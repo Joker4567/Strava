@@ -19,6 +19,8 @@ interface AthleteDao {
     @Query("DELETE FROM CreateActivitiesEntity")
     suspend fun deleteAthleteActivities()
 
+    @Query("SELECT * FROM CreateActivitiesEntity ORDER BY id DESC LIMIT 1")
+    suspend fun getAthleteLastDate() : CreateActivitiesEntity?
     //Athlete
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAthlete(athlete: AthleteEntities)

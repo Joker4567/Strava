@@ -1,5 +1,7 @@
 package com.skillbox.strava.ui.activity.main
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +10,7 @@ import androidx.lifecycle.*
 import androidx.navigation.NavController
 import com.skillbox.core.extensions.*
 import com.skillbox.core.extensions.setupBottomWithNavController
+import com.skillbox.core.notification.NotificationChannels
 import com.skillbox.core.platform.BaseActivity
 import com.skillbox.core.state.StateCache
 import com.skillbox.core.state.StateToolbar
@@ -55,6 +58,9 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
                 }
             }
         })
+        screenViewModel.showNotificationObserver.observe(this, {
+            showNotification()
+        })
         StateCache.isClearCache
                 .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
                 .onEach { isClear ->
@@ -69,8 +75,25 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
     }
 
     override fun onDestroy() {
+        screenViewModel.showNotificationObserver.removeObserver {  }
         screenViewModel.reAuthStateObserver.removeObserver {  }
         super.onDestroy()
+    }
+
+    private fun showNotification() {
+        val isEnable = NotificationChannels.isNotificationsEnabled(
+                context = this,
+                notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        )
+        if(isEnable) {
+            val notification =
+                    NotificationChannels.buildNotificationEvent(this, "Пора бегать", "Strava напоминает о важности движения в жизни")
+            val notificationManager =
+                    getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.notify(NotificationChannels.EVENT_ID, notification)
+        } else {
+            Log.d("CheckRunner", "Нотификации отключены пользователем")
+        }
     }
 
     private fun exitProfile() {

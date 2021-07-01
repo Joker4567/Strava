@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.*
 
 fun <T: Fragment> T.withArguments(action: Bundle.() -> Unit): T {
     return apply {
@@ -48,5 +49,17 @@ fun getAbbreviatedFromDateTime(inputDate: String): String {
     } catch (ex: Exception) {
         Log.e("parseDate", ex.localizedMessage)
         ""
+    }
+}
+
+fun getDate(inputDate: String): Date {
+    //2018-02-20T18:02:13Z
+    return try {
+        val date = inputDate.split('T')[0].split('-')
+        val time = inputDate.split('T')[1].split(':')
+        return Date(date[0].toInt()-1900, date[1].toInt(), date[2].toInt(), time[0].toInt(), time[1].toInt())
+    } catch (ex: Exception) {
+        Log.e("parseDate", ex.localizedMessage)
+        Date()
     }
 }

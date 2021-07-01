@@ -101,6 +101,9 @@ class AthleteRepositoryImpl @Inject constructor(
         athleteDao.deleteAthlete()
     }
 
+    override suspend fun getLastAthleteDate() : CreateActivitiesEntity? =
+            athleteDao.getAthleteLastDate()
+
     private fun <T> parseResponse(response: retrofit2.Response<List<T>>): List<T> = when {
         response.raw().cacheResponse != null -> {
             ((response.raw().cacheResponse?.body) ?: response.body()) as List<T>

@@ -105,7 +105,7 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
         binding.profileTvCountFlollowing.text = "${model.friend ?: 0}"
         binding.profileTvGenderValue.text = "${model.sex?.name ?: "not sex"}"
         binding.profileTvCountryValue.text = "${model.country ?: "not country"}"
-        setSpinner(model.weight ?: 0)
+        setSpinner(model.weight?.toInt() ?: 0)
     }
 
     private fun setSpinner(currentWeight: Int) {

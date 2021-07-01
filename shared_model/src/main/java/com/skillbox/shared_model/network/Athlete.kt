@@ -13,7 +13,7 @@ data class Athlete(
         val friend: Int?,
         val follower: Int?,
         val country: String?,
-        val weight: Int? = 0
+        val weight: Double? = 0.0
 )
 
 enum class Sex {

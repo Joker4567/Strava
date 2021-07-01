@@ -1,8 +1,12 @@
 package com.skillbox.strava
 
 import android.app.Application
+import android.app.NotificationManager
+import android.os.Build
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
+import com.kirich1409.androidnotificationdsl.channels.createNotificationChannels
+import com.skillbox.core.notification.NotificationChannels
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,6 +22,9 @@ class App : Application(), Configuration.Provider {
         super.onCreate()
         _application = this
         initLog()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannels.createNotificationChannel(this)
+        }
     }
 
     private fun initLog() {

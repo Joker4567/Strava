@@ -19,6 +19,14 @@ class Pref(context: Context) {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
+    var checkDay: Int
+        get() = sharedPreferences.getInt(KeyDay, 1)
+        set(value) {
+            sharedPreferences.edit {
+                putInt(KeyDay, value)
+            }
+        }
+
     var accessToken: String
         get() = sharedPreferences.getString(KeyToken, "") ?: ""
         set(value) {
@@ -74,5 +82,6 @@ class Pref(context: Context) {
         const val KeyOnBoarding = "onBoarding"
         const val KeyProfilePhoto = "photo"
         const val KeyProfileName = "name"
+        const val KeyDay = "day"
     }
 }

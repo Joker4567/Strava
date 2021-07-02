@@ -15,3 +15,5 @@
 [Оригинальное приложение](https://play.google.com/store/apps/details?id=com.strava&hl=ru&gl=US)
 
 [API](https://developers.strava.com/docs/reference/)
+
+[Техническое задание.pdf](https://github.com/Joker4567/Strava/blob/master/doc/strava.pdf)

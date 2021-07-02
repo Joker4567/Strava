@@ -22,7 +22,7 @@
     <string name="activites_add_date">Date</string>
     <string name="activities_add_button_text">Add</string>
     <string name="bottom_sheet_text">Are you sure you want to logout? All local data will be deleted.</string>
-    <string name="title_notification">It's time to run</string>
+    <string name="title_notification">It time to run</string>
     <string name="description_notification">Strava reminds of the importance of movement in life</string>
     <string name="add_activities_error_name">Enter the name of the activity</string>
     <string name="add_activities_error_type">Select the activity type</string>

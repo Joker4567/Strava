@@ -2,12 +2,20 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    kotlin("android.extensions")
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs")
-    kotlin("android.extensions")
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("../skillbox.jks")
+            storePassword = "skillbox"
+            keyAlias = "key0"
+            keyPassword = "skillbox"
+        }
+    }
     buildToolsVersion = "30.0.3"
     compileSdk = rootProject.extra["compileSdkVersion"] as Int
 
@@ -31,6 +39,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

@@ -21,7 +21,10 @@ class ContactViewModel @Inject constructor(
         loadDataObserver.postValue(true)
         launchIO {
             try {
-                contactObserver.postValue(repository.getAllContacts(context, R.drawable.ic_error_contact))
+                val contact = repository.getAllContacts(context, R.drawable.ic_error_contact)
+                contact?.let {
+                    contactObserver.postValue(it)
+                }
             } catch (e: Exception) {
                 contactObserver.postValue(arrayListOf())
             } finally {

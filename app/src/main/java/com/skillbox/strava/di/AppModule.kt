@@ -1,12 +1,11 @@
 package com.skillbox.strava.di
 
-import com.google.gson.Gson
+import com.skillbox.core_network.utils.ErrorHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import com.skillbox.core_network.utils.ErrorHandler
 
 @Module
 @InstallIn(SingletonComponent::class)

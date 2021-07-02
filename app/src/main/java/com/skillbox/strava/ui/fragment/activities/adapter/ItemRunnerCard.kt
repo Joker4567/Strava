@@ -12,7 +12,7 @@ import com.skillbox.strava.R
 import kotlinx.android.synthetic.main.item_runner.view.*
 import java.time.Instant
 
-fun itemRunnerCard(share: () -> Unit) =
+fun itemRunnerCard() =
         adapterDelegateLayoutContainer<СreateActivity, Any>(R.layout.item_runner) {
 
             bind {
@@ -52,9 +52,6 @@ fun itemRunnerCard(share: () -> Unit) =
                 containerView.runner_tvTimeValue.text = "$hour h $minutes m"
 
                 containerView.runner_tvElevationValue.text = "${item.total_elevation_gain} m"
-                containerView.runner_share.setOnClickListener {
-                    share.invoke()
-                }
             }
 
         }

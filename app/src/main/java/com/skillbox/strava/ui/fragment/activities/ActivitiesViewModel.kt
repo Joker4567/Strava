@@ -18,7 +18,7 @@ class ActivitiesViewModel @Inject constructor(
     fun getAthleteActivities() {
         loadDataObserver.postValue(true)
         launchIO {
-            repository.getListAthlete(::handleLocal, ::handleState)?.let { resultList ->
+            repository.getListAthlete(::handleState)?.let { resultList ->
                 launch {
                     list(resultList)
                 }

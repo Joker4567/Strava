@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.skillbox.core.extensions.observeEvent
 import com.skillbox.core.state.StateCache
+import com.skillbox.core.utils.Event
 import com.skillbox.core_network.utils.Failure
 import com.skillbox.core_network.utils.State
 import com.skillbox.shared_model.ToastModel
@@ -26,7 +27,7 @@ abstract class BaseFragment() : Fragment() {
 
     open fun onBackPressed(): Boolean = false
 
-    open fun handleState(state: Failure) {
+    open fun handleState(state: Event<State>) {
 
     }
 

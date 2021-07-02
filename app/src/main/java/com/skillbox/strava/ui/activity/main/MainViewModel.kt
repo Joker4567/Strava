@@ -34,13 +34,11 @@ class MainViewModel @Inject constructor(
         else
             ""
         launchIO {
-            repository.reauthorize(token, ::handleLocal, ::handleState)?.let { token ->
-                if (token.isNotEmpty()) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        Pref(appContext).clearProfile()
-                    }
+            repository.reauthorize(token, ::handleState)?.let { _ ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    Pref(appContext).clearProfile()
                 }
-                reAuthStateObserver.postValue(token.isNotEmpty())
+                reAuthStateObserver.postValue(true)
             }
         }
     }

@@ -27,8 +27,8 @@ class AthleteRepositoryImpl @Inject constructor(
         private val athleteDao: AthleteDao
 ) : BaseRepository(errorHandler = errorHandler), AthleteRepository {
 
-    override suspend fun getAthlete(onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit) : Athlete?  =
-        execute(onState = onState, onLocal = onLocal, func =  {
+    override suspend fun getAthlete(onState: (State) -> Unit) : Athlete?  =
+        execute(onState = onState, func =  {
             val response = apiAthlete.getAthlete().execute()
             val resultModel = response.body() as Athlete
             pref.nameProfile = "${resultModel.lastname} ${resultModel.firstname}"
@@ -41,8 +41,8 @@ class AthleteRepositoryImpl @Inject constructor(
             null
         })
 
-    override suspend fun getListAthlete(onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit): List<СreateActivity>? =
-            execute(onState = onState, onLocal = onLocal, func =  {
+    override suspend fun getListAthlete(onState: (State) -> Unit): List<СreateActivity>? =
+            execute(onState = onState, func =  {
                 val response = apiAthlete.getActivities().execute()
                 var resultModel = parseResponse(response)
                 resultModel
@@ -63,8 +63,8 @@ class AthleteRepositoryImpl @Inject constructor(
             time: Int,
             description: String?,
             distance: Float,
-            onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit): Boolean? =
-            execute(onState = onState, onLocal = onLocal, func =  {
+            onState: (State) -> Unit): Boolean? =
+            execute(onState = onState, func =  {
                 val response = apiAthlete.createActivities(name, type.name, date, time, description, distance).execute()
                 response.isSuccessful
             }, funcLocal = {
@@ -86,8 +86,8 @@ class AthleteRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun putWeightAthlete(weight: Int, onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit) : Boolean? =
-            execute(onState = onState, onLocal = onLocal, func =  {
+    override suspend fun putWeightAthlete(weight: Int, onState: (State) -> Unit) : Boolean? =
+            execute(onState = onState, func =  {
                 val response = apiAthlete.putWeightProfile(weight).execute()
                 response.isSuccessful
             }, funcLocal = {

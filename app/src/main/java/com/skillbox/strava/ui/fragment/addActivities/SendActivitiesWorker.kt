@@ -35,7 +35,7 @@ class SendActivitiesWorker @AssistedInject constructor(
                         date,
                         time.toInt(),
                         desc,
-                        dist.toFloat(), {}, {})!!
+                        dist.toFloat(), {})!!
                 return@withContext if (isSuccess) {
                     Log.d("SendActivitiesWorker", "Запись успешно добавлена")
                     Result.success()

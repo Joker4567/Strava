@@ -20,7 +20,7 @@ class ProfileViewModel @Inject constructor(
     fun getAthlete() {
         loadDataObserver.postValue(true)
         launchIO {
-            val athlete = repository.getAthlete(::handleLocal, ::handleState)
+            val athlete = repository.getAthlete(::handleState)
             launch {
                 athlete?.let { athleteObserver.postValue(it) }
                 loadDataObserver.postValue(false)
@@ -30,14 +30,7 @@ class ProfileViewModel @Inject constructor(
 
     fun changeWeight(weight: Int) {
         launchIO {
-            repository.putWeightAthlete(weight, { isSuccess ->
-                isSuccess?.let {
-                    if(isSuccess)
-                        Log.d("ProfileViewModel", "Вес успешно изменён")
-                    else
-                        Log.d("ProfileViewModel", "Ошибка сохранения веса на веб-сервер")
-                }
-            }, ::handleState)
+            repository.putWeightAthlete(weight, ::handleState)
         }
     }
 }

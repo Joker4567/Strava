@@ -41,17 +41,19 @@ class CustomSnackbar(
 
             if(isCache) {
                 customView.tvMessage.setTextColor(ContextCompat.getColor(customView.context, android.R.color.white))
+                customView.setBackgroundDrawable(ContextCompat.getDrawable(customView.context, R.drawable.rounded_cache))
                 customView.ivState.setBackgroundDrawable(customView.context.getDrawable(R.drawable.ic_notification))
             }
             else {
                 customView.tvMessage.setTextColor(ContextCompat.getColor(customView.context, android.R.color.white))
+                customView.setBackgroundDrawable(ContextCompat.getDrawable(customView.context, R.drawable.rounded_error))
                 customView.ivState.setBackgroundDrawable(customView.context.getDrawable(R.drawable.ic_error))
             }
 
             if(isError){
-                customView.ivClose.show()
+                customView.tvRetry.show()
             } else {
-                customView.ivClose.gone()
+                customView.tvRetry.gone()
             }
 
             customView.ivClose.setOnClickListener {

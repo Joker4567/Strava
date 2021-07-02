@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.lifecycle.*
 import androidx.navigation.NavController
@@ -12,8 +13,10 @@ import com.skillbox.core.extensions.*
 import com.skillbox.core.extensions.setupBottomWithNavController
 import com.skillbox.core.notification.NotificationChannels
 import com.skillbox.core.platform.BaseActivity
+import com.skillbox.core.snackbar.CustomSnackbar
 import com.skillbox.core.state.StateCache
 import com.skillbox.core.state.StateToolbar
+import com.skillbox.shared_model.ToastModel
 import com.skillbox.strava.R
 import com.skillbox.strava.ui.activity.OnBoardingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -78,6 +81,18 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         screenViewModel.showNotificationObserver.removeObserver {  }
         screenViewModel.reAuthStateObserver.removeObserver {  }
         super.onDestroy()
+    }
+
+    override fun localData(localToast: ToastModel) {
+        if(localToast.text.isEmpty()) return
+        CustomSnackbar.make(
+                window.decorView.rootView as ViewGroup,
+                localToast.isLocal,
+                localToast.text,
+                localToast.isError
+        ) {
+            screenViewModel.exit()
+        }.show()
     }
 
     private fun showNotification() {

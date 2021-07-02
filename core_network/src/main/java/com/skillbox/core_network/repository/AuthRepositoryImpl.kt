@@ -18,8 +18,8 @@ class AuthRepositoryImpl @Inject constructor(
         private val pref: Pref
 ) : BaseRepository(errorHandler = errorHandler), AuthRepository {
 
-    override suspend fun postAuth(code: String, onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit): String? =
-            execute(onState = onState, onLocal = onLocal, func = {
+    override suspend fun postAuth(code: String, onState: (State) -> Unit): String? =
+            execute(onState = onState, func = {
                 val response =
                         api.postAuth(
                                 client_id = ConstAPI.id_client,
@@ -35,8 +35,8 @@ class AuthRepositoryImpl @Inject constructor(
                 ""
             })
 
-    override suspend fun reauthorize(access_token: String, onLocal: (Boolean) -> Unit, onState: (Failure) -> Unit): String? =
-            execute(onState = onState, onLocal = onLocal, func = {
+    override suspend fun reauthorize(access_token: String, onState: (State) -> Unit): String? =
+            execute(onState = onState, func = {
                 val response = api.reauthorization(access_token = access_token).execute()
                 val resultOAuth = response.body() as OAuthModel
                 resultOAuth.access_token

@@ -166,28 +166,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/runner_ivBackground" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/white"
-        android:backgroundTint="@color/white"
-        android:elevation="3dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/runner_desc_big">
-
-        <ImageView
-            android:id="@+id/runner_share"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/white"
-            android:backgroundTint="@color/white"
-            app:srcCompat="@drawable/ic_share" />
-    </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

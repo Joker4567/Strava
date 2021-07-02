@@ -1,7 +1,6 @@
 package com.skillbox.strava.ui.fragment.auth
 
 import com.skillbox.core.platform.BaseViewModel
-import com.skillbox.core.utils.SingleLiveEvent
 import com.skillbox.core_network.repository.AthleteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -13,7 +12,7 @@ class AuthViewModel @Inject constructor(
 
     fun getIsAthlete() {
         launchIO {
-            repository.getAthlete(::handleLocal, ::handleState)
+            repository.getAthlete(::handleState)
         }
     }
 }

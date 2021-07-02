@@ -5,6 +5,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.skillbox.core.extensions.observeEvent
 import com.skillbox.core.state.StateCache
+import com.skillbox.core.utils.Event
 import com.skillbox.core_network.utils.Failure
 import com.skillbox.core_network.utils.State
 import com.skillbox.shared_model.ToastModel
@@ -38,7 +39,7 @@ abstract class BaseActivity() : AppCompatActivity() {
         }
     }
 
-    open fun handleState(state: Failure) {
+    open fun handleState(state: Event<State>) {
 
     }
 

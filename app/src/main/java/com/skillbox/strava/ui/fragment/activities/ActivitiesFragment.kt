@@ -77,12 +77,8 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
 
     private val runnerCardAdapter by lazy {
         ListDelegationAdapter(
-                itemRunnerCard(::share)
+                itemRunnerCard()
         )
-    }
-
-    private fun share() {
-
     }
 
     private fun initList() {

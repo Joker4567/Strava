@@ -6,5 +6,5 @@ sealed class Failure {
     //Переход на экран авторизации, кэш сервера протух
     object CacheError : Failure()
     //Подгружаем локальные данные
-    object UnknownError : Failure()
+    object LocalSuccess : Failure()
 }

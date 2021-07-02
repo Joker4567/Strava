@@ -7,32 +7,39 @@ import kotlinx.coroutines.withContext
 abstract class BaseRepository(val errorHandler: ErrorHandler) {
 
     protected suspend inline fun <T> execute(
-        crossinline onLocal: (Boolean) -> Unit,
-        crossinline onState: (Failure) -> Unit,
-        noinline func: suspend () -> T,
-        noinline funcLocal: suspend () -> T,
-        noinline funcOther: suspend (result: T) -> T
-    ) : T? {
+            crossinline onState: (State) -> Unit,
+            noinline func: suspend () -> T,
+            noinline funcLocal: suspend () -> T,
+            noinline funcOther: suspend (result: T) -> T
+    ): T? {
+        val result: T
         return try {
-            val result = withContext(Dispatchers.IO) { func.invoke() }
-            withContext(Dispatchers.IO) { result ?.let { funcOther.invoke(result) } }
+            result = withContext(Dispatchers.IO) { func.invoke() }
+            withContext(Dispatchers.IO) { result?.let { funcOther.invoke(result) } }
             withContext(Dispatchers.Main) {
-                onLocal.invoke(false)
+                onState(State.Success)
                 result
             }
         } catch (e: Exception) {
             Log.e("BaseRepository", e.localizedMessage)
             withContext(Dispatchers.Main) {
-                val failure = errorHandler.proceedException(e)
-                if(failure == Failure.UnknownError){
-                    onLocal.invoke(true)
-                    funcLocal.invoke()
+                val result = funcLocal.invoke()
+                val isLocal = isSuccessLocal(result)
+
+                val failure = errorHandler.proceedException(e, isLocal)
+                onState.invoke(State.Error(failure))
+                if (failure != Failure.CacheError) {
+                    result
                 } else {
-                    onState.invoke(failure)
-                    onLocal.invoke(false)
                     null
                 }
             }
         }
+    }
+
+    fun <T> isSuccessLocal(result: T): Boolean = try {
+        (result as List<T>).isNotEmpty()
+    } catch (ex: Exception) {
+        (result as T) != null
     }
 }

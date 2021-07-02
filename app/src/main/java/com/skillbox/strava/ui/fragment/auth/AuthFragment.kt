@@ -5,11 +5,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.viewModels
 import com.skillbox.core.platform.ViewBindingFragment
+import com.skillbox.core.snackbar.CustomSnackbar
+import com.skillbox.core.utils.Event
 import com.skillbox.core_db.pref.Pref
 import com.skillbox.core_network.ConstAPI
+import com.skillbox.core_network.utils.State
 import com.skillbox.shared_model.ToastModel
 import com.skillbox.strava.databinding.FragmentAuthBinding
 import com.skillbox.strava.ui.activity.main.MainActivity
@@ -32,11 +36,25 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
         screenViewModel.getIsAthlete()
     }
 
-    override fun localData(localToast: ToastModel) {
-        if(localToast.isLocal.not() && Pref(requireContext()).accessToken.isNotEmpty()){
+    override fun handleState(state: Event<State>) {
+        if(state.peekContent() == State.Success && Pref(requireContext()).accessToken.isNotEmpty()) {
             val intent = Intent(requireActivity(), MainActivity::class.java)
             startActivity(intent)
             finishAffinity(requireActivity())
+        }
+    }
+
+    override fun localData(localToast: ToastModel) {
+        if(localToast.text.isEmpty()) return
+        if(localToast.isError) {
+            CustomSnackbar.make(
+                    requireActivity().window.decorView.rootView as ViewGroup,
+                    localToast.isLocal,
+                    localToast.text,
+                    localToast.isError
+            ) {
+                doAuthorization()
+            }.show()
         }
     }
 

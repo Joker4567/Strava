@@ -1,11 +1,11 @@
 package com.skillbox.core.notification
 
-import android.R
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.media.RingtoneManager
 import android.os.Build
+import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -29,8 +29,8 @@ object NotificationChannels {
     const val EVENT_CHANNEL_ID = "notifier_background"
     const val EVENT_ID = 245425
 
-    fun buildNotificationEvent(context: Context, title:String, message:String) =
-            notification(context, EVENT_CHANNEL_ID, R.drawable.ic_menu_day) {
+    fun buildNotificationEvent(context: Context, title:String, message:String, @DrawableRes iconRes: Int) =
+            notification(context, EVENT_CHANNEL_ID, iconRes) {
                 contentTitle(title)
                 ongoing(false)
                 onlyAlertOnce(true)

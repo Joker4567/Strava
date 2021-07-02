@@ -33,7 +33,8 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
         binding.authButton.setOnClickListener {
             doAuthorization()
         }
-        screenViewModel.getIsAthlete()
+        if(Pref(requireContext()).accessToken.isNotEmpty())
+            screenViewModel.getIsAthlete()
     }
 
     override fun handleState(state: Event<State>) {

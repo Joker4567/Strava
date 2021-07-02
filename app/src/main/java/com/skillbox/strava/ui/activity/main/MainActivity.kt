@@ -102,7 +102,7 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         )
         if(isEnable) {
             val notification =
-                    NotificationChannels.buildNotificationEvent(this, getString(R.string.title_notification), getString(R.string.description_notification))
+                    NotificationChannels.buildNotificationEvent(this, getString(R.string.title_notification), getString(R.string.description_notification), R.drawable.ic_launcher_foreground)
             val notificationManager =
                     getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(NotificationChannels.EVENT_ID, notification)

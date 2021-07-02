@@ -102,7 +102,7 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         )
         if(isEnable) {
             val notification =
-                    NotificationChannels.buildNotificationEvent(this, "Пора бегать", "Strava напоминает о важности движения в жизни")
+                    NotificationChannels.buildNotificationEvent(this, getString(R.string.title_notification), getString(R.string.description_notification))
             val notificationManager =
                     getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(NotificationChannels.EVENT_ID, notification)

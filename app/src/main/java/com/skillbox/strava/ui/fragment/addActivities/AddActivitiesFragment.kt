@@ -134,35 +134,35 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
         val description = binding.activitiesDescriptionValue.text?.toString() ?: ""
         if(name.isEmpty()) {
             binding.activitiesName.isErrorEnabled = true
-            binding.activitiesName.error = "Введите название активности"
+            binding.activitiesName.error = getString(R.string.add_activities_error_name)
             binding.activitiesName.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
             binding.activitiesNameValue.requestFocus()
         }
         if(type == null){
             binding.activitiesType.isErrorEnabled = true
-            binding.activitiesType.error = "Выберите тип активности"
+            binding.activitiesType.error = getString(R.string.add_activities_error_type)
             binding.activitiesType.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
             binding.activitiesTypeValue.requestFocus()
         }
         if(date.isEmpty()) {
             binding.activitiesDate.isErrorEnabled = true
-            binding.activitiesDate.error = "Выберите дату"
+            binding.activitiesDate.error = getString(R.string.add_activities_error_date)
             binding.activitiesDate.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-            binding.activitiesDateValue.setError("Выберите дату", requireContext().getDrawable(R.drawable.ic_error))
+            binding.activitiesDateValue.setError(getString(R.string.add_activities_error_date), requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesDateValue.requestFocus()
         }
         if(time.isEmpty()) {
             binding.activitiesTime.isErrorEnabled = true
-            binding.activitiesTime.error = "Введите время"
+            binding.activitiesTime.error = getString(R.string.add_activities_error_time)
             binding.activitiesTime.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-            binding.activitiesTimeValue.setError("Введите время забега в минутах", requireContext().getDrawable(R.drawable.ic_error))
+            binding.activitiesTimeValue.setError(getString(R.string.add_activities_error_minutes), requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesTimeValue.requestFocus()
         }
         if(distance.isEmpty()) {
             binding.activitiesDistance.isErrorEnabled = true
-            binding.activitiesDistance.error = "Введите дистанцию в (м)"
+            binding.activitiesDistance.error = getString(R.string.add_activities_error_dist)
             binding.activitiesDistance.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-            binding.activitiesDistanceValue.setError("Введите дистанцию в метрах", requireContext().getDrawable(R.drawable.ic_error))
+            binding.activitiesDistanceValue.setError(getString(R.string.add_activities_error_dist_metr), requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesDistanceValue.requestFocus()
         }
         if(name.isNotEmpty() && type != null && date.isNotEmpty() && time.isNotEmpty() && distance.isNotEmpty()) {
@@ -220,7 +220,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
 
         val datePicker =
                 MaterialDatePicker.Builder.datePicker()
-                        .setTitleText("Выберите дату забега")
+                        .setTitleText(getString(R.string.add_activities_error_date_choose))
                         .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                         .build()
         var hour = 0
@@ -236,7 +236,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
                         .setTimeFormat(TimeFormat.CLOCK_24H)
                         .setHour(hour)
                         .setMinute(minutes)
-                        .setTitleText("Выберите время начала забега")
+                        .setTitleText(getString(R.string.add_activities_error_choose_time))
                         .build()
 
         timePicker.addOnPositiveButtonClickListener {
@@ -259,7 +259,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
         }
 
         timePicker.addOnCancelListener {
-            binding.activitiesDateValue.setText("Выберите время")
+            binding.activitiesDateValue.setText(getString(R.string.add_activities_error_choose_time))
         }
 
         datePicker.addOnPositiveButtonClickListener {
@@ -275,7 +275,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
             }
         }
         datePicker.addOnCancelListener {
-            binding.activitiesDateValue.setText("Выберите дату")
+            binding.activitiesDateValue.setText(getString(R.string.add_activities_error_date))
         }
 
         val fm = activity?.supportFragmentManager

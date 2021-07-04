@@ -33,12 +33,12 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
         binding.authButton.setOnClickListener {
             doAuthorization()
         }
-        if(Pref(requireContext()).accessToken.isNotEmpty())
+        if(Pref(requireContext(), requireActivity().application).accessToken.isNotEmpty())
             screenViewModel.getIsAthlete()
     }
 
     override fun handleState(state: Event<State>) {
-        if(state.peekContent() == State.Success && Pref(requireContext()).accessToken.isNotEmpty()) {
+        if(state.peekContent() == State.Success && Pref(requireContext(), requireActivity().application).accessToken.isNotEmpty()) {
             val intent = Intent(requireActivity(), MainActivity::class.java)
             startActivity(intent)
             finishAffinity(requireActivity())

@@ -80,9 +80,7 @@ class BoardingFragment : ViewBindingFragment<FragmentBoardingBinding>(FragmentBo
     }
 
     private fun navigateAuth() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Pref(requireContext()).isBoarding = true
-        }
+        Pref(requireContext(), requireActivity().application).isBoarding = true
         findNavController()
                 .navigate(R.id.action_boardingFragment_to_authFragment)
     }

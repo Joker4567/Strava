@@ -5,10 +5,7 @@ import com.skillbox.core_network.ConstAPI
 import com.skillbox.core_network.api.AuthApi
 import com.skillbox.core_network.utils.BaseRepository
 import com.skillbox.core_network.utils.ErrorHandler
-import com.skillbox.core_network.utils.Failure
 import com.skillbox.core_network.utils.State
-import com.skillbox.shared_model.map.mapToСreateActivities
-import com.skillbox.shared_model.map.mapToСreateActivitiesEntity
 import com.skillbox.shared_model.network.OAuthModel
 import javax.inject.Inject
 

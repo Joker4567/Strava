@@ -1,5 +1,6 @@
 package com.skillbox.core_db.pref
 
+import android.app.Application
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -7,17 +8,22 @@ import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 
-@RequiresApi(Build.VERSION_CODES.M)
-class Pref(context: Context) {
+class Pref(context: Context, app:Application) {
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private var masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-    private var sharedPreferences = EncryptedSharedPreferences.create(
-            FileName,
-            masterKeyAlias,
-            context,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-    )
+
+    private var sharedPreferences = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        EncryptedSharedPreferences.create(
+                FileName,
+                masterKeyAlias,
+                context,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    } else {
+        app.getSharedPreferences(FileName, Context.MODE_PRIVATE)
+    }
 
     var checkDay: Int
         get() = sharedPreferences.getInt(KeyDay, 1)

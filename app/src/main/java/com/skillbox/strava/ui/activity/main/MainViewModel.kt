@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
         private val repository: AuthRepository,
-        @ApplicationContext private val appContext: Context,
+        private val pref: Pref,
         private val repositoryAthlete: AthleteRepository
 ) : BaseViewModel() {
 
@@ -29,15 +29,10 @@ class MainViewModel @Inject constructor(
     }
 
     fun exit() {
-        val token = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            Pref(appContext).accessToken
-        else
-            ""
+        val token = pref.accessToken
         launchIO {
             repository.reauthorize(token, ::handleState)?.let { _ ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    Pref(appContext).clearProfile()
-                }
+                pref.clearProfile()
                 reAuthStateObserver.postValue(true)
             }
         }
@@ -49,9 +44,9 @@ class MainViewModel @Inject constructor(
                 val dateLocalDB = getDate(athlete.start_date)
                 val dateNow = Date(System.currentTimeMillis())
                 if (dateLocalDB < dateNow) {
-                    val dayPref = Pref(appContext).checkDay
+                    val dayPref = pref.checkDay
                     if (dayPref != dateNow.day) {
-                        Pref(appContext).checkDay = dateNow.day
+                        pref.checkDay = dateNow.day
                         //Отправляем уведомление об напоминании
                         showNotificationObserver.postValue(true)
                     }

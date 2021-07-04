@@ -1,5 +1,6 @@
 package com.skillbox.strava.di
 
+import android.app.Application
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -14,9 +15,10 @@ import dagger.hilt.components.SingletonComponent
 @Module
 object StorageModule {
 
-    @RequiresApi(Build.VERSION_CODES.M)
     @Provides
-    fun provideSharedPreferences(@ApplicationContext context: Context): Pref {
-        return Pref(context)
+    fun provideSharedPreferences(
+            @ApplicationContext context: Context,
+            app: Application): Pref {
+        return Pref(context, app)
     }
 }

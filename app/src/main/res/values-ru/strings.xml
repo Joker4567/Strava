@@ -8,7 +8,7 @@
 
     <string name="boarding_card_title_tree">Активности</string>
     <string name="boarding_card_desc_tree">Удобная система отслеживания веса и активности-заполните свой профиль и начните жить ярко</string>
-    <string name="boarding_button_skip">Пропустить</string>
+    <string name="boarding_button_skip">Далее</string>
     <string name="boarding_button_okey">Готово</string>
     <string name="auth_button_text">Продолжить в Strava</string>
     <string name="auth_already">Участник сообщества</string>

@@ -20,10 +20,8 @@ class OnBoardingActivity : BaseActivity(R.layout.activity_app) {
     override fun initInterface(savedInstanceState: Bundle?) {
         if(savedInstanceState == null)
             setupBottomNavigationBar()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if(Pref(this).isBoarding)
-                navigateAuth()
-        }
+        if(Pref(this, application).isBoarding)
+            navigateAuth()
         intent?.data?.let { data ->
             val auth: Boolean = data.getQueryParameter("auth") as Boolean ?: false
             if(auth)

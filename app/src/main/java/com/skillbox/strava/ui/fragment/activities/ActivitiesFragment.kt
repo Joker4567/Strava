@@ -12,6 +12,7 @@ import com.skillbox.core.extensions.*
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.snackbar.CustomSnackbar
 import com.skillbox.core.state.StateToolbar
+import com.skillbox.core_db.pref.Pref
 import com.skillbox.shared_model.ToastModel
 import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.shared_model.network.СreateActivity
@@ -19,6 +20,7 @@ import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentActivitiesBinding
 import com.skillbox.strava.ui.fragment.activities.adapter.itemRunnerCard
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(FragmentActivitiesBinding::inflate) {
@@ -77,7 +79,7 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
 
     private val runnerCardAdapter by lazy {
         ListDelegationAdapter(
-                itemRunnerCard()
+                itemRunnerCard(Pref(requireContext(), requireActivity().application))
         )
     }
 

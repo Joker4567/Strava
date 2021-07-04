@@ -10,20 +10,14 @@ import com.skillbox.core_db.pref.Pref
 import com.skillbox.shared_model.network.СreateActivity
 import com.skillbox.strava.R
 import kotlinx.android.synthetic.main.item_runner.view.*
-import java.time.Instant
 
-fun itemRunnerCard() =
+fun itemRunnerCard(pref: Pref) =
         adapterDelegateLayoutContainer<СreateActivity, Any>(R.layout.item_runner) {
 
             bind {
-                val profileImageUrl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    Pref(itemView.context).photoprofile
-                else
-                    ""
-                val nameProfile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    Pref(itemView.context).nameProfile
-                else
-                    ""
+                val profileImageUrl = pref.photoprofile
+                val nameProfile = pref.nameProfile
+
                 if (profileImageUrl.isNotEmpty()) {
                     Glide.with(containerView.context)
                             .load(profileImageUrl)

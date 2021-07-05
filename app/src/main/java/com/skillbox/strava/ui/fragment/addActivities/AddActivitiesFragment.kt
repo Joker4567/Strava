@@ -37,6 +37,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Опять же очень захламлен onViewCreated, лучше разнести все по функциям
         WorkManager.getInstance(requireContext())
                 .getWorkInfosForUniqueWorkLiveData(DOWNLOAD_WORK_ID)
                 .observe(viewLifecycleOwner, { if(startDownload) handleWorkInfo(it.first()) })
@@ -48,8 +49,9 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
         binding.activitiesButtonInsert.setOnClickListener {
             postActivities()
         }
+
         onError()
-        StateToolbar.changeToolbarTitle(ToolbarModel("",visible = false))
+        StateToolbar.changeToolbarTitle(ToolbarModel("", visible = false))
 
         if (savedInstanceState != null) {
             try {
@@ -135,10 +137,10 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
         if(name.isEmpty()) {
             binding.activitiesName.isErrorEnabled = true
             binding.activitiesName.error = getString(R.string.add_activities_error_name)
-            binding.activitiesName.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
+            binding.activitiesName.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error) // Вот здесь даже сама студия подчеркивает и советует как сделать правильно
             binding.activitiesNameValue.requestFocus()
         }
-        if(type == null){
+        if(type == null) {
             binding.activitiesType.isErrorEnabled = true
             binding.activitiesType.error = getString(R.string.add_activities_error_type)
             binding.activitiesType.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
@@ -165,6 +167,8 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
             binding.activitiesDistanceValue.setError(getString(R.string.add_activities_error_dist_metr), requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesDistanceValue.requestFocus()
         }
+
+        // Как-то это бы на функции разбить все, а то какая-то мешанина все в одном
         if(name.isNotEmpty() && type != null && date.isNotEmpty() && time.isNotEmpty() && distance.isNotEmpty()) {
             startDownload = true
 
@@ -216,6 +220,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
     }
 
     private fun getDateOfTime() {
+        // Тут тоже все как-то в одной куче, надо бы разбить
         var dateSelectedUnixTime = 0L
 
         val datePicker =

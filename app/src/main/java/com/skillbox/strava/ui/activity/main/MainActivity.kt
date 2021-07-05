@@ -30,11 +30,17 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
     private var currentNavController: LiveData<NavController>? = null
 
     override fun initInterface(savedInstanceState: Bundle?) {
+        // Выглядит как будто в метод понапихано все подряд
         if(savedInstanceState == null)
             setupBottomNavigationBar()
+
+
         ivExit.setOnClickListener {
             screenViewModel.exit()
         }
+
+        // Вот эту настройку я бы в отдельную функцию вынес, настройку этого тулбара
+        // Тулбар лучше использовать для каждого фрагмента отдельно, чем настраивать его в активити
         StateToolbar.modelToolbar
                 .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
                 .onEach { toolbarModel ->
@@ -54,6 +60,8 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
                     Log.e("MainActivity", "StateTitleToolbar.titleToolbar -> ${it.localizedMessage}")
                 }
                 .launchIn(lifecycleScope)
+
+        // Я бы посмотрел в сторону MVI, либо обсервы вынес в отдельную функцию, будет гораздо читаемее
         screenViewModel.reAuthStateObserver.observe(this, { isSuccessReAuth ->
             isSuccessReAuth?.let {
                 if(isSuccessReAuth) {
@@ -64,6 +72,8 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         screenViewModel.showNotificationObserver.observe(this, {
             showNotification()
         })
+
+        // Вот это вообще непонятно зачем
         StateCache.isClearCache
                 .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
                 .onEach { isClear ->
@@ -78,13 +88,14 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
     }
 
     override fun onDestroy() {
+        // Ты передаешь lifecycle owner в подписку, по идее удалять подписчиков не нужно
         screenViewModel.showNotificationObserver.removeObserver {  }
         screenViewModel.reAuthStateObserver.removeObserver {  }
         super.onDestroy()
     }
 
     override fun localData(localToast: ToastModel) {
-        if(localToast.text.isEmpty()) return
+        if(localToast.text.isEmpty()) return // Лучше isBlank использовать иначе пройдет вариант с " "
         CustomSnackbar.make(
                 window.decorView.rootView as ViewGroup,
                 localToast.isLocal,
@@ -100,6 +111,7 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
                 context = this,
                 notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         )
+
         if(isEnable) {
             val notification =
                     NotificationChannels.buildNotificationEvent(this, getString(R.string.title_notification), getString(R.string.description_notification))
@@ -107,6 +119,7 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
                     getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(NotificationChannels.EVENT_ID, notification)
         } else {
+            // Ошибки лучше обрабатывать. а не просто логгировать
             Log.d("CheckRunner", "Нотификации отключены пользователем")
         }
     }

@@ -16,7 +16,7 @@ import javax.inject.Inject
 class LogOutViewMode @Inject constructor(
         private val repositoryAuth: AuthRepository,
         private val repository: AthleteRepository,
-        @ApplicationContext private val appContext: Context
+        @ApplicationContext private val appContext: Context // Опять утечка
 ) : BaseViewModel() {
 
     val reAuthStateObserver = SingleLiveEvent<Boolean>()
@@ -25,7 +25,7 @@ class LogOutViewMode @Inject constructor(
         val token = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             Pref(appContext).accessToken
         else
-            ""
+            ""// Очень странный подход, как бы ты уже версию тогда повысь, а то пользователь будет кастрированным приложением пользоваться
         launchIO {
             repositoryAuth.reauthorize(token, ::handleState)?.let { token ->
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

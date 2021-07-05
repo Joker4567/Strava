@@ -33,7 +33,7 @@ class App : Application(), Configuration.Provider {
     }
 
     fun getInstance(): App {
-        return application
+        return application // Учитывая, что нигде не используется наверное можно удалить все, что с этим связано
     }
 
     override fun getWorkManagerConfiguration() =

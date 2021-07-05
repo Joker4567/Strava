@@ -37,7 +37,7 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
     }
 
     override fun handleState(state: Event<State>) {
-        if(state.peekContent() == State.Success && Pref(requireContext()).accessToken.isNotEmpty()) {
+        if(state.peekContent() == State.Success && Pref(requireContext()).accessToken.isNotEmpty()) { // Опять не обработан ворнинг
             val intent = Intent(requireActivity(), MainActivity::class.java)
             startActivity(intent)
             finishAffinity(requireActivity())
@@ -58,7 +58,7 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
         }
     }
 
-    private fun doAuthorization() {
+    private fun doAuthorization() { // Воу, а что создание запроса делает во фрагменте прям?)
         val intentUri : Uri = Uri.parse("https://www.strava.com/oauth/mobile/authorize")
                 .buildUpon()
                 .appendQueryParameter("client_id", ConstAPI.id_client.toString())

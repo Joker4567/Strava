@@ -11,6 +11,7 @@ class OnboardingFragment: ViewBindingFragment<ItemCardBinding>(ItemCardBinding::
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        // А почему не во onViewCreated?
         binding.cardImage.setImageResource(requireArguments().getInt(KEY_IMAGE))
         binding.cardTitle.setText(requireArguments().getInt(KEY_TITLE))
         binding.cardDesc.setText(requireArguments().getInt(KEY_DESC))

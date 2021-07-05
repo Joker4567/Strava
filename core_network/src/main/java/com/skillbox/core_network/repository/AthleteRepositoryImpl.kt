@@ -23,14 +23,14 @@ import javax.inject.Inject
 class AthleteRepositoryImpl @Inject constructor(
         errorHandler: ErrorHandler,
         private val apiAthlete: AthleteApi,
-        private val pref: Pref,
+        private val pref: Pref, // лучше это сделать отдельными датасорсами
         private val athleteDao: AthleteDao
 ) : BaseRepository(errorHandler = errorHandler), AthleteRepository {
 
     override suspend fun getAthlete(onState: (State) -> Unit) : Athlete?  =
         execute(onState = onState, func =  {
-            val response = apiAthlete.getAthlete().execute()
-            val resultModel = response.body() as Athlete
+            val response = apiAthlete.getAthlete().execute() // тут даже студия пишет, что ты блокируешь поток и толку от suspend никакого
+            val resultModel = response.body() as Athlete // Почему не используешься GsonConverterFactory? или Kotlinx Serialization?
             pref.nameProfile = "${resultModel.lastname} ${resultModel.firstname}"
             pref.photoprofile = resultModel.profile ?: ""
             resultModel

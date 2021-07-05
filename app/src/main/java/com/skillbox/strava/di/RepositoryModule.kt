@@ -19,6 +19,8 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(ViewModelComponent::class)
 object RepositoryModule {
 
+    // Тем более такой модуль есть
+    // Все репозитории сюда можно занести
     @Provides
     fun provideAuthRepository(
             errorHandler: ErrorHandler,

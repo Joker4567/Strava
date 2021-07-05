@@ -7,10 +7,10 @@ import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 
-@RequiresApi(Build.VERSION_CODES.M)
+@RequiresApi(Build.VERSION_CODES.M) // А зачем здесь это?
 class Pref(context: Context) {
 
-    private var masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+    private var masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC) // А зачем шифрование тут?
     private var sharedPreferences = EncryptedSharedPreferences.create(
             FileName,
             masterKeyAlias,

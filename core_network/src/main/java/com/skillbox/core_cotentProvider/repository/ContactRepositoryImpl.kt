@@ -14,7 +14,7 @@ import java.io.IOException
 import java.io.InputStream
 import javax.inject.Inject
 
-
+// Почему это находится в сети?
 class ContactRepositoryImpl @Inject constructor() : ContactRepository {
 
     override suspend fun getAllContacts(context: Context, @DrawableRes default: Int): List<Contact> = withContext(Dispatchers.IO) {

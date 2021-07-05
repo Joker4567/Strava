@@ -48,7 +48,7 @@ class ContactAdapterDelegate (
             }
             item_textViewName.text = item.name
             if(item.numbers.isEmpty()) item_textViewNumber.text = ""
-            else item_textViewNumber.text = item.numbers.first()
+            else item_textViewNumber.text = item.numbers.first() // Текст уже должен приходить готовым в модельке
             Glide.with(itemView)
                     .load(item.avatar ?: R.drawable.ic_error_contact)
                     .placeholder(R.drawable.ic_placeholder_contact)

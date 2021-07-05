@@ -30,7 +30,7 @@ fun Context.getDrawable(@DrawableRes res: Int) {
     ContextCompat.getDrawable(this, res)
 }
 
-fun View.show() = run { visibility = View.VISIBLE }
+fun View.show() = run { visibility = View.VISIBLE } // А зачем тут run?
 
 fun View.invisible() = run { visibility = View.INVISIBLE }
 

@@ -46,6 +46,8 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
             }
         })
         binding.profileButtonLogout.setOnClickListener {
+            // Что? Фрагмент создается внутри другого фрагмента? Причем показывается уровнем выше?
+            // Это жестко, так делать не надо
             LogOutDialogFragment().show(requireActivity().supportFragmentManager, "DialogFragment")
         }
         binding.profileButtonShare.setOnClickListener {
@@ -109,22 +111,24 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
     }
 
     private fun setSpinner(currentWeight: Int) {
+        // var не нужен
         var weightData = arrayOf("29 kg").toMutableSet()
         (30..120).forEach { weight ->
             weightData.add("$weight kg")
-        }
+        }// Не понимаю смысла этой записи, но почему нельзя сделать сразу 29..120?
         val adapter: ArrayAdapter<String> = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, weightData.toList())
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         binding.profileSpinnerItems.setAdapter(adapter)
 
+        // Тут короче явно криво конвертированный java код
         binding.profileSpinnerItems?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val weightSelected = weightData.toList()[position].split(' ')[0].toInt()
+                val weightSelected = weightData.toList()[position].split(' ').first().toInt()
                 screenViewModel.changeWeight(weightSelected)
             }
 

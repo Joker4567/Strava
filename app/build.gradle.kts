@@ -16,7 +16,7 @@ android {
             keyPassword = "skillbox"
         }
     }
-    buildToolsVersion = "30.0.3"
+    buildToolsVersion = "30.0.2"
     compileSdk = rootProject.extra["compileSdkVersion"] as Int
 
     defaultConfig {

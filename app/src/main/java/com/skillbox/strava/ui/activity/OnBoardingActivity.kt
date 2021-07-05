@@ -12,6 +12,8 @@ import com.skillbox.strava.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_app.*
 
+// Напишу тут. Уже почти все перешли на SingleActivity, поэтому рекомендую так же сделать
+
 @AndroidEntryPoint
 class OnBoardingActivity : BaseActivity(R.layout.activity_app) {
 
@@ -25,9 +27,8 @@ class OnBoardingActivity : BaseActivity(R.layout.activity_app) {
                 navigateAuth()
         }
         intent?.data?.let { data ->
-            val auth: Boolean = data.getQueryParameter("auth") as Boolean ?: false
-            if(auth)
-                navigateAuth()
+            val auth: Boolean = data.getBooleanQueryParameter("auth", false)
+            if(auth) navigateAuth()
         }
     }
 

@@ -9,7 +9,7 @@ import com.skillbox.strava.R
 import com.skillbox.strava.ui.activity.main.MainActivity
 import com.skillbox.strava.ui.activity.OnBoardingActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_redirect.*
+import kotlinx.android.synthetic.main.activity_redirect.* // Синтетика устарела, нужно переходить либо на viewBinding либо findViewById
 
 @AndroidEntryPoint
 class RedirectActivity : BaseActivity(R.layout.activity_redirect) {
@@ -29,6 +29,7 @@ class RedirectActivity : BaseActivity(R.layout.activity_redirect) {
                 }
             }
         })
+
         redirect_ivLogin?.setOnClickListener {
             auth()
         }
@@ -36,32 +37,39 @@ class RedirectActivity : BaseActivity(R.layout.activity_redirect) {
 
     private fun auth() {
         val intent = Intent(this, OnBoardingActivity::class.java)
-        intent.putExtra("auth", true)
+        intent.putExtra(AUTH, true)
+        // Ключи нужно хранить в константах,
+        // а то опечатка может быть очень критичной
         startActivity(intent)
         finishAffinity()
     }
 
     private fun checkIntent(intent: Intent?) {
-        val data = intent?.data
-        val action = intent?.action
-        if(data != null && action != null) {
-           if(action == Intent.ACTION_VIEW)
-           {
-               data.getQueryParameter("code")?.let { code ->
-                   screenViewModel.auth(code)
-               }
-               //https://strava/athletes/?userId=87785387 -> https://www.strava.com/athletes/87785387
-               data.getQueryParameter("userId")?.let { userId ->
-                   redirect_webView?.show()
-                   redirect_toolbar?.show()
-                   redirect_webView?.loadUrl("https://www.strava.com/athletes/$userId")
-               }
-           }
+        // Переписал кусок кода, сделал более котлиновским стиль
+        intent?.action?.let { action ->
+            if (action == Intent.ACTION_VIEW) {
+                intent.data?.getQueryParameter(CODE)?.let {
+                    screenViewModel.auth(it)
+                }
+
+                intent.data?.getQueryParameter(USER_ID)?.let { userId ->
+                    redirect_webView?.show()
+                    redirect_toolbar?.show()
+                    redirect_webView?.loadUrl("https://www.strava.com/athletes/$userId")
+                }
+            }
         }
     }
 
     override fun onDestroy() {
         screenViewModel.authStateObserver.removeObserver { }
         super.onDestroy()
+    }
+
+    // Добавил константы, чтоб показать как это лучше сделать
+    companion object {
+        const val USER_ID = "userId"
+        const val CODE = "code"
+        const val AUTH = "auth"
     }
 }

@@ -16,7 +16,7 @@ interface AthleteDao {
     @Query("SELECT * FROM CreateActivitiesEntity")
     suspend fun getAthleteActivities() : List<CreateActivitiesEntity>
 
-    @Query("DELETE FROM CreateActivitiesEntity")
+    @Query("DELETE FROM CreateActivitiesEntity") // Можно и специфические аннотации использовать, но окей
     suspend fun deleteAthleteActivities()
 
     @Query("SELECT * FROM CreateActivitiesEntity ORDER BY id DESC LIMIT 1")

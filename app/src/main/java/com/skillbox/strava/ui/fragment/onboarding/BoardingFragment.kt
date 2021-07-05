@@ -3,6 +3,7 @@ package com.skillbox.strava.ui.fragment.onboarding
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -27,7 +28,7 @@ class BoardingFragment : ViewBindingFragment<FragmentBoardingBinding>(FragmentBo
         super.onViewCreated(view, savedInstanceState)
 
         val imageDrawable = if (requireContext().checkDarkTheme())
-            requireContext().getDrawable(R.drawable.ic_logo_dark)
+            AppCompatResources.getDrawable(requireContext(), R.drawable.ic_logo_dark)
         else
             requireContext().getDrawable(R.drawable.ic_logo_light)
 
@@ -36,6 +37,7 @@ class BoardingFragment : ViewBindingFragment<FragmentBoardingBinding>(FragmentBo
     }
 
     private fun bindViewPager() {
+        // Вот это все делается внутри вьюМодели, все что нужно для условий передается параметрами
         screens.clear()
         screens.addAll(
                 listOf(

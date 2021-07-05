@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoardingViewModel @Inject constructor()  : BaseViewModel() {
-
+    // Зачем она нужна?
 }

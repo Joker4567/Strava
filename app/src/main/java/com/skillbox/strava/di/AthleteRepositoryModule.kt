@@ -15,6 +15,8 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object AthleteRepositoryModule {
 
+    // На самом деле проще сделать один единственный репозиторий модуль и там их все хранить
+    // И я бы сделал синглтон, потому что он тебе часто нужен будет
     @Provides
     fun provideAthleteRepository(
             errorHandler: ErrorHandler,

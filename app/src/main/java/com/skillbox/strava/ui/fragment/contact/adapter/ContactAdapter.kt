@@ -11,7 +11,8 @@ class ContactAdapter (onItemClick: (position: Contact) -> Unit ) : AsyncListDiff
     init {
         delegatesManager.addDelegate(
                 ContactAdapterDelegate(
-                        onItemClick
+                        onItemClick // Я бы сделал или полем или как минимум предоставил бы дефолтное значение для клика
+                            // Потому что если вдруг этот адаптер где-то еще понадобится, то тебе придется просто имплементить дефолтное значение, а это не очень хорошо
                 )
         )
     }

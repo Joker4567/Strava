@@ -35,9 +35,11 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Опять адски перегруженный onViewCreated
         screenViewModel.contactObserver.observe(viewLifecycleOwner, { items ->
             items?.let {
-                contactAdapter.items = it as List<Contact>
+                contactAdapter.items = it as List<Contact> // А если не конвертнется?
             }
         })
         screenViewModel.loadDataObserver.observe(viewLifecycleOwner, { isLoad ->
@@ -61,6 +63,8 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
         } else {
             screenViewModel.getContacts(requireContext())
         }
+
+        // Адаптер по идее нужно создавать где-нибудь полем, чтоб отвсюду был доступ
         contactAdapter = ContactAdapter(onItemClick = { contact ->
                     openContactDetailInfo(contact)
                 })
@@ -85,6 +89,7 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
     private fun openContactDetailInfo(contact: Contact) {
         val uri = Uri.parse("smsto:${contact.numbers.first()}")
         val intentSms = Intent(Intent.ACTION_SENDTO, uri)
+        // Хардкод и это все можно готовить во вью модели и запускать оттуда
         intentSms.putExtra("sms_body", "Я уже в Strava: https://strava/athletes/?userId=${args.userId}")
         if (intentSms.resolveActivity(requireContext().packageManager) != null) {
             startActivity(intentSms)

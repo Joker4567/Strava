@@ -34,6 +34,7 @@ abstract class BaseViewModel : ViewModel() {
             mainState.value = Event(state)
     }
 
+    // Интересные функции расширения, но
     protected fun launch(func: suspend () -> Unit) =
         viewModelScope.launch(Dispatchers.Main) { func.invoke() }
 

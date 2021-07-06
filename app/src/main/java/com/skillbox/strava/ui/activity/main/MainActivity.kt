@@ -9,19 +9,19 @@ import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.lifecycle.*
 import androidx.navigation.NavController
-import com.skillbox.core.extensions.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.skillbox.core.extensions.setupBottomWithNavController
 import com.skillbox.core.notification.NotificationChannels
 import com.skillbox.core.platform.BaseActivity
 import com.skillbox.core.snackbar.CustomSnackbar
-import com.skillbox.core.state.StateCache
-import com.skillbox.core.state.StateToolbar
+import com.skillbox.core.state.StateExitProfile
 import com.skillbox.shared_model.ToastModel
 import com.skillbox.strava.R
 import com.skillbox.strava.ui.activity.OnBoardingActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity(R.layout.activity_main) {
@@ -29,31 +29,32 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
     override val screenViewModel by viewModels<MainViewModel>()
     private var currentNavController: LiveData<NavController>? = null
 
+    private var _bottomNav: BottomNavigationView? = null
+    private val bottomNav get() = checkNotNull(_bottomNav) { "BottomNavigationView bottomNav MainActivity isn`n initialized" }
+
     override fun initInterface(savedInstanceState: Bundle?) {
-        if(savedInstanceState == null)
-            setupBottomNavigationBar()
-        ivExit.setOnClickListener {
+        bind()
+        setupBottomNavigationBar()
+        subscribe()
+    }
+
+    override fun localData(localToast: ToastModel) {
+        if(localToast.text.isBlank()) return
+        CustomSnackbar.make(
+                window.decorView.rootView as ViewGroup,
+                localToast.isLocal,
+                localToast.text,
+                localToast.isError
+        ) {
             screenViewModel.exit()
-        }
-        StateToolbar.modelToolbar
-                .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
-                .onEach { toolbarModel ->
-                    redirect_toolbar.title = toolbarModel.title
+        }.show()
+    }
 
-                    if(toolbarModel.visible)
-                        redirect_toolbar.show()
-                    else
-                        redirect_toolbar.gone()
+    private fun bind() {
+        _bottomNav = findViewById(R.id.bottom_nav)
+    }
 
-                    if(toolbarModel.visibleLogOut)
-                        ivExit.show()
-                    else
-                        ivExit.gone()
-                }
-                .catch {
-                    Log.e("MainActivity", "StateTitleToolbar.titleToolbar -> ${it.localizedMessage}")
-                }
-                .launchIn(lifecycleScope)
+    private fun subscribe() {
         screenViewModel.reAuthStateObserver.observe(this, { isSuccessReAuth ->
             isSuccessReAuth?.let {
                 if(isSuccessReAuth) {
@@ -64,35 +65,17 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         screenViewModel.showNotificationObserver.observe(this, {
             showNotification()
         })
-        StateCache.isClearCache
+
+        StateExitProfile.actionExit
                 .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
-                .onEach { isClear ->
-                    if(isClear){
+                .onEach { isSuccess ->
+                    if(isSuccess)
                         screenViewModel.exit()
-                    }
                 }
                 .catch {
-                    Log.e("MainActivity", "StateCache.isClearCache -> ${it.localizedMessage}")
+                    Log.e("MainActivity", "StateTitleToolbar.titleToolbar -> ${it.localizedMessage}")
                 }
                 .launchIn(lifecycleScope)
-    }
-
-    override fun onDestroy() {
-        screenViewModel.showNotificationObserver.removeObserver {  }
-        screenViewModel.reAuthStateObserver.removeObserver {  }
-        super.onDestroy()
-    }
-
-    override fun localData(localToast: ToastModel) {
-        if(localToast.text.isEmpty()) return
-        CustomSnackbar.make(
-                window.decorView.rootView as ViewGroup,
-                localToast.isLocal,
-                localToast.text,
-                localToast.isError
-        ) {
-            screenViewModel.exit()
-        }.show()
     }
 
     private fun showNotification() {
@@ -107,6 +90,14 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
                     getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(NotificationChannels.EVENT_ID, notification)
         } else {
+            CustomSnackbar.make(
+                    window.decorView.rootView as ViewGroup,
+                    false,
+                    getString(R.string.main_notification_warning),
+                    false
+            ) {
+                screenViewModel.exit()
+            }.show()
             Log.d("CheckRunner", "Нотификации отключены пользователем")
         }
     }
@@ -122,7 +113,7 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
                 R.navigation.activities
         )
 
-        val controller = bottom_nav.setupBottomWithNavController(
+        val controller = bottomNav.setupBottomWithNavController(
                 navGraphIds = navGraphIds,
                 fragmentManager = supportFragmentManager,
                 containerId = R.id.nav_host_container,

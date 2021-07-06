@@ -8,8 +8,8 @@ import androidx.room.TypeConverters
 import com.skillbox.core_db.room.SkillboxDatabase.Companion.DATABASE_VERSION
 import com.skillbox.core_db.room.converters.SexConverters
 import com.skillbox.core_db.room.dao.AthleteDao
-import com.skillbox.shared_model.room.AthleteEntities
-import com.skillbox.shared_model.room.CreateActivitiesEntity
+import com.skillbox.shared_model.room.model.AthleteEntities
+import com.skillbox.shared_model.room.model.CreateActivitiesEntity
 
 @Database(
         entities = [CreateActivitiesEntity::class, AthleteEntities::class],

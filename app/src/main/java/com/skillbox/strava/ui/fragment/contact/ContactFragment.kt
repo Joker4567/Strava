@@ -1,9 +1,7 @@
 package com.skillbox.strava.ui.fragment.contact
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,9 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.skillbox.core.extensions.gone
 import com.skillbox.core.extensions.show
 import com.skillbox.core.platform.ViewBindingFragment
-import com.skillbox.core.state.StateToolbar
-import com.skillbox.core.utils.autoCleared
-import com.skillbox.shared_model.ToolbarModel
+import com.skillbox.core.state.StateExitProfile
 import com.skillbox.shared_model.contact.Contact
 import com.skillbox.strava.databinding.FragmentContactBinding
 import com.skillbox.strava.ui.fragment.contact.adapter.ContactAdapter
@@ -29,16 +25,57 @@ import dagger.hilt.android.AndroidEntryPoint
 class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentContactBinding::inflate) {
 
     override val screenViewModel by viewModels<ContactViewModel>()
-    private var contactAdapter: ContactAdapter by autoCleared()
-    val args: ContactFragmentArgs by navArgs()
+    override var setLogout = true
+    override val setToolbar = true
+    override var toolbarTitle = "Share"
+
+    private val args: ContactFragmentArgs by navArgs()
+
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
+
+    private val contactAdapter by lazy {
+        ContactAdapter(onItemClick = { contact ->
+            openContactDetailInfo(contact)
+        })
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        screenViewModel.contactObserver.observe(viewLifecycleOwner, { items ->
-            items?.let {
-                contactAdapter.items = it as List<Contact>
+
+        if (hasReadWithWritePermission().not()) {
+            initPermissionResultListener()
+            binding.contactAllow.show()
+            binding.contactPermissionTitle.show()
+            binding.contactAllow.setOnClickListener {
+                requestReadWithWritePermissions()
             }
+        } else {
+            screenViewModel.getContacts(requireContext())
+        }
+
+        bind()
+        subscribe()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+    }
+
+    private fun bind() {
+        binding.contactRecycler.apply {
+            adapter = contactAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+        }
+        ivExit.setOnClickListener {
+            StateExitProfile.changeToolbarTitle(true)
+        }
+    }
+
+    private fun subscribe() {
+        screenViewModel.contactObserver.observe(viewLifecycleOwner, { items ->
+            items?.let { contactAdapter.items = it }
         })
         screenViewModel.loadDataObserver.observe(viewLifecycleOwner, { isLoad ->
             isLoad?.let {
@@ -51,41 +88,10 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
                 }
             }
         })
-        if (hasReadWithWritePermission().not()) {
-            initPermissionResultListener()
-            binding.contactAllow.show()
-            binding.contactPermissionTitle.show()
-            binding.contactAllow.setOnClickListener {
-                requestReadWithWritePermissions()
-            }
-        } else {
-            screenViewModel.getContacts(requireContext())
-        }
-        contactAdapter = ContactAdapter(onItemClick = { contact ->
-                    openContactDetailInfo(contact)
-                })
-        binding.contactRecycler.apply {
-            adapter = contactAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-            setHasFixedSize(true)
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        StateToolbar.changeToolbarTitle(ToolbarModel("Share", visibleLogOut = false))
-    }
-
-    override fun onDestroyView() {
-        screenViewModel.contactObserver.removeObserver { }
-        screenViewModel.loadDataObserver.removeObserver {  }
-        super.onDestroyView()
     }
 
     private fun openContactDetailInfo(contact: Contact) {
-        val uri = Uri.parse("smsto:${contact.numbers.first()}")
-        val intentSms = Intent(Intent.ACTION_SENDTO, uri)
-        intentSms.putExtra("sms_body", "Я уже в Strava: https://strava/athletes/?userId=${args.userId}")
+        val intentSms = screenViewModel.getIntentContact(contact.numbers, args.userId)
         if (intentSms.resolveActivity(requireContext().packageManager) != null) {
             startActivity(intentSms)
         } else {

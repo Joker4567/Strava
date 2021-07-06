@@ -15,12 +15,9 @@ import javax.inject.Inject
 class App : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
-    private var _application: App? = null
-    private val application get() = checkNotNull(_application) { "Application isn`n initialized" }
 
     override fun onCreate() {
         super.onCreate()
-        _application = this
         initLog()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannels.createNotificationChannel(this)
@@ -30,10 +27,6 @@ class App : Application(), Configuration.Provider {
     private fun initLog() {
         if (BuildConfig.DEBUG)
             Timber.plant(Timber.DebugTree())
-    }
-
-    fun getInstance(): App {
-        return application
     }
 
     override fun getWorkManagerConfiguration() =

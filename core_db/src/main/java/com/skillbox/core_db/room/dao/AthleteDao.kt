@@ -4,8 +4,10 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.skillbox.shared_model.room.AthleteEntities
-import com.skillbox.shared_model.room.CreateActivitiesEntity
+import com.skillbox.shared_model.room.contract.ActivitiesContract
+import com.skillbox.shared_model.room.contract.AthleteContract
+import com.skillbox.shared_model.room.model.AthleteEntities
+import com.skillbox.shared_model.room.model.CreateActivitiesEntity
 
 @Dao
 interface AthleteDao {
@@ -13,21 +15,22 @@ interface AthleteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAthleteActivities(list: List<CreateActivitiesEntity>)
 
-    @Query("SELECT * FROM CreateActivitiesEntity")
+    @Query("SELECT * FROM ${ActivitiesContract.tableName}")
     suspend fun getAthleteActivities() : List<CreateActivitiesEntity>
 
-    @Query("DELETE FROM CreateActivitiesEntity")
+    @Query("DELETE FROM ${ActivitiesContract.tableName}")
     suspend fun deleteAthleteActivities()
 
-    @Query("SELECT * FROM CreateActivitiesEntity ORDER BY id DESC LIMIT 1")
+    @Query("SELECT * FROM ${ActivitiesContract.tableName} ORDER BY ${ActivitiesContract.Column.id} DESC LIMIT 1")
     suspend fun getAthleteLastDate() : CreateActivitiesEntity?
+
     //Athlete
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAthlete(athlete: AthleteEntities)
 
-    @Query("SELECT * FROM AthleteEntities LIMIT 1")
+    @Query("SELECT * FROM ${AthleteContract.tableName} LIMIT 1")
     suspend fun getAthlete() : AthleteEntities?
 
-    @Query("DELETE FROM AthleteEntities")
+    @Query("DELETE FROM ${AthleteContract.tableName}")
     suspend fun deleteAthlete()
 }

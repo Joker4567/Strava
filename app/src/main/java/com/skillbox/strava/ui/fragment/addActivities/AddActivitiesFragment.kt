@@ -16,8 +16,6 @@ import com.google.android.material.timepicker.TimeFormat
 import com.skillbox.core.extensions.OnTouchListener
 import com.skillbox.core.extensions.afterTextChanged
 import com.skillbox.core.platform.ViewBindingFragment
-import com.skillbox.core.state.StateToolbar
-import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.shared_model.network.ActivityType
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentAddActivitiesBinding
@@ -36,37 +34,30 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindAndInit()
+        setAdapterTypeActivities()
+        onErrorTextChanged()
+        savedInstanceState?.let {
+            Icepick.restoreInstanceState(this, savedInstanceState)
+        }
+    }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        Icepick.saveInstanceState(this, outState)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun bindAndInit() {
         WorkManager.getInstance(requireContext())
                 .getWorkInfosForUniqueWorkLiveData(DOWNLOAD_WORK_ID)
-                .observe(viewLifecycleOwner, { if(startDownload) handleWorkInfo(it.first()) })
+                .observe(viewLifecycleOwner, { if (startDownload) handleWorkInfo(it.first()) })
 
-        setAdapterTypeActivities()
         binding.activitiesDateValue.OnTouchListener {
             getDateOfTime()
         }
         binding.activitiesButtonInsert.setOnClickListener {
             postActivities()
         }
-        onError()
-        StateToolbar.changeToolbarTitle(ToolbarModel("",visible = false))
-
-        if (savedInstanceState != null) {
-            try {
-                Icepick.restoreInstanceState(this, savedInstanceState)
-            } catch (ex: Exception) {
-                Log.e("AddActivitiesFragment", ex.localizedMessage)
-            }
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        try {
-            Icepick.saveInstanceState(this, outState)
-        } catch (ex: Exception) {
-            Log.e("AddActivitiesFragment", ex.localizedMessage)
-        }
-        super.onSaveInstanceState(outState)
     }
 
     private fun stopDownload() {
@@ -75,7 +66,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
 
     private fun handleWorkInfo(workInfo: WorkInfo) {
         val isFinished = workInfo.state.isFinished
-        when(workInfo.state){
+        when (workInfo.state) {
             WorkInfo.State.FAILED -> {
                 Log.e("AddActivitiesFragment", "Ошибка добавления записи")
             }
@@ -83,41 +74,41 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
                 Log.d("AddActivitiesFragment", "Запись успешно добавлена")
             }
         }
-        if(isFinished)
+        if (isFinished)
             Log.d("AddActivitiesFragment", "Передача записи завершена")
     }
 
-    private fun onError() {
+    private fun onErrorTextChanged() {
         binding.activitiesDateValue.afterTextChanged { str ->
-            if(str.isNotEmpty()) {
+            if (str.isNotEmpty()) {
                 binding.activitiesDate.isErrorEnabled = false
                 binding.activitiesDate.error = null
                 binding.activitiesDateValue.error = null
             }
         }
         binding.activitiesTypeValue.afterTextChanged { str ->
-            if(str.isNotEmpty()) {
+            if (str.isNotEmpty()) {
                 binding.activitiesType.isErrorEnabled = false
                 binding.activitiesType.error = null
                 binding.activitiesTypeValue.error = null
             }
         }
         binding.activitiesNameValue.afterTextChanged { str ->
-            if(str.isNotEmpty()) {
+            if (str.isNotEmpty()) {
                 binding.activitiesName.isErrorEnabled = false
                 binding.activitiesName.error = null
                 binding.activitiesNameValue.error = null
             }
         }
         binding.activitiesTimeValue.afterTextChanged { str ->
-            if(str.isNotEmpty()) {
+            if (str.isNotEmpty()) {
                 binding.activitiesTime.isErrorEnabled = false
                 binding.activitiesTime.error = null
                 binding.activitiesTimeValue.error = null
             }
         }
         binding.activitiesDistanceValue.afterTextChanged { str ->
-            if(str.isNotEmpty()) {
+            if (str.isNotEmpty()) {
                 binding.activitiesDistance.isErrorEnabled = false
                 binding.activitiesDistance.error = null
                 binding.activitiesDistanceValue.error = null
@@ -132,40 +123,8 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
         val time = binding.activitiesTimeValue.text?.toString() ?: ""
         val distance = binding.activitiesDistanceValue.text?.toString() ?: ""
         val description = binding.activitiesDescriptionValue.text?.toString() ?: ""
-        if(name.isEmpty()) {
-            binding.activitiesName.isErrorEnabled = true
-            binding.activitiesName.error = getString(R.string.add_activities_error_name)
-            binding.activitiesName.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-            binding.activitiesNameValue.requestFocus()
-        }
-        if(type == null){
-            binding.activitiesType.isErrorEnabled = true
-            binding.activitiesType.error = getString(R.string.add_activities_error_type)
-            binding.activitiesType.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-            binding.activitiesTypeValue.requestFocus()
-        }
-        if(date.isEmpty()) {
-            binding.activitiesDate.isErrorEnabled = true
-            binding.activitiesDate.error = getString(R.string.add_activities_error_date)
-            binding.activitiesDate.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-            binding.activitiesDateValue.setError(getString(R.string.add_activities_error_date), requireContext().getDrawable(R.drawable.ic_error))
-            binding.activitiesDateValue.requestFocus()
-        }
-        if(time.isEmpty()) {
-            binding.activitiesTime.isErrorEnabled = true
-            binding.activitiesTime.error = getString(R.string.add_activities_error_time)
-            binding.activitiesTime.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-            binding.activitiesTimeValue.setError(getString(R.string.add_activities_error_minutes), requireContext().getDrawable(R.drawable.ic_error))
-            binding.activitiesTimeValue.requestFocus()
-        }
-        if(distance.isEmpty()) {
-            binding.activitiesDistance.isErrorEnabled = true
-            binding.activitiesDistance.error = getString(R.string.add_activities_error_dist)
-            binding.activitiesDistance.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
-            binding.activitiesDistanceValue.setError(getString(R.string.add_activities_error_dist_metr), requireContext().getDrawable(R.drawable.ic_error))
-            binding.activitiesDistanceValue.requestFocus()
-        }
-        if(name.isNotEmpty() && type != null && date.isNotEmpty() && time.isNotEmpty() && distance.isNotEmpty()) {
+
+        if (checkActivities(name, date, distance, time, type?.name ?: "")) {
             startDownload = true
 
             val workData = workDataOf(
@@ -174,7 +133,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
                     SendActivitiesWorker.MODEL_DESC to description,
                     SendActivitiesWorker.MODEL_DIST to distance,
                     SendActivitiesWorker.MODEL_TIME to time,
-                    SendActivitiesWorker.MODEL_TYPE to type.name
+                    SendActivitiesWorker.MODEL_TYPE to type!!.name
             )
 
             screenViewModel.saveLocal(name, ActivityType.valueOf(type.name), date, time.toInt(), description, distance.toFloat())
@@ -200,6 +159,43 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
         }
     }
 
+    private fun checkActivities(name: String, date: String, distance: String, time: String, type: String) : Boolean {
+        if (name.isBlank()) {
+            binding.activitiesName.isErrorEnabled = true
+            binding.activitiesName.error = getString(R.string.add_activities_error_name)
+            binding.activitiesName.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
+            binding.activitiesNameValue.requestFocus()
+        }
+        if (type == null) {
+            binding.activitiesType.isErrorEnabled = true
+            binding.activitiesType.error = getString(R.string.add_activities_error_type)
+            binding.activitiesType.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
+            binding.activitiesTypeValue.requestFocus()
+        }
+        if (date.isBlank()) {
+            binding.activitiesDate.isErrorEnabled = true
+            binding.activitiesDate.error = getString(R.string.add_activities_error_date)
+            binding.activitiesDate.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
+            binding.activitiesDateValue.setError(getString(R.string.add_activities_error_date), requireContext().getDrawable(R.drawable.ic_error))
+            binding.activitiesDateValue.requestFocus()
+        }
+        if (time.isBlank()) {
+            binding.activitiesTime.isErrorEnabled = true
+            binding.activitiesTime.error = getString(R.string.add_activities_error_time)
+            binding.activitiesTime.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
+            binding.activitiesTimeValue.setError(getString(R.string.add_activities_error_minutes), requireContext().getDrawable(R.drawable.ic_error))
+            binding.activitiesTimeValue.requestFocus()
+        }
+        if (distance.isBlank()) {
+            binding.activitiesDistance.isErrorEnabled = true
+            binding.activitiesDistance.error = getString(R.string.add_activities_error_dist)
+            binding.activitiesDistance.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
+            binding.activitiesDistanceValue.setError(getString(R.string.add_activities_error_dist_metr), requireContext().getDrawable(R.drawable.ic_error))
+            binding.activitiesDistanceValue.requestFocus()
+        }
+        return name.isNotBlank() && type != null && date.isNotBlank() && time.isNotBlank() && distance.isNotBlank()
+    }
+
     private fun setAdapterTypeActivities() {
         val items = listOf(
                 ActivityType.Ride.name,
@@ -217,12 +213,6 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
 
     private fun getDateOfTime() {
         var dateSelectedUnixTime = 0L
-
-        val datePicker =
-                MaterialDatePicker.Builder.datePicker()
-                        .setTitleText(getString(R.string.add_activities_error_date_choose))
-                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                        .build()
         var hour = 0
         var minutes = 0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -257,11 +247,15 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
                     "${dateLocal}T${timePicker.hour}:${timePicker.minute}:00Z"
             )
         }
-
         timePicker.addOnCancelListener {
             binding.activitiesDateValue.setText(getString(R.string.add_activities_error_choose_time))
         }
 
+        val datePicker =
+                MaterialDatePicker.Builder.datePicker()
+                        .setTitleText(getString(R.string.add_activities_error_date_choose))
+                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                        .build()
         datePicker.addOnPositiveButtonClickListener {
             dateSelectedUnixTime = it
             val fm = activity?.supportFragmentManager
@@ -290,6 +284,6 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
     }
 
     companion object {
-        private const val DOWNLOAD_WORK_ID = "download work"
+        private const val DOWNLOAD_WORK_ID = "download_work"
     }
 }

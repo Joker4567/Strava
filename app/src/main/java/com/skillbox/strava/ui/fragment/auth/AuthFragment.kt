@@ -30,11 +30,7 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.authButton.setOnClickListener {
-            doAuthorization()
-        }
-        if(Pref(requireContext(), requireActivity().application).accessToken.isNotEmpty())
-            screenViewModel.getIsAthlete()
+        bind()
     }
 
     override fun handleState(state: Event<State>) {
@@ -46,7 +42,7 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
     }
 
     override fun localData(localToast: ToastModel) {
-        if(localToast.text.isEmpty()) return
+        if(localToast.text.isBlank()) return
         if(localToast.isError) {
             CustomSnackbar.make(
                     requireActivity().window.decorView.rootView as ViewGroup,
@@ -59,25 +55,17 @@ class AuthFragment : ViewBindingFragment<FragmentAuthBinding>(FragmentAuthBindin
         }
     }
 
+    private fun bind() {
+        binding.authButton.setOnClickListener {
+            doAuthorization()
+        }
+
+        if(Pref(requireContext(), requireActivity().application).accessToken.isNotEmpty())
+            screenViewModel.getIsAthlete()
+    }
+
     private fun doAuthorization() {
-        val intentUri : Uri = Uri.parse("https://www.strava.com/oauth/mobile/authorize")
-                .buildUpon()
-                .appendQueryParameter("client_id", ConstAPI.id_client.toString())
-                .appendQueryParameter("redirect_uri", "https://www.strava.com/oauth/token")
-                .appendQueryParameter("response_type", "code")
-                .appendQueryParameter("approval_prompt", "auto")
-                .appendQueryParameter("scope", "read,activity:write,activity:read,profile:write,profile:read_all")
-                .build()
-
-        val serviceConfig = AuthorizationServiceConfiguration(
-                intentUri,
-                Uri.parse("https://www.strava.com/oauth/token"))
-
-        val authRequest = AuthorizationRequest.Builder(
-                serviceConfig,
-                ConstAPI.id_client.toString(),
-                ResponseTypeValues.CODE,
-                Uri.parse("https://strava/token")).build()
+        val authRequest = screenViewModel.authorizationRequest()
 
         val authService = AuthorizationService(requireContext())
         val authIntent = authService.getAuthorizationRequestIntent(authRequest)

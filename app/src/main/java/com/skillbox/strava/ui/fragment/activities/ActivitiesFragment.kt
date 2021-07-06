@@ -7,28 +7,58 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
+import com.skillbox.core.extensions.gone
 import com.skillbox.core.extensions.setData
-import com.skillbox.core.extensions.*
+import com.skillbox.core.extensions.show
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.snackbar.CustomSnackbar
-import com.skillbox.core.state.StateToolbar
+import com.skillbox.core.state.StateExitProfile
 import com.skillbox.core_db.pref.Pref
 import com.skillbox.shared_model.ToastModel
-import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.shared_model.network.СreateActivity
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentActivitiesBinding
 import com.skillbox.strava.ui.fragment.activities.adapter.itemRunnerCard
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(FragmentActivitiesBinding::inflate) {
 
     override val screenViewModel by viewModels<ActivitiesViewModel>()
 
+    override var setLogout = true
+    override val setToolbar = true
+    override var toolbarTitle = "Activities"
+
+    private val runnerCardAdapter by lazy {
+        ListDelegationAdapter(
+                itemRunnerCard(Pref(requireContext(), requireActivity().application))
+        )
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        subscribe()
+        bind()
+        initList()
+
+        screenViewModel.getAthleteActivities()
+    }
+
+    override fun localData(localToast: ToastModel) {
+        if(localToast.text.isBlank()) return
+        CustomSnackbar.make(
+                requireActivity().window.decorView.rootView as ViewGroup,
+                localToast.isLocal,
+                localToast.text,
+                localToast.isError
+        ) {
+            screenViewModel.getAthleteActivities()
+        }.show()
+    }
+
+    private fun subscribe() {
         screenViewModel.runnerItemsObserver.observe(viewLifecycleOwner, { list ->
             list?.let {
                 setAdapter(list)
@@ -46,41 +76,16 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
                 }
             }
         })
+    }
+
+    private fun bind() {
         binding.activitiesFabButton.setOnClickListener {
             findNavController()
                     .navigate(R.id.action_activitiesFragment_to_addActivitiesFragment)
         }
-        initList()
-        screenViewModel.getAthleteActivities()
-    }
-
-    override fun onDestroyView() {
-        screenViewModel.loadDataObserver.removeObserver {  }
-        screenViewModel.runnerItemsObserver.removeObserver {  }
-        super.onDestroyView()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        StateToolbar.changeToolbarTitle(ToolbarModel("Activities"))
-    }
-
-    override fun localData(localToast: ToastModel) {
-        if(localToast.text.isEmpty()) return
-        CustomSnackbar.make(
-                requireActivity().window.decorView.rootView as ViewGroup,
-                localToast.isLocal,
-                localToast.text,
-                localToast.isError
-        ) {
-            screenViewModel.getAthleteActivities()
-        }.show()
-    }
-
-    private val runnerCardAdapter by lazy {
-        ListDelegationAdapter(
-                itemRunnerCard(Pref(requireContext(), requireActivity().application))
-        )
+        ivExit.setOnClickListener {
+            StateExitProfile.changeToolbarTitle(true)
+        }
     }
 
     private fun initList() {

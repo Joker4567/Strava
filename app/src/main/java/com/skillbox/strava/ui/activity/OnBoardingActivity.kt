@@ -1,32 +1,39 @@
 package com.skillbox.strava.ui.activity
 
-import android.os.Build
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.skillbox.core.extensions.setupBottomWithNavController
 import com.skillbox.core.platform.BaseActivity
 import com.skillbox.core_db.pref.Pref
 import com.skillbox.strava.R
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_app.*
 
 @AndroidEntryPoint
 class OnBoardingActivity : BaseActivity(R.layout.activity_app) {
 
     private var currentNavController: LiveData<NavController>? = null
 
+    private var _bottomNav: BottomNavigationView? = null
+    private val bottomNav get() = checkNotNull(_bottomNav) { "BottomNavigationView bottomNav OnBoardingActivity isn`n initialized" }
+
     override fun initInterface(savedInstanceState: Bundle?) {
-        if(savedInstanceState == null)
-            setupBottomNavigationBar()
+        bind()
+        setupBottomNavigationBar()
+
         if(Pref(this, application).isBoarding)
             navigateAuth()
+
         intent?.data?.let { data ->
-            val auth: Boolean = data.getQueryParameter("auth") as Boolean ?: false
-            if(auth)
-                navigateAuth()
+            val auth: Boolean = data.getBooleanQueryParameter("auth", false)
+            if(auth) navigateAuth()
         }
+    }
+
+    private fun bind() {
+        _bottomNav = findViewById(R.id.bottom_nav)
     }
 
     private fun navigateAuth() {
@@ -39,7 +46,7 @@ class OnBoardingActivity : BaseActivity(R.layout.activity_app) {
                 R.navigation.onboarding
         )
 
-        val controller = bottom_nav.setupBottomWithNavController(
+        val controller = bottomNav.setupBottomWithNavController(
                 navGraphIds = navGraphIds,
                 fragmentManager = supportFragmentManager,
                 containerId = R.id.fragmentContainer,

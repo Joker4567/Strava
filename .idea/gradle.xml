@@ -12,8 +12,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core_data" />
             <option value="$PROJECT_DIR$/core_db" />
-            <option value="$PROJECT_DIR$/core_network" />
             <option value="$PROJECT_DIR$/shared_model" />
           </set>
         </option>

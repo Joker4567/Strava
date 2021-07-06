@@ -4,7 +4,7 @@ import com.skillbox.core_network.utils.State
 import com.skillbox.shared_model.network.ActivityType
 import com.skillbox.shared_model.network.Athlete
 import com.skillbox.shared_model.network.СreateActivity
-import com.skillbox.shared_model.room.CreateActivitiesEntity
+import com.skillbox.shared_model.room.model.CreateActivitiesEntity
 
 interface AthleteRepository {
     suspend fun getAthlete(onState: (State) -> Unit) : Athlete?

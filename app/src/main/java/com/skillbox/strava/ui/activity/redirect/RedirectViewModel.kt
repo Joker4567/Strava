@@ -15,7 +15,7 @@ class RedirectViewModel @Inject constructor(
 
     fun auth(code: String) {
         launchIO {
-            authRepository.postAuth(code, ::handleState)?.let { tokenAccess ->
+            authRepository.postAuth(code, ::handleState)?.let { _ ->
                 authStateObserver.postValue(true) }
         }
     }

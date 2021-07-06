@@ -1,12 +1,14 @@
 package com.skillbox.core.platform
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import com.skillbox.core.extensions.observeEvent
-import com.skillbox.core.state.StateCache
+import androidx.appcompat.widget.Toolbar
+import com.skillbox.core.R
+import com.skillbox.core.extensions.gone
+import com.skillbox.core.extensions.show
 import com.skillbox.core.utils.Event
-import com.skillbox.core_network.utils.Failure
 import com.skillbox.core_network.utils.State
 import com.skillbox.shared_model.ToastModel
 
@@ -17,6 +19,14 @@ abstract class BaseActivity() : AppCompatActivity() {
     constructor(@LayoutRes layoutResId: Int) : this() {
         layout = layoutResId
     }
+
+    open val setToolbar = false
+    open var setLogout = false
+    open val setDisplayHomeAsUpEnabled = true
+    open var toolbarTitle: String = ""
+
+    private var _ivExit: ImageView? = null
+    val ivExit get() = checkNotNull(_ivExit) { "BaseFragment _ivExit isn`n initialized" }
 
     open val screenViewModel: BaseViewModel?
         get() = null
@@ -30,6 +40,15 @@ abstract class BaseActivity() : AppCompatActivity() {
         }
         initInterface(savedInstanceState)
         observeBaseLiveData()
+        setupToolbar()
+    }
+
+    override fun onDestroy() {
+        screenViewModel?.let { vm ->
+            vm.mainState.removeObserver {  }
+            vm.localState.removeObserver {  }
+        }
+        super.onDestroy()
     }
 
     open fun observeBaseLiveData() {
@@ -47,11 +66,15 @@ abstract class BaseActivity() : AppCompatActivity() {
 
     }
 
-    override fun onDestroy() {
-        screenViewModel?.let { vm ->
-            vm.mainState.removeObserver {  }
-            vm.localState.removeObserver {  }
+    private fun setupToolbar() {
+        val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
+        _ivExit = findViewById(R.id.main_ivExit)
+        toolbar?.let {
+            toolbar.title = toolbarTitle
+            if(setToolbar) toolbar.show() else toolbar.gone()
         }
-        super.onDestroy()
+        _ivExit?.let {
+            if(setLogout) ivExit.show() else ivExit.gone()
+        }
     }
 }

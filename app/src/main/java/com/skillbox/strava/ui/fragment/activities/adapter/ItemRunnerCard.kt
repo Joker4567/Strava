@@ -1,6 +1,7 @@
 package com.skillbox.strava.ui.fragment.activities.adapter
 
-import android.os.Build
+import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
@@ -9,7 +10,6 @@ import com.skillbox.core.extensions.roundTo2DecimalPlaces
 import com.skillbox.core_db.pref.Pref
 import com.skillbox.shared_model.network.СreateActivity
 import com.skillbox.strava.R
-import kotlinx.android.synthetic.main.item_runner.view.*
 
 fun itemRunnerCard(pref: Pref) =
         adapterDelegateLayoutContainer<СreateActivity, Any>(R.layout.item_runner) {
@@ -18,34 +18,36 @@ fun itemRunnerCard(pref: Pref) =
                 val profileImageUrl = pref.photoprofile
                 val nameProfile = pref.nameProfile
 
-                if (profileImageUrl.isNotEmpty()) {
+                val image = containerView.findViewById<ImageView>(R.id.runner_ivPhoto)
+                val timeTitle = containerView.findViewById<TextView>(R.id.runner_tvTimeTitle)
+                val name = containerView.findViewById<TextView>(R.id.runner_tvName)
+                val title = containerView.findViewById<TextView>(R.id.runner_tvTitle)
+                val distance = containerView.findViewById<TextView>(R.id.runner_tvDistanceValue)
+                val timeValue = containerView.findViewById<TextView>(R.id.runner_tvTimeValue)
+                val elevation = containerView.findViewById<TextView>(R.id.runner_tvElevationValue)
+
+                if (profileImageUrl.isNotBlank()) {
                     Glide.with(containerView.context)
                             .load(profileImageUrl)
                             .placeholder(R.drawable.ic_placeholder_contact)
                             .error(R.drawable.ic_error_contact)
                             .transform(CircleCrop())
-                            .into(containerView.runner_ivPhoto)
+                            .into(image)
                 }
 
                 //2018-02-20T18:02:13Z
                 if(item.start_date.isNotEmpty()) {
                     val formatDate = getAbbreviatedFromDateTime(item.start_date)
-                    containerView.runner_tvTimeTitle.text = formatDate
+                    timeTitle.text = formatDate
                 }
-                if (nameProfile.isNotEmpty())
-                    containerView.runner_tvName.text = nameProfile
+                if (nameProfile.isNotEmpty()) name.text = nameProfile
 
-                containerView.runner_tvTitle.text = item.name
-
-                containerView.runner_tvDistanceValue.text =
-                        item.distance?.let { "${(it / 1000).roundTo2DecimalPlaces()} km" }
-
+                title.text = item.name
+                distance.text = item.distance?.let { "${(it / 1000).roundTo2DecimalPlaces()} km" }
 
                 val hour = (item.elapsed_time / 60)
                 val minutes = item.elapsed_time - (hour * 60)
-                containerView.runner_tvTimeValue.text = "$hour h $minutes m"
-
-                containerView.runner_tvElevationValue.text = "${item.total_elevation_gain} m"
+                timeValue.text = "$hour h $minutes m"
+                elevation.text = "${item.total_elevation_gain} m"
             }
-
         }

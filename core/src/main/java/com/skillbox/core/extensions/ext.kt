@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.annotation.DrawableRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import java.text.ParseException
@@ -27,18 +28,18 @@ fun Context.checkDarkTheme() : Boolean {
 }
 
 fun Context.getDrawable(@DrawableRes res: Int) {
-    ContextCompat.getDrawable(this, res)
+    AppCompatResources.getDrawable(this, res)
 }
 
-fun View.show() = run { visibility = View.VISIBLE }
+fun View.show() = apply { visibility = View.VISIBLE }
 
-fun View.invisible() = run { visibility = View.INVISIBLE }
+fun View.invisible() = apply { visibility = View.INVISIBLE }
 
-fun View.gone() = run { visibility = View.GONE }
+fun View.gone() = apply { visibility = View.GONE }
 
-fun View.enable() = run { isEnabled = true }
+fun View.enable() = apply { isEnabled = true }
 
-fun View.disable() = run { isEnabled = false }
+fun View.disable() = apply { isEnabled = false }
 
 fun getAbbreviatedFromDateTime(inputDate: String): String {
     //2018-02-20T18:02:13Z

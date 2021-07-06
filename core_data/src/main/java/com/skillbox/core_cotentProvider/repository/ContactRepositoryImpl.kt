@@ -51,7 +51,7 @@ class ContactRepositoryImpl @Inject constructor() : ContactRepository {
         return list
     }
 
-    private fun getPhonesForContact(id: Long, context: Context): List<String> {
+    private fun getPhonesForContact(id: Long, context: Context): String {
         return context.contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 null,
@@ -59,7 +59,7 @@ class ContactRepositoryImpl @Inject constructor() : ContactRepository {
                 arrayOf(id.toString()),
                 null
         )?.use {
-            getPhonesFromCursor(it)
+            getPhonesFromCursor(it).firstOrNull() ?: ""
         }.orEmpty()
     }
 

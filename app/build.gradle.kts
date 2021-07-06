@@ -64,7 +64,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":core_network"))
+    implementation(project(":core_data"))
     implementation(project(":shared_model"))
     implementation(project(":core_db"))
 
@@ -78,6 +78,9 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:$hilt_work_version")
     implementation("androidx.hilt:hilt-work:$hilt_work_version")
     kapt("androidx.hilt:hilt-compiler:$hilt_work_version")
+
+    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
 
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2")

@@ -4,17 +4,27 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import com.skillbox.core.extensions.observeEvent
-import com.skillbox.core.state.StateCache
+import com.skillbox.core.R
+import com.skillbox.core.extensions.gone
+import com.skillbox.core.extensions.show
 import com.skillbox.core.utils.Event
-import com.skillbox.core_network.utils.Failure
 import com.skillbox.core_network.utils.State
 import com.skillbox.shared_model.ToastModel
 
 abstract class BaseFragment() : Fragment() {
 
     open val screenViewModel: BaseViewModel? = null
+
+    open val setToolbar = false
+    open var setLogout = false
+    open val setDisplayHomeAsUpEnabled = true
+    open var toolbarTitle: String = ""
+
+    private var _ivExit: ImageView? = null
+    val ivExit get() = checkNotNull(_ivExit) { "BaseFragment _ivExit isn`n initialized" }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -23,6 +33,8 @@ abstract class BaseFragment() : Fragment() {
             vm.mainState.observe(viewLifecycleOwner, ::handleState)
             vm.localState.observe(viewLifecycleOwner, ::localData)
         }
+
+        setupToolbar(view)
     }
 
     open fun onBackPressed(): Boolean = false
@@ -46,6 +58,18 @@ abstract class BaseFragment() : Fragment() {
             vm.localState.removeObserver {  }
         }
         super.onDestroyView()
+    }
+
+    private fun setupToolbar(view: View) {
+        val toolbar = view?.findViewById<Toolbar>(R.id.main_toolbar)
+        _ivExit = view?.findViewById(R.id.main_ivExit)
+        toolbar?.let {
+            toolbar.title = toolbarTitle
+            if(setToolbar) toolbar.show() else toolbar.gone()
+        }
+        _ivExit?.let {
+            if(setLogout) ivExit.show() else ivExit.gone()
+        }
     }
 
     fun showSoftKeyboard(field: View?) {

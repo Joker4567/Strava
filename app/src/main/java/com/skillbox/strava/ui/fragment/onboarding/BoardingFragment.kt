@@ -1,6 +1,5 @@
 package com.skillbox.strava.ui.fragment.onboarding
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -10,7 +9,6 @@ import com.skillbox.core.extensions.checkDarkTheme
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.utils.ZoomOutPageTransformer
 import com.skillbox.core_db.pref.Pref
-import com.skillbox.shared_model.network.BoardingModel
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentBoardingBinding
 import com.skillbox.strava.ui.fragment.onboarding.adapter.OnboardingAdapter
@@ -20,43 +18,26 @@ import dagger.hilt.android.AndroidEntryPoint
 class BoardingFragment : ViewBindingFragment<FragmentBoardingBinding>(FragmentBoardingBinding::inflate) {
 
     override val screenViewModel by viewModels<BoardingViewModel>()
-    private var screens: MutableList<BoardingModel> = emptyList<BoardingModel>().toMutableList()
     private var positionSelected = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        bind()
+        bindViewPager()
+    }
+
+    private fun bind(){
         val imageDrawable = if (requireContext().checkDarkTheme())
             requireContext().getDrawable(R.drawable.ic_logo_dark)
         else
             requireContext().getDrawable(R.drawable.ic_logo_light)
 
         binding.boardingImageLogo.setBackgroundDrawable(imageDrawable)
-        bindViewPager()
     }
 
     private fun bindViewPager() {
-        screens.clear()
-        screens.addAll(
-                listOf(
-                        BoardingModel(
-                                R.string.boarding_card_title_one,
-                                R.string.boarding_card_desc_one,
-                                R.drawable.ic_welcome_ascent
-                        ),
-                        BoardingModel(
-                                R.string.boarding_card_title_two,
-                                R.string.boarding_card_desc_two,
-                                if(requireContext().checkDarkTheme()) R.drawable.ic_friends_dark else R.drawable.ic_friends
-                        ),
-                        BoardingModel(
-                                R.string.boarding_card_title_tree,
-                                R.string.boarding_card_desc_tree,
-                                if(requireContext().checkDarkTheme()) R.drawable.ic_activities_dark else R.drawable.ic_activities
-                        )
-                )
-        )
-
+        val screens = screenViewModel.getScreen(requireContext().checkDarkTheme())
         val adapter = OnboardingAdapter(screens, requireActivity())
         binding.boardingCard.adapter = adapter
         binding.boardingCard.setPageTransformer(ZoomOutPageTransformer())
@@ -69,12 +50,15 @@ class BoardingFragment : ViewBindingFragment<FragmentBoardingBinding>(FragmentBo
             else
                 navigateAuth()
         }
-
         binding.boardingCard.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 positionSelected = position
-                binding.boardingSkip.text = if (position < 2) getString(R.string.boarding_button_skip) else getString(R.string.boarding_button_okey)
+                binding.boardingSkip.text =
+                        if (position < 2)
+                            getString(R.string.boarding_button_skip)
+                        else
+                            getString(R.string.boarding_button_okey)
             }
         })
     }

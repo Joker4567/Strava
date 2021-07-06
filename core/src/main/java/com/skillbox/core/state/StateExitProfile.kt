@@ -1,19 +1,18 @@
 package com.skillbox.core.state
 
-import com.skillbox.shared_model.ToolbarModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
-object StateToolbar {
-    private val stateTitle = MutableSharedFlow<ToolbarModel>()
-    val modelToolbar: SharedFlow<ToolbarModel> = stateTitle
+object StateExitProfile {
+    private val stateExit = MutableSharedFlow<Boolean>()
+    val actionExit: SharedFlow<Boolean> = stateExit
 
-    fun changeToolbarTitle(modelToolbar: ToolbarModel) {
+    fun changeToolbarTitle(modelToolbar: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
-            stateTitle.emit(modelToolbar)
+            stateExit.emit(modelToolbar)
         }
     }
 }

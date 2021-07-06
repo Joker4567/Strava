@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core_network"))
+    implementation(project(":core_data"))
     implementation(project(":shared_model"))
     //ViewBindDelegate
     implementation("com.github.kirich1409:viewbindingpropertydelegate:1.4.4")

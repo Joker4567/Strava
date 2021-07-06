@@ -14,14 +14,12 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.skillbox.core.extensions.*
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.snackbar.CustomSnackbar
-import com.skillbox.core.state.StateToolbar
+import com.skillbox.core.state.StateExitProfile
 import com.skillbox.shared_model.ToastModel
-import com.skillbox.shared_model.ToolbarModel
 import com.skillbox.shared_model.network.Athlete
 import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentProfileBinding
 import com.skillbox.strava.ui.activity.OnBoardingActivity
-import com.skillbox.strava.ui.fragment.logOut.LogOutDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,13 +27,49 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
 
     override val screenViewModel by viewModels<ProfileViewModel>()
     private var userId: Long = 0
+    override var setLogout = true
+    override val setToolbar = true
+    override var toolbarTitle = "Profile"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        screenViewModel.athleteObserver.observe(this, { athlete ->
+        bind()
+        subscribe()
+        screenViewModel.getAthlete()
+    }
+
+    override fun localData(localToast: ToastModel) {
+        if(localToast.text.isBlank()) return
+        CustomSnackbar.make(
+                requireActivity().window.decorView.rootView as ViewGroup,
+                localToast.isLocal,
+                localToast.text,
+                localToast.isError
+        ) {
+            screenViewModel.getAthlete()
+        }.show()
+    }
+
+    private fun bind() {
+        binding.profileButtonLogout.setOnClickListener {
+            val action = ProfileFragmentDirections.actionHomeFragmentToLogOutDialogFragment()
+            findNavController()
+                    .navigate(action)
+        }
+        binding.profileButtonShare.setOnClickListener {
+            val action = ProfileFragmentDirections.actionHomeFragmentToContactFragment(userId)
+            findNavController()
+                    .navigate(action)
+        }
+        ivExit.setOnClickListener {
+            StateExitProfile.changeToolbarTitle(true)
+        }
+    }
+
+    private fun subscribe() {
+        screenViewModel.athleteObserver.observe(viewLifecycleOwner, { athlete ->
             athlete?.let { setData(athlete) }
         })
-        screenViewModel.getAthlete()
         screenViewModel.reAuthStateObserver.observe(viewLifecycleOwner, { isSuccessReAuth ->
             isSuccessReAuth?.let {
                 if(isSuccessReAuth)
@@ -45,14 +79,6 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
                 }
             }
         })
-        binding.profileButtonLogout.setOnClickListener {
-            LogOutDialogFragment().show(requireActivity().supportFragmentManager, "DialogFragment")
-        }
-        binding.profileButtonShare.setOnClickListener {
-            val action = ProfileFragmentDirections.actionHomeFragmentToContactFragment(userId)
-            findNavController()
-                    .navigate(action)
-        }
         screenViewModel.loadDataObserver.observe(viewLifecycleOwner, { isLoad ->
             isLoad?.let {
                 if(isLoad) {
@@ -64,30 +90,6 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
                 }
             }
         })
-    }
-
-    override fun onStart() {
-        super.onStart()
-        StateToolbar.changeToolbarTitle(ToolbarModel("Profile"))
-    }
-
-    override fun onDestroyView() {
-        screenViewModel.reAuthStateObserver.removeObserver {  }
-        screenViewModel.athleteObserver.removeObserver {  }
-        screenViewModel.loadDataObserver.removeObserver {  }
-        super.onDestroyView()
-    }
-
-    override fun localData(localToast: ToastModel) {
-        if(localToast.text.isEmpty()) return
-        CustomSnackbar.make(
-                requireActivity().window.decorView.rootView as ViewGroup,
-                localToast.isLocal,
-                localToast.text,
-                localToast.isError
-        ) {
-            screenViewModel.getAthlete()
-        }.show()
     }
 
     private fun setData(model: Athlete) {
@@ -109,22 +111,21 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
     }
 
     private fun setSpinner(currentWeight: Int) {
-        var weightData = arrayOf("29 kg").toMutableSet()
-        (30..120).forEach { weight ->
+        val weightData = emptyArray<String>().toMutableList()
+        (29..120).forEach { weight ->
             weightData.add("$weight kg")
         }
         val adapter: ArrayAdapter<String> = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, weightData.toList())
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        binding.profileSpinnerItems.setAdapter(adapter)
-
-        binding.profileSpinnerItems?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.profileSpinnerItems.adapter = adapter
+        binding.profileSpinnerItems.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val weightSelected = weightData.toList()[position].split(' ')[0].toInt()
+                val weightSelected = weightData.toList()[position].split(' ').first().toInt()
                 screenViewModel.changeWeight(weightSelected)
             }
 

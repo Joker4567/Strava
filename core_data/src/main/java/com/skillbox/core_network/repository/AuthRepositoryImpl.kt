@@ -17,13 +17,12 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun postAuth(code: String, onState: (State) -> Unit): String? =
             execute(onState = onState, func = {
-                val response =
+                val resultOAuth =
                         api.postAuth(
                                 client_id = ConstAPI.id_client,
                                 client_secret = ConstAPI.client_secret,
                                 code = code,
-                                grant_type = "authorization_code").execute()
-                val resultOAuth = response.body() as OAuthModel
+                                grant_type = "authorization_code").execute().body()!!
                 pref.accessToken = resultOAuth.access_token
                 resultOAuth.access_token
             }, funcLocal = {
@@ -34,8 +33,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun reauthorize(access_token: String, onState: (State) -> Unit): String? =
             execute(onState = onState, func = {
-                val response = api.reauthorization(access_token = access_token).execute()
-                val resultOAuth = response.body() as OAuthModel
+                val resultOAuth = api.reauthorization(access_token = access_token).execute().body()!!
                 resultOAuth.access_token
             }, funcLocal = {
                 ""

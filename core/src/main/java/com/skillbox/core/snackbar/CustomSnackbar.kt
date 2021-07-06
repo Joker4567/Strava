@@ -4,13 +4,14 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.skillbox.core.R
 import com.skillbox.core.extensions.getDimension
 import com.skillbox.core.extensions.gone
 import com.skillbox.core.extensions.show
-import kotlinx.android.synthetic.main.item_custom_snackbar.view.*
 
 class CustomSnackbar(
         parent: ViewGroup,
@@ -39,30 +40,30 @@ class CustomSnackbar(
                     false
             ) as CustomSnackbarView
 
+            val tvMessage = customView.findViewById<TextView>(R.id.tvMessage)
+            val ivState = customView.findViewById<ImageView>(R.id.ivState)
+            val tvRetry = customView.findViewById<TextView>(R.id.tvRetry)
+            val ivClose = customView.findViewById<ImageView>(R.id.ivClose)
+
             if(isCache) {
-                customView.tvMessage.setTextColor(ContextCompat.getColor(customView.context, android.R.color.white))
+                tvMessage.setTextColor(ContextCompat.getColor(customView.context, android.R.color.white))
                 customView.setBackgroundDrawable(ContextCompat.getDrawable(customView.context, R.drawable.rounded_cache))
-                customView.ivState.setBackgroundDrawable(customView.context.getDrawable(R.drawable.ic_notification))
+                ivState.setBackgroundDrawable(customView.context.getDrawable(R.drawable.ic_notification))
             }
             else {
-                customView.tvMessage.setTextColor(ContextCompat.getColor(customView.context, android.R.color.white))
+                tvMessage.setTextColor(ContextCompat.getColor(customView.context, android.R.color.white))
                 customView.setBackgroundDrawable(ContextCompat.getDrawable(customView.context, R.drawable.rounded_error))
-                customView.ivState.setBackgroundDrawable(customView.context.getDrawable(R.drawable.ic_error))
+                ivState.setBackgroundDrawable(customView.context.getDrawable(R.drawable.ic_error))
             }
+            tvMessage.text = text
 
-            if(isError){
-                customView.tvRetry.show()
-            } else {
-                customView.tvRetry.gone()
-            }
+            if(isError)
+                tvRetry.show()
+            else
+                tvRetry.gone()
 
-            customView.ivClose.setOnClickListener {
-                retry.invoke()
-            }
-
-            customView.tvRetry.setOnClickListener {  }
-
-            customView.tvMessage.text = text
+            tvRetry.setOnClickListener { retry.invoke() }
+            ivClose.setOnClickListener {  }
 
             return CustomSnackbar(viewGroup, customView)
         }

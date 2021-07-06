@@ -1,12 +1,10 @@
 package com.skillbox.core_network.repository
 
-import android.util.Log
 import com.skillbox.core_db.pref.Pref
 import com.skillbox.core_db.room.dao.AthleteDao
 import com.skillbox.core_network.api.AthleteApi
 import com.skillbox.core_network.utils.BaseRepository
 import com.skillbox.core_network.utils.ErrorHandler
-import com.skillbox.core_network.utils.Failure
 import com.skillbox.core_network.utils.State
 import com.skillbox.shared_model.map.mapToAthlete
 import com.skillbox.shared_model.map.mapToAthleteEntities
@@ -15,7 +13,7 @@ import com.skillbox.shared_model.map.mapToСreateActivitiesEntity
 import com.skillbox.shared_model.network.ActivityType
 import com.skillbox.shared_model.network.Athlete
 import com.skillbox.shared_model.network.СreateActivity
-import com.skillbox.shared_model.room.CreateActivitiesEntity
+import com.skillbox.shared_model.room.model.CreateActivitiesEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -29,8 +27,7 @@ class AthleteRepositoryImpl @Inject constructor(
 
     override suspend fun getAthlete(onState: (State) -> Unit) : Athlete?  =
         execute(onState = onState, func =  {
-            val response = apiAthlete.getAthlete().execute()
-            val resultModel = response.body() as Athlete
+            val resultModel = apiAthlete.getAthlete().execute().body()!!
             pref.nameProfile = "${resultModel.lastname} ${resultModel.firstname}"
             pref.photoprofile = resultModel.profile ?: ""
             resultModel
@@ -43,9 +40,7 @@ class AthleteRepositoryImpl @Inject constructor(
 
     override suspend fun getListAthlete(onState: (State) -> Unit): List<СreateActivity>? =
             execute(onState = onState, func =  {
-                val response = apiAthlete.getActivities().execute()
-                var resultModel = parseResponse(response)
-                resultModel
+                apiAthlete.getActivities().execute().body()!!
             }, funcLocal = {
                 athleteDao.getAthleteActivities().map { it.mapToСreateActivities() }
             }, funcOther = { resultModel ->
@@ -65,8 +60,8 @@ class AthleteRepositoryImpl @Inject constructor(
             distance: Float,
             onState: (State) -> Unit): Boolean? =
             execute(onState = onState, func =  {
-                val response = apiAthlete.createActivities(name, type.name, date, time, description, distance).execute()
-                response.isSuccessful
+                apiAthlete.createActivities(name, type.name, date, time, description, distance)
+                true
             }, funcLocal = {
                 false
             }, funcOther = { _ ->
@@ -88,8 +83,8 @@ class AthleteRepositoryImpl @Inject constructor(
 
     override suspend fun putWeightAthlete(weight: Int, onState: (State) -> Unit) : Boolean? =
             execute(onState = onState, func =  {
-                val response = apiAthlete.putWeightProfile(weight).execute()
-                response.isSuccessful
+                apiAthlete.putWeightProfile(weight)
+                true
             }, funcLocal = {
                 false
             }, funcOther = { _ ->
@@ -103,17 +98,4 @@ class AthleteRepositoryImpl @Inject constructor(
 
     override suspend fun getLastAthleteDate() : CreateActivitiesEntity? =
             athleteDao.getAthleteLastDate()
-
-    private fun <T> parseResponse(response: retrofit2.Response<List<T>>): List<T> = when {
-        response.raw().cacheResponse != null -> {
-            ((response.raw().cacheResponse?.body) ?: response.body()) as List<T>
-        }
-        response.isSuccessful -> {
-            response.body() as List<T>
-        }
-        else -> {
-            Log.e("AthleteRepositoryImpl", "Code: ${response.code()}, error: ${response.errorBody()}")
-            emptyList()
-        }
-    }
 }

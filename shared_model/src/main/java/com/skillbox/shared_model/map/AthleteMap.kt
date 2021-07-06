@@ -2,8 +2,8 @@ package com.skillbox.shared_model.map
 
 import com.skillbox.shared_model.network.Athlete
 import com.skillbox.shared_model.network.СreateActivity
-import com.skillbox.shared_model.room.AthleteEntities
-import com.skillbox.shared_model.room.CreateActivitiesEntity
+import com.skillbox.shared_model.room.model.AthleteEntities
+import com.skillbox.shared_model.room.model.CreateActivitiesEntity
 
 fun СreateActivity.mapToСreateActivitiesEntity() =
         CreateActivitiesEntity(

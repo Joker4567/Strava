@@ -1,11 +1,13 @@
 package com.skillbox.core.extensions
 
 import android.content.Context
+import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.viewpager2.widget.ViewPager2
 import java.math.BigDecimal
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {

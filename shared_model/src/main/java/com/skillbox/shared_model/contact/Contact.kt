@@ -8,7 +8,7 @@ import kotlinx.android.parcel.Parcelize
 class Contact(
     override val id: Long,
     override val name: String,
-    override val numbers: List<String>,
+    override val numbers: String,
     override val avatar: Bitmap?
 ) : BaseContact(id, name, numbers, avatar),
     Parcelable

@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Profile user"
+        app:title="@string/redirect_profile"
         app:titleTextColor="@color/white"
         tools:visibility="visible">
 

@@ -28,7 +28,7 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
 
     override var setLogout = true
     override val setToolbar = true
-    override var toolbarTitle = "Activities"
+    override var resToolbarId = R.string.activities_title_app
 
     private val runnerCardAdapter by lazy {
         ListDelegationAdapter(
@@ -82,9 +82,6 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
         binding.activitiesFabButton.setOnClickListener {
             findNavController()
                     .navigate(R.id.action_activitiesFragment_to_addActivitiesFragment)
-        }
-        ivExit.setOnClickListener {
-            StateExitProfile.changeToolbarTitle(true)
         }
     }
 

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="main_notification_warning">Нотификации отключены</string>
+    <string name="redirect_profile">Профиль пользователя</string>
+    <string name="activities_title_app">Активности</string>
+    <string name="contact_title_app">Поделиться</string>
+    <string name="profile_title_app">Профиль</string>
 </resources>

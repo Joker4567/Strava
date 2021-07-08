@@ -29,7 +29,7 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
     private var userId: Long = 0
     override var setLogout = true
     override val setToolbar = true
-    override var toolbarTitle = "Profile"
+    override var resToolbarId = R.string.profile_title_app
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,9 +60,6 @@ class ProfileFragment : ViewBindingFragment<FragmentProfileBinding>(FragmentProf
             val action = ProfileFragmentDirections.actionHomeFragmentToContactFragment(userId)
             findNavController()
                     .navigate(action)
-        }
-        ivExit.setOnClickListener {
-            StateExitProfile.changeToolbarTitle(true)
         }
     }
 

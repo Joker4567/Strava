@@ -4,8 +4,7 @@
     style="@style/Toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:tooltipText="Sample"
-    app:title="Sample"
+    app:title=""
     app:titleTextColor="@color/white">
 
     <ImageView

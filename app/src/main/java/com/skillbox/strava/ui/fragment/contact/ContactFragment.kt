@@ -16,6 +16,7 @@ import com.skillbox.core.extensions.show
 import com.skillbox.core.platform.ViewBindingFragment
 import com.skillbox.core.state.StateExitProfile
 import com.skillbox.shared_model.contact.Contact
+import com.skillbox.strava.R
 import com.skillbox.strava.databinding.FragmentContactBinding
 import com.skillbox.strava.ui.fragment.contact.adapter.ContactAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +28,7 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
     override val screenViewModel by viewModels<ContactViewModel>()
     override var setLogout = true
     override val setToolbar = true
-    override var toolbarTitle = "Share"
+    override var resToolbarId = R.string.contact_title_app
 
     private val args: ContactFragmentArgs by navArgs()
 
@@ -57,19 +58,11 @@ class ContactFragment : ViewBindingFragment<FragmentContactBinding>(FragmentCont
         subscribe()
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
     private fun bind() {
         binding.contactRecycler.apply {
             adapter = contactAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
-        }
-        ivExit.setOnClickListener {
-            StateExitProfile.changeToolbarTitle(true)
         }
     }
 

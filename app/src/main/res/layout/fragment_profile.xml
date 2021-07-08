@@ -33,14 +33,13 @@
             android:layout_height="match_parent">
 
             <TextView
+                style="@style/headerProfile"
                 android:id="@+id/profile_tvFollowers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/profile_followers"
-                android:textColor="@color/gray"
-                android:textSize="10sp"
                 app:layout_constraintStart_toEndOf="@+id/profile_tvFollowing"
                 app:layout_constraintTop_toBottomOf="@+id/profile_imageViewPhoto" />
 
@@ -50,7 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textSize="11sp"
                 app:layout_constraintStart_toStartOf="@+id/profile_tvFollowers"
                 app:layout_constraintTop_toBottomOf="@+id/profile_tvFollowers"
                 tools:text="53" />
@@ -70,11 +68,10 @@
                 android:id="@+id/profile_tvtelegramName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:textColor="@color/gray"
-                android:textSize="8sp"
+                android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/profile_imageViewPhoto"
-                app:layout_constraintStart_toEndOf="@+id/profile_imageViewPhoto"
+                app:layout_constraintStart_toStartOf="@+id/profile_tvName"
                 tools:text="\@viktoriaivanova" />
 
             <TextView
@@ -82,7 +79,7 @@
                 style="@style/textColorCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="19dp"
                 android:fontFamily="@font/roboto"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/profile_imageViewPhoto"
@@ -96,8 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="@string/profile_following"
-                android:textColor="@color/gray"
-                android:textSize="10sp"
+                style="@style/headerProfile"
                 app:layout_constraintStart_toStartOf="@+id/profile_imageViewPhoto"
                 app:layout_constraintTop_toBottomOf="@+id/profile_imageViewPhoto" />
 
@@ -107,7 +103,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textSize="11sp"
                 app:layout_constraintStart_toStartOf="@+id/profile_tvFollowing"
                 app:layout_constraintTop_toBottomOf="@+id/profile_tvFollowing"
                 tools:text="109" />
@@ -156,8 +151,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/profile_county"
-                android:textColor="@color/gray"
-                android:textSize="10sp"
+                style="@style/headerProfile"
                 app:layout_constraintStart_toStartOf="@+id/profile_tvGenderValue"
                 app:layout_constraintTop_toBottomOf="@+id/profile_tvGenderValue" />
 
@@ -167,8 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="76dp"
                 android:text="@string/profile_weight_edit"
-                android:textColor="@color/gray"
-                android:textSize="10sp"
+                style="@style/headerProfile"
                 app:layout_constraintStart_toStartOf="@+id/profile_tvCountryValue"
                 app:layout_constraintTop_toBottomOf="@+id/profile_tvGenderValue" />
 
@@ -191,8 +184,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="32dp"
                 android:text="@string/profile_gender"
-                android:textColor="@color/gray"
-                android:textSize="10sp"
+                style="@style/headerProfile"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

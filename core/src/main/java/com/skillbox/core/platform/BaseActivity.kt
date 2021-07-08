@@ -3,6 +3,7 @@ package com.skillbox.core.platform
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.skillbox.core.R
@@ -23,7 +24,7 @@ abstract class BaseActivity() : AppCompatActivity() {
     open val setToolbar = false
     open var setLogout = false
     open val setDisplayHomeAsUpEnabled = true
-    open var toolbarTitle: String = ""
+    open @StringRes var resToolBarId : Int = 0
 
     private var _ivExit: ImageView? = null
     val ivExit get() = checkNotNull(_ivExit) { "BaseFragment _ivExit isn`n initialized" }
@@ -70,7 +71,7 @@ abstract class BaseActivity() : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
         _ivExit = findViewById(R.id.main_ivExit)
         toolbar?.let {
-            toolbar.title = toolbarTitle
+            toolbar.title = getString(resToolBarId)
             if(setToolbar) toolbar.show() else toolbar.gone()
         }
         _ivExit?.let {

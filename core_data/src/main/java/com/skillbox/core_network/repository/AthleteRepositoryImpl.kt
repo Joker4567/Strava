@@ -27,10 +27,15 @@ class AthleteRepositoryImpl @Inject constructor(
 
     override suspend fun getAthlete(onState: (State) -> Unit) : Athlete?  =
         execute(onState = onState, func =  {
-            val resultModel = apiAthlete.getAthlete().execute().body()!!
-            pref.nameProfile = "${resultModel.lastname} ${resultModel.firstname}"
-            pref.photoprofile = resultModel.profile ?: ""
-            resultModel
+            val response = apiAthlete.getAthlete().execute()
+            if(response.isSuccessful)
+            {
+                val resultModel = response.body() as Athlete
+                pref.nameProfile = "${resultModel.lastname} ${resultModel.firstname}"
+                pref.photoprofile = resultModel.profile ?: ""
+                resultModel
+            } else
+                null
         }, funcLocal = {
             athleteDao.getAthlete()?.mapToAthlete()
         }, funcOther = { resultModel ->
@@ -40,7 +45,12 @@ class AthleteRepositoryImpl @Inject constructor(
 
     override suspend fun getListAthlete(onState: (State) -> Unit): List<СreateActivity>? =
             execute(onState = onState, func =  {
-                apiAthlete.getActivities().execute().body()!!
+                val response = apiAthlete.getActivities().execute()
+                if(response.isSuccessful){
+                    val result = response.body() as List<СreateActivity>
+                    result
+                } else
+                    emptyList()
             }, funcLocal = {
                 athleteDao.getAthleteActivities().map { it.mapToСreateActivities() }
             }, funcOther = { resultModel ->
@@ -60,7 +70,7 @@ class AthleteRepositoryImpl @Inject constructor(
             distance: Float,
             onState: (State) -> Unit): Boolean? =
             execute(onState = onState, func =  {
-                apiAthlete.createActivities(name, type.name, date, time, description, distance)
+                apiAthlete.createActivities(name, type.name, date, time, description, distance).execute()
                 true
             }, funcLocal = {
                 false

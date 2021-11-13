@@ -50,7 +50,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
     private fun bindAndInit() {
         WorkManager.getInstance(requireContext())
                 .getWorkInfosForUniqueWorkLiveData(DOWNLOAD_WORK_ID)
-                .observe(viewLifecycleOwner, { if (startDownload) handleWorkInfo(it.first()) })
+                .observe(viewLifecycleOwner) { if (startDownload) handleWorkInfo(it.first()) }
 
         binding.activitiesDateValue.OnTouchListener {
             getDateOfTime()
@@ -68,14 +68,23 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
         val isFinished = workInfo.state.isFinished
         when (workInfo.state) {
             WorkInfo.State.FAILED -> {
+                if (isResumed) {
+                    findNavController()
+                            .navigateUp()
+                }
                 Log.e("AddActivitiesFragment", "Ошибка добавления записи")
             }
             WorkInfo.State.SUCCEEDED -> {
+                if (isResumed) {
+                    findNavController()
+                            .navigateUp()
+                }
                 Log.d("AddActivitiesFragment", "Запись успешно добавлена")
             }
         }
-        if (isFinished)
+        if (isFinished) {
             Log.d("AddActivitiesFragment", "Передача записи завершена")
+        }
     }
 
     private fun onErrorTextChanged() {
@@ -151,11 +160,6 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
 
             WorkManager.getInstance(requireContext())
                     .enqueueUniqueWork(DOWNLOAD_WORK_ID, ExistingWorkPolicy.KEEP, workRequest)
-
-            if (isResumed) {
-                findNavController()
-                        .navigateUp()
-            }
         }
     }
 

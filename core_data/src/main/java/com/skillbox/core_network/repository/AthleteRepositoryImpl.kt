@@ -33,6 +33,7 @@ class AthleteRepositoryImpl @Inject constructor(
                 val resultModel = response.body() as Athlete
                 pref.nameProfile = "${resultModel.lastname} ${resultModel.firstname}"
                 pref.photoprofile = resultModel.profile ?: ""
+                resultModel.weight = athleteDao.getAthlete()?.weight ?: resultModel.weight
                 resultModel
             } else
                 null
@@ -93,6 +94,10 @@ class AthleteRepositoryImpl @Inject constructor(
 
     override suspend fun putWeightAthlete(weight: Int, onState: (State) -> Unit) : Boolean? =
             execute(onState = onState, func =  {
+                athleteDao.getAthlete()?.let { athlete ->
+                    apply { athlete.weight = weight.toDouble() }
+                    athleteDao.updateWeight(athlete)
+                }
                 apiAthlete.putWeightProfile(weight)
                 true
             }, funcLocal = {

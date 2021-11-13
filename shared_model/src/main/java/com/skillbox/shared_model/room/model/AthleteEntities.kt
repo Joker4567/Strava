@@ -41,5 +41,5 @@ data class AthleteEntities(
         @ColumnInfo(name = AthleteContract.Column.country)
         val country: String?,
         @ColumnInfo(name = AthleteContract.Column.weight)
-        val weight: Double? = 0.0
+        var weight: Double? = 0.0
 ) : Serializable

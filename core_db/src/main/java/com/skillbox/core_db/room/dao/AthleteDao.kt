@@ -1,9 +1,6 @@
 package com.skillbox.core_db.room.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.skillbox.shared_model.room.contract.ActivitiesContract
 import com.skillbox.shared_model.room.contract.AthleteContract
 import com.skillbox.shared_model.room.model.AthleteEntities
@@ -30,6 +27,9 @@ interface AthleteDao {
 
     @Query("SELECT * FROM ${AthleteContract.tableName} LIMIT 1")
     suspend fun getAthlete() : AthleteEntities?
+
+    @Update
+    suspend fun updateWeight(model: AthleteEntities)
 
     @Query("DELETE FROM ${AthleteContract.tableName}")
     suspend fun deleteAthlete()

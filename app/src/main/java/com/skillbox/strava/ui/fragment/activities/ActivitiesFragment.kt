@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.whenResumed
+import androidx.lifecycle.withResumed
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
@@ -42,7 +44,10 @@ class ActivitiesFragment : ViewBindingFragment<FragmentActivitiesBinding>(Fragme
         subscribe()
         bind()
         initList()
+    }
 
+    override fun onStart() {
+        super.onStart()
         screenViewModel.getAthleteActivities()
     }
 

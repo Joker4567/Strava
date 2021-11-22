@@ -21,7 +21,7 @@ abstract class BaseRepository(val errorHandler: ErrorHandler) {
                 result
             }
         } catch (e: Exception) {
-            Log.e("BaseRepository", e.localizedMessage)
+            Log.e("BaseRepository", e.message.toString())
             withContext(Dispatchers.Main) {
                 val result = funcLocal.invoke()
                 val isLocal = isSuccessLocal(result)

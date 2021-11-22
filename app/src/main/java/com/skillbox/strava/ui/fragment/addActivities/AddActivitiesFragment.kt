@@ -170,7 +170,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
             binding.activitiesName.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
             binding.activitiesNameValue.requestFocus()
         }
-        if (type == null) {
+        if (type.isBlank()) {
             binding.activitiesType.isErrorEnabled = true
             binding.activitiesType.error = getString(R.string.add_activities_error_type)
             binding.activitiesType.errorIconDrawable = requireContext().getDrawable(R.drawable.ic_error)
@@ -197,7 +197,7 @@ class AddActivitiesFragment : ViewBindingFragment<FragmentAddActivitiesBinding>(
             binding.activitiesDistanceValue.setError(getString(R.string.add_activities_error_dist_metr), requireContext().getDrawable(R.drawable.ic_error))
             binding.activitiesDistanceValue.requestFocus()
         }
-        return name.isNotBlank() && type != null && date.isNotBlank() && time.isNotBlank() && distance.isNotBlank()
+        return name.isNotBlank() && type.isNotBlank() && date.isNotBlank() && time.isNotBlank() && distance.isNotBlank()
     }
 
     private fun setAdapterTypeActivities() {

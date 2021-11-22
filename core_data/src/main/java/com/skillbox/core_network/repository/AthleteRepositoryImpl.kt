@@ -40,7 +40,9 @@ class AthleteRepositoryImpl @Inject constructor(
         }, funcLocal = {
             athleteDao.getAthlete()?.mapToAthlete()
         }, funcOther = { resultModel ->
-            athleteDao.insertAthlete(resultModel!!.mapToAthleteEntities())
+            resultModel?.let {
+                athleteDao.insertAthlete(resultModel.mapToAthleteEntities())
+            }
             null
         })
 

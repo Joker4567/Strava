@@ -7,7 +7,7 @@ data class Athlete(
         val firstname: String,
         val lastname: String,
         val city: String?,
-        val sex: Sex,
+        val sex: Sex?,
         val profile_medium: String?,
         val profile: String?,
         val friend: Int?,
@@ -17,5 +17,5 @@ data class Athlete(
 )
 
 enum class Sex {
-    M, F
+    M, F, NOT_SEX
 }
